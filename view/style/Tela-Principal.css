@@ -1,0 +1,124 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('images/0f0d989af5ce80b293f0de513b7a2bcb.jpg');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+}
+
+header {
+    background-color: #333;
+    color: rgb(255, 0, 0);
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    text-transform: uppercase; 
+}
+
+.btn-lateral {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgb(255, 0, 0);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.btn-lateral:hover {
+    color: #ff9800;
+}
+
+.btn-usuario {
+    left: 15px;
+}
+
+.btn-config {
+    right: 15px;
+}
+
+.container {
+    padding: 20px;
+}
+
+.dias-semana {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.dias-semana button {
+    background-color: #ff0000;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.dias-semana button:hover {
+    background-color: #ff0000;
+}
+
+.treino, .aluno-info {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.progresso {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.progresso-barra {
+    height: 30px;
+    background-color: #ff0000;
+    width: 0%;
+    border-radius: 10px;
+}
+
+.botao-progresso, .botao-novo-treino {
+    background-color: #9a0000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.botao-progresso:hover, .botao-novo-treino:hover {
+    background-color: #ff0000;
+}
+
+.botao-novo-treino {
+    display: none; 
+    margin-top: 10px;
+    background-color: #f44336;
+}
+
+.botao-novo-treino:hover {
+    background-color: #d32f2f;
+}
+
+.exercicio {
+    margin-bottom: 10px;
+}
