@@ -28,8 +28,9 @@ class Database {
 
             return $this->con;
 
-        }catch(Exeption $e){
+        }catch(PDOException $e){
             echo "Erro: ".$e->getMessage();
         }
+        
     }
 }
