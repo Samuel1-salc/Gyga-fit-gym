@@ -5,21 +5,26 @@ class Database {
     private $host;
     private $dbname;
     private $username;
+    private $pass;
+    private $port;
 
-    private $con;//cinnection
+    private $con; //cinnection
 
     function __construct() {
         $this->driver = "mysql";
-        $this->username = "localhost";
-        $this->dbname = "teste";
+        $this->dbname = "Gyga-fit";
         $this->username = "root";
+        $this->pass = "";
+        $this->port = "";
+        $this->host = "localhost";
     }
 
     function getConexao(){
         try{
             $this->con = new PDO(
-                "{$this->driver}:host={$this->host};dbname={$this->dbname}",
-                $this->username,
+                "{$this->driver}:host={$this->host};port={$this->port};dbname={$this->dbname}",
+                $this->username, 
+                $this->pass
                 
             );
             echo "conexao bem sussedida\n";
