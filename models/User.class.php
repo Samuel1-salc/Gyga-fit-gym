@@ -6,7 +6,7 @@ class User{
     private $link;
   
     public function __construct() {
-        require("database.class.php");
+        require_once __DIR__ . './../config/database.class.php';
         $this->con = new Database();
         $this->link = $this->con->getConexao();
     }

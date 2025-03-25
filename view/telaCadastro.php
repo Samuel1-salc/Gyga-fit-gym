@@ -15,7 +15,7 @@
         <div class="login-box">
             <h1>GYGA FIT</h1>
             <p>Entre com suas credenciais para cadastrar</p>
-            <form action="/../../api/processarCadastro.php" method="post">
+            <form action="./../controllers/processarCadastro.php" method="post">
                 <div class="input-group">
                     <label for="email">Email</label>
                      <input type="text" name = 'campo1'  placeholder="seu@email.com" required>

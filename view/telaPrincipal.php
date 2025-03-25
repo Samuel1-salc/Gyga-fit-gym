@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/Tela-Principal.css">
 
 </head>
 <body>
@@ -28,12 +28,14 @@
 
 <div class="container">
 
+
+  
     <div class="aluno-info">
         <h3>Informações do Aluno</h3>
-        <p><strong>Nome:</strong> João Hott</p>
-        <p><strong>Altura:</strong> 1,89 m</p>
-        <p><strong>Peso:</strong> 68 kg</p>
-        <p><strong>Sexo:</strong> Masculino</p>
+        <p><strong>Nome:</strong> </p>
+        <p><strong>Altura:</strong>  </p>
+        <p><strong>Peso:</strong> </p>
+        <p><strong>Sexo:</strong> </p>
     </div>
 
     <div class="dias-semana">
@@ -43,7 +45,6 @@
         <button onclick="mostrarTreino('quinta')">Quinta</button>
         <button onclick="mostrarTreino('sexta')">Sexta</button>
     </div>
-
     <div id="treino" class="treino">
         <h3>Treino do Dia</h3>
         <p>Selecione um dia para ver o treino.</p>
@@ -103,6 +104,9 @@
                     <strong>${exercicio.nome}</strong><br>
                     Séries: ${exercicio.series} | Repetições: ${exercicio.repeticoes}<br>
                     <em>Músculos trabalhados: ${exercicio.musculos}</em>
+                    <select  id ="peso">
+                        <option value = "" disabled selected>Selecione</option>
+                    </select>
                 </li>
             `;
         });
