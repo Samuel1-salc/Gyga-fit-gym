@@ -12,7 +12,7 @@ class Database {
 
     function __construct() {
         $this->driver = "mysql";
-        $this->dbname = "Gyga-fit";
+        $this->dbname = "gygafit";
         $this->username = "root";
         $this->pass = "";
         $this->port = "";

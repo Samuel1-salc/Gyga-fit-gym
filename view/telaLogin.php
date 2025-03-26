@@ -15,7 +15,7 @@
         <div class="login-box">
             <h1>GYGA FIT</h1>
             <p>Entre com suas credenciais para Entrar</p>
-            <form action="#" method="">
+            <form action="./../controllers/processarLogin.php" method="post">
                 <div class = "input-group">
                     <label for="cpf">cpf</label>
                     <input type="text" name = 'campo3' required>
