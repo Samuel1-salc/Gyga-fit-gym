@@ -56,6 +56,8 @@
         }
     </style>
 </head>
+
+
 <body>
     <div class="container">
         <h1>Registro de Treino</h1>

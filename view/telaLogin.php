@@ -16,13 +16,26 @@
             <h1>GYGA FIT</h1>
             <p>Entre com suas credenciais para Entrar</p>
             <form action="./../controllers/processarLogin.php" method="post">
+           
                 <div class = "input-group">
                     <label for="cpf">cpf</label>
-                    <input type="text" name = 'campo3' required>
+                    <input type="text" name = 'cpf' required>
+
+
+                    <?php if (isset($_SESSION['error']) && strpos($_SESSION['error'], "CPF") !== false): ?>
+                    <div class="error-message"><?php echo $_SESSION['error']; ?></div>
+                    <?php endif; ?>
+
+                    
                 </div>
                 <div class="input-group">
                     <label for="password">Senha</label>
-                    <input type="password" name = 'campo4'  required>
+                    <input type="password" name = 'senha'  required>
+
+                    <?php if (isset($_SESSION['error']) && strpos($_SESSION['error'], "Senha") !== false): ?>
+                    <div class="error-message"><?php echo $_SESSION['error']; ?></div>
+                    <?php endif; ?>
+                    
                 </div>
                 <button type="submit">Entrar</button>
             </form>
