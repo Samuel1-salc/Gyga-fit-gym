@@ -1,7 +1,9 @@
-<?php 
-    require_once ("./config/database.class.php");
-    $con = new Database ();
-    $link = $con->getConexao ();
-    $stmt = $link->prepare("INSERT INTO usuarios(email, username, senha, CPF) VALUES ('teste@gmail.com', 'Teste1', '12345678', '01234567891') ");
-    $stmt->execute();    
-    
+<?php
+require_once __DIR__ . "/models/User.class.php";
+$usuario = new User();
+if ($usuario->cadastrar("samuellclash@gmail.com","samuelPingas", "05274963161","12345", "12345")) {
+   echo "cadastrado com sucesso";
+} else {
+   echo "errado";
+}
+?>
