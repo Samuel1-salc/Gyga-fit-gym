@@ -78,6 +78,7 @@ class User
     // Busca os dados do usuário pelo CPF
     public function getUserByCpf($Cpf)
     {
+        echo "oi";
         // Busca os dados do usuário pelo CPF
         $stmt = $this->link->prepare("SELECT * FROM usuarios WHERE cpf = :Cpf");
         $stmt->bindParam(':Cpf', $Cpf);
