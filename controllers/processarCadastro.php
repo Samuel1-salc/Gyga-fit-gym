@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../models/User.class.php';
+
+include __DIR__ .'./../models/User.class.php';
 session_start();
 
 $usuario = new User();

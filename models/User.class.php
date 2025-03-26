@@ -1,12 +1,12 @@
 <?php
-
+include __DIR__ .'./../config/database.class.php';
 
 class User{
     private $con;
     private $link;
   
     public function __construct() {
-        require_once __DIR__ . './../config/database.class.php';
+        
         $this->con = new Database();
         $this->link = $this->con->getConexao();
     }
