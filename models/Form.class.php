@@ -24,4 +24,11 @@ class Form{
             echo "Erro ao cadastrar: " . implode('', $stmt->errorInfo());
         }
     }
+
+    public function getFormById($id_user){
+        $stmt = $this->link->prepare("SELECT * FROM formulario WHERE id_user = :id_user");
+        $stmt->bindParam(':id_user', $id_user);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

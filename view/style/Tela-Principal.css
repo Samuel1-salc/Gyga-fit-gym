@@ -69,7 +69,7 @@ header h1 {
 }
 
 .dias-semana button:hover {
-    background-color: #ff0000;
+    background-color: #180202;
 }
 
 .treino, .aluno-info {
@@ -79,6 +79,19 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     opacity: 0.8;
+}
+.aluno-info button{
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.aluno-info button:hover {
+    background-color: #180202;
 }
 
 .progresso {
@@ -96,7 +109,7 @@ header h1 {
 }
 
 .botao-progresso, .botao-novo-treino {
-    background-color: #9a0000;
+    background-color: #ff0000;
     color: white;
     border: none;
     padding: 10px;
@@ -106,7 +119,7 @@ header h1 {
 }
 
 .botao-progresso:hover, .botao-novo-treino:hover {
-    background-color: #ff0000;
+    background-color: #180202;
 }
 
 .botao-novo-treino {
@@ -126,3 +139,17 @@ input {
     width: 40px;
     text-align: left;
 }
+.botao-registrar {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.botao-registrar:hover {
+    background-color: #180202;
+}
+
