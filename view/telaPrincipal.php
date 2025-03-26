@@ -32,10 +32,11 @@
   
     <div class="aluno-info">
         <h3>Informações do Aluno</h3>
-        <p><strong>Nome:</strong> </p>
-        <p><strong>Altura:</strong>  </p>
-        <p><strong>Peso:</strong> </p>
-        <p><strong>Sexo:</strong> </p>
+        <p><strong>Nome:</strong><?php session_start(); echo $_SESSION['usuario']['username'] ?> </p>
+        <p><strong>Altura:</strong><?php   echo $_SESSION['aluno']['altura'] ?>  </p>
+        <p><strong>Peso:</strong><?php   echo $_SESSION['aluno']['peso'] ?> </p>
+        <p><strong>Sexo:</strong> <?php   echo $_SESSION['aluno']['sexo'] ?></p>
+        <button id = Form onclick="abrirform()">Novo Treino</button>
     </div>
 
     <div class="dias-semana">
@@ -58,6 +59,7 @@
         <p id="texto-progresso">Progresso: 0%</p>
         <button class="botao-progresso" id="botao-progresso" onclick="atualizarProgresso()">Treino Finalizado</button>
         <button class="botao-novo-treino" id="botao-novo-treino" onclick="solicitarNovoTreino()">Solicitar Novo Treino</button>
+        <button class="botao-registrar" onclick="abrirRegist()">registrar</button>
     </div>
 
 </div>
@@ -142,6 +144,13 @@
 
     function abrirConfiguracoes() {
         alert("Abrindo configurações...");
+    }
+
+    function abrirForm(){
+        window.location.href = "./paginaFormulario.php";
+    }
+    function abrirRegist(){
+        window.location.href = "./paginaMonitoramento.php";
     }
 </script>
 

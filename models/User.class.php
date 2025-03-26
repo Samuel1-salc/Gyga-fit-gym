@@ -14,7 +14,7 @@ class User
 
     // Cadastra um novo usuário
     // Recebe os dados do formulário e insere no banco de dados
-    public function cadastrar($Email, $Username, $Cpf, $Senha, $Confirm_password)
+    public function cadastrar($Email, $Username, $Cpf, $Senha)
     {
         // Criptografa a senha
         $senha_hash = password_hash($Senha, PASSWORD_DEFAULT);
@@ -82,6 +82,13 @@ class User
         // Busca os dados do usuário pelo CPF
         $stmt = $this->link->prepare("SELECT * FROM usuarios WHERE cpf = :Cpf");
         $stmt->bindParam(':Cpf', $Cpf);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function firstLogin($id){
+        $stmt = $this->link->prepare("SELECT * FROM formulario WHERE id_user = :id");
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

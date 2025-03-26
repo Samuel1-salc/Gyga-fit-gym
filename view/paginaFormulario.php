@@ -26,8 +26,9 @@
 <div class="container">
     <h1>Requerimento de Planilha de Treino</h1>
     <form action="./../controllers/processarForm.php" method="post">
-        <div class="form-group">
+        <div class="form-group pergunta">
             <label>1. Qual a sua experiência na academia?</label>
+            
             <div class="radio-group">
                 <input type="radio" id="iniciante" name="experiencia" value="Iniciante" required>
                 <label for="iniciante">Iniciante</label>
@@ -40,7 +41,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group pergunta">
             <label>2. Qual o seu objetivo na academia?</label>
             <div class="radio-group">
                 <input type="radio" id="hipertrofia" name="objetivo" value="Hipertrofia" required>
@@ -60,7 +61,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group pergunta">
             <label>3. Quantos dias por semana pretende treinar?</label>
             <div class="radio-group">
                 <input type="radio" id="treinos2" name="treinos" value="2" required>
@@ -74,31 +75,31 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group pergunta">
             <label>4. Sexo:</label>
             <div class="radio-group">
-                <input type="radio" id="masculino" name="sexo" value="M" required>
-                <label for="Masculino">Masculino</label>
+                <input type="radio" id="masculino" name="sexo" value="M">
+                <label for="masculino">Masculino</label>
                 
                 <input type="radio" id="feminino" name="sexo" value="F">
-                <label for="Feminino">Feminino</label>
+                <label for="feminino">Feminino</label>
 
-                <input type="radio" id="Outro" name="sexo" value="Outro">
-                <label for="Outro">Outro</label>
+                <input type="radio" id="Outro" name="sexo" value="O">
+                <label for="outro">Outro</label>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group pergunta">
             <label for="peso">5. Qual o seu peso? (kg)</label>
             <input type="number" id="peso" name="peso" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group pergunta">
             <label for="altura">6. Qual a sua altura? (cm)</label>
             <input type="number" id="altura" name="altura" required>
         </div>
         
-        <div class="form-group">
+        <div class="form-group pergunta">
             <button type="submit">Enviar Formulário</button>
         </div>
     </form>
