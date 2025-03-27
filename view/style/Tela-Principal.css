@@ -125,4 +125,28 @@ header h1 {
 input {
     width: 40px;
     text-align: left;
+<<<<<<< Updated upstream
 }
+=======
+}
+.botao-registrar {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+    
+}
+
+.botao-registrar:hover {
+    background-color: #180202;
+}
+
+>>>>>>> Stashed changes
