@@ -27,7 +27,7 @@ JavaScript
 
 Backend:
 
-Node.js 
+Php 
 
 Banco de dados xampp
 
@@ -70,7 +70,7 @@ A estrutura de pastas do projeto é a seguinte:
 
 João Hott: Desenvolvimento das páginas da tela principal
 
-Samuel Ribeiro:Desenvolvimento das páginas de cadastro e login
+Samuel Andrade:Desenvolvimento das páginas de cadastro e login
 
 Hallef Kayk:Desenvolvimento do Banco de Dados
 
