@@ -14,6 +14,9 @@ Formulário de treino: Os usuários podem fazer o requerimento de um plano de tr
 
 Monitoramento: Após realizar um treino, o usuário pode especificar seu desempenho na pagina de monitoramento.
 
+Requisitos funcionais User storys
+André chegou agora em palmas e se matriculou na Gyga-fit, no sistema o instrutor fez sua matrícula, e sendo André um iniciante ele desejava um treino montado pelo instrutor para seguir seus treinos, assim o instrutor por meio do software Gyga-fit montou seu treino. André agora pode acessar o treino sem auxílio do instrutor por meio do software disponibilizado pela academia, visualizando seus treinos diários na tela principal. 
+
 - Tecnologias Utilizadas
 O projeto foi desenvolvido com as seguintes tecnologias:
 
