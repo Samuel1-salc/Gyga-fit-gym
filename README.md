@@ -139,36 +139,6 @@ ___
 
 **como** um aluno **eu quero** preencher um formulário solicitando um treino personalizado para que o instrutor possa montar um plano de treino adequado às minhas necessidades e objetivos.
 
-#### Regras de Negócio
-
-- Apenas alunos autenticados poderão acessar o formulário de solicitação de treino.
-- O formulário deve conter campos obrigatórios como: objetivo do treino, frequência semanal, restrições físicas e específicas.
-- O instrutor responsável será notificado quando um novo formulário for enviado.
-- Cada aluno pode enviar um novo formulário quando desejar atualizar suas preferências.
-
-#### Tarefas
-
-**Back-end/front-end:**
-
-- Criar endpoint para submissão de formulário de treino pelo aluno
-- Criar interface com campos obrigatórios e formulários para o formulário
-- Armazenar os dados no banco e relacionar ao aluno
-- Implementar notificação ou lista de instruções para os instrutores
-
-#### Critérios de Aceitação
-
-- O aluno deve conseguir acessar e preencher o formulário após login.
-- O formulário deve validar os campos obrigatórios antes do envio.
-- O instrutor deve conseguir visualizar os dados enviados para criação do treino.
-- Os dados devem ser armazenados corretamente no banco, associados ao aluno.
-- O aluno deve conseguir reenviar um novo formulário caso deseje.
-
-___
-
-### Criação do Formulário de Treino (RF - 4)
-
-**como** um aluno **eu quero** preencher um formulário solicitando um treino personalizado para que o instrutor possa montar um plano de treino adequado às minhas necessidades e objetivos.
-
 ### Regras de Negócio
 
 - Apenas alunos autenticados poderão acessar o formulário de solicitação de treino.
@@ -208,7 +178,7 @@ ___
 | RF-5      | Criação do Formulário de Treino              | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Planejado      | Permitir ao aluno solicitar treino personalizado.                     |
 ___
 
-### Sistema de cadastro de usuários(RF - 1)
+### Sistema de cadastro de usuários(RF - 5)
 **como** um usário gerente **eu quero** cadastrar novos clientes(assinantes do plano da academia) para enfim os clientes terem acesso ao aplicativo.
 **também quero** cadastrar instrutores(funcionários da academia com acesso ao sistema), para efim os mesmos terem acesso ao sistema e acessar os privilégios de instrutor.
 
@@ -227,7 +197,7 @@ ___
 - Os usuários deverão receber confirmação de cadastro.
 ___
 
-### Recuperação de senha (RF - 2)
+### Recuperação de senha (RF - 6)
 **como** um usuário cadastrado **eu quero** recuperar o acesso à minha conta caso eu esqueça minha senha,
 para que eu possa redefinir minha senha com segurança e continuar utilizando o sistema.
 
@@ -249,7 +219,7 @@ para que eu possa redefinir minha senha com segurança e continuar utilizando o 
 - O usuário deve conseguir redefinir sua senha com sucesso ao acessar o link.
 ___
 
-### Visualizar Perfis no Sistema (RF - 3)
+### Visualizar Perfis no Sistema (RF - 7)
 **como** um aluno, instrutor ou visitante do sistema
 **eu quero** visualizar os perfis correspondentes
 para que eu possa acompanhar informações relevantes à minha função ou à academia.
@@ -293,7 +263,7 @@ para que eu possa acompanhar informações relevantes à minha função ou à ac
 - A visualização do perfil da academia deve estar disponível publicamente.
 ___
 
-### Criação do Formulário de Treino (RF - 4)
+### Criação do Formulário de Treino (RF - 8)
 **como** um aluno **eu quero** preencher um formulário solicitando um treino personalizado
 para que o instrutor possa montar um plano de treino adequado às minhas necessidades e objetivos.
 
