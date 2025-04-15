@@ -44,6 +44,7 @@ Descrição
 | RF-2      | Recuperação de senha/conta                    | Funcionalidade de Recuperação | Mauricio       |                |                  |                | Em andamento   | Envio de email com link de redefinição.                               |
 | RF-4      | Visualizar Perfis do sistema                 | Interface de Usuário (UI)   | João Hott      |                |                  |                | Em andamento   | Exibir dados de usuários e perfil da academia.                        |
 | RF-5      | Criação do Formulário de Treino              | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Planejado      | Permitir ao aluno solicitar treino personalizado.                     |
+___
 
 ### Sistema de cadastro de usuários(RF - 1)
 **como** um usário gerente **eu quero** cadastrar novos clientes(assinantes do plano da academia) para enfim os clientes terem acesso ao aplicativo.
@@ -62,6 +63,7 @@ Descrição
 
 #### Critérios de aceitação:
 - Os usuários deverão receber confirmação de cadastro.
+___
 
 ### Recuperação de senha (RF - 2)
 **como** um usuário cadastrado **eu quero** recuperar o acesso à minha conta caso eu esqueça minha senha,
@@ -73,7 +75,7 @@ para que eu possa redefinir minha senha com segurança e continuar utilizando o 
 - A redefinição só será possível após validação do token de recuperação enviado por email.
 
 #### Tarefas:
-backend/FrontEnd:
+**backend/FrontEnd:**
 
 - Implementar endpoint para solicitação de recuperação de senha (Mauricio)
 - Gerar token temporário e enviar email com link de redefinição (Mauricio)
@@ -83,8 +85,9 @@ backend/FrontEnd:
 - O usuário deve receber um email com um link único de recuperação.
 - O link deve expirar após um determinado tempo (ex: 1 hora).
 - O usuário deve conseguir redefinir sua senha com sucesso ao acessar o link.
+___
 
-### Visualizar Perfis no Sistema (RF - 4)
+### Visualizar Perfis no Sistema (RF - 3)
 **como** um aluno, instrutor ou visitante do sistema
 **eu quero** visualizar os perfis correspondentes
 para que eu possa acompanhar informações relevantes à minha função ou à academia.
@@ -93,16 +96,19 @@ para que eu possa acompanhar informações relevantes à minha função ou à ac
 **Perfil do Aluno:**
 - Deve exibir informações pessoais: nome, email, plano atual e histórico de treinos.
 - Deve ser acessível apenas pelo próprio aluno, após login.
+
 **Perfil do Instrutor:**
 - Deve exibir informações pessoais do instrutor.
 - Deve mostrar a lista de alunos vinculados e treinos criados.
 - Acesso restrito ao próprio instrutor logado.
+
 **Perfil da Academia:**
 - Deve exibir informações institucionais: nome da academia, endereço, horário de funcionamento, planos disponíveis e contatos.
 - Pode ser acessado por qualquer tipo de usuário, inclusive visitantes sem login.
 
 #### Tarefas:
-**Backend/Frontend (João Hott)**:
+**Backend/Frontend (João Hott):**
+
 -Criar endpoint para retorno dos dados de perfil do aluno.
 -Criar endpoint para retorno dos dados de perfil do instrutor.
 -Criar endpoint para retorno das informações institucionais da academia.
@@ -114,15 +120,18 @@ para que eu possa acompanhar informações relevantes à minha função ou à ac
 #### Critérios de Aceitação:
 **Aluno:**
 - Deve visualizar corretamente: nome, email, plano atual e histórico de treinos.
+
 **Instrutor:**
 - Deve visualizar corretamente: seus dados e a lista de alunos vinculados.
+
 **Academia:**
 - Deve exibir corretamente: nome, endereço, horário de funcionamento, planos e contatos.
 - O conteúdo exibido deve respeitar o nível de permissão do usuário.
 - O acesso aos perfis pessoais (aluno e instrutor) deve exigir autenticação.
 - A visualização do perfil da academia deve estar disponível publicamente.
+___
 
-### Criação do Formulário de Treino (RF - 5)
+### Criação do Formulário de Treino (RF - 4)
 **como** um aluno **eu quero** preencher um formulário solicitando um treino personalizado
 para que o instrutor possa montar um plano de treino adequado às minhas necessidades e objetivos.
 
@@ -145,6 +154,7 @@ para que o instrutor possa montar um plano de treino adequado às minhas necessi
 - O instrutor deve conseguir visualizar os dados enviados para criação do treino.
 - Os dados devem ser armazenados corretamente no banco, associados ao aluno.
 - O aluno deve conseguir reenviar um novo formulário caso deseje.
+___
 
 
 
