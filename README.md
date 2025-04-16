@@ -23,7 +23,7 @@ Samuel Andrade
 Hallef Kayk 
 Heitor Fernandes 
 Maurício Monteiro 
-Sophia 
+Sophia Prado
 
 Descrição 
 
@@ -172,7 +172,7 @@ ___
 
 | Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
 |-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
-| RF-1      | Cadastro de novo usuário (Aluno, Instrutor, ADM) | Cadastro de Usuário          Samuel         |                |                  |                | Em andamento   | Implementar com campos obrigatórios e tipo de usuário.                |
+| RF-1      | Cadastro de novo usuário (Aluno, Instrutor, ADM) | Cadastro de Usuário       |   Samuel e Sophia        |                |                  |                | Em andamento   | Implementar com campos obrigatórios e tipo de usuário.                |
 | RF-2      | Recuperação de senha/conta                    | Funcionalidade de Recuperação | Mauricio       |                |                  |                | Em andamento   | Envio de email com link de redefinição.                               |
 | RF-4      | Visualizar Perfis do sistema                 | Interface de Usuário (UI)   | João Hott      |                |                  |                | Em andamento   | Exibir dados de usuários e perfil da academia.                        |
 | RF-5      | Criação do Formulário de Treino              | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Planejado      | Permitir ao aluno solicitar treino personalizado.                     |
