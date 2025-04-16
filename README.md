@@ -1,21 +1,14 @@
-# Escopo do Projeto Gyga Fit 
+# Engenharia de Software 2025/01 | Universidade Federal do Tocantins 
 
- 
 
-Universidade: 
-Universidade Federal do Tocantins 
+**Curso:**
+**Ciência da Computação** 
 
-Curso:
-Ciência da Computação 
+**Semestre:**
+**1º semestre de 2025**
 
-Disciplina:
-Engenharia de Software 
-
-Semestre:
-1º semestre de 2025 
-
-Professor:
-Edeílson Milhomem 
+**Professor:**
+**Edeílson Milhomem** 
 
 Integrantes do Projeto 
 João Vitor Hott 
@@ -25,7 +18,7 @@ Heitor Fernandes
 Maurício Monteiro 
 Sophia 
 
-Descrição 
+
 
  
 
@@ -37,7 +30,16 @@ Descrição
 
 ## SPRINT 1 – Sistema de solicitação de treinos
 
-**Descrição:** Desenvolvimento das funcionalidades de solicitação e criação de treinos por parte do cliente e instrutor respectivamente.
+**Valor:** Desenvolvimento das funcionalidades de solicitação e criação de treinos por parte do cliente e instrutor respectivamente.
+
+__ 
+
+| Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
+|-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
+| RF-1      | Perfil do Instrutor (RF - 1) | perfil do instrutor          Samuel/Hott         |                |                  |                | Em andamento   | Implementação do perfil do usuário                |
+| RF-2      | Criação do Plano de Treino (RF - 2)                    | Formulário de criação| Mauricio/Heitor       |                |                  |                | Em andamento   | implementação do plano de treino para o user                               |
+| RF-4      | Visualização dos Planos de Treino (RF - 3)                 | Interface de Usuário (UI)   | Sophie/Samuel      |                |                  |                | Em andamento   | Exibir dados deo plano de treino da academia.                        |
+| RF-5      | Criação do Formulário de Treino (RF - 4)             | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Em andamento      | Permitir ao aluno solicitar treino personalizado.                     |
 
 ___
 
@@ -168,7 +170,7 @@ ___
 
 ## SPRINT 2 – Sistema de Cadastro e Autenticação de Usuário 
 
-**Descrição:**  Desenvolvimento das funcionalidades de autenticação e perfis dos diferentes tipos de usuários (Aluno, Instrutor e Gerente). 
+**Valor:**  Desenvolvimento das funcionalidades de autenticação e perfis dos diferentes tipos de usuários (Aluno, Instrutor e Gerente). 
 
 | Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
 |-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
@@ -263,30 +265,6 @@ para que eu possa acompanhar informações relevantes à minha função ou à ac
 - A visualização do perfil da academia deve estar disponível publicamente.
 ___
 
-### Criação do Formulário de Treino (RF - 8)
-**como** um aluno **eu quero** preencher um formulário solicitando um treino personalizado
-para que o instrutor possa montar um plano de treino adequado às minhas necessidades e objetivos.
-
-#### Regras de Negócio
-- Apenas alunos autenticados poderão acessar o formulário de solicitação de treino.
-- O formulário deve conter campos obrigatórios como: objetivo do treino, frequência semanal, restrições físicas e preferências.
-- O instrutor responsável será notificado quando um novo formulário for enviado.
-- Cada aluno pode enviar um novo formulário quando desejar atualizar suas preferências.
-
-#### Tarefas
-**Backend/Frontend (Hallef Kayk):**
-- Criar endpoint para submissão de formulário de treino pelo aluno
-- Criar interface com campos obrigatórios e opcionais para o formulário
-- Armazenar os dados no banco e relacionar ao aluno
-- Implementar notificação ou listagem de solicitações para os instrutores
-
-**Critérios de Aceitação**
-- O aluno deve conseguir acessar e preencher o formulário após login.
-- O formulário deve validar campos obrigatórios antes do envio.
-- O instrutor deve conseguir visualizar os dados enviados para criação do treino.
-- Os dados devem ser armazenados corretamente no banco, associados ao aluno.
-- O aluno deve conseguir reenviar um novo formulário caso deseje.
-___
 
 
 
