@@ -5,7 +5,7 @@ body {
     padding: 10px 0;
     text-align: center;
     position: relative;
-
+    background-image: url('/view/img/0f0d989af5ce80b293f0de513b7a2bcb.jpg');
     
 }
   
@@ -16,7 +16,11 @@ header {
     color: rgb(255, 0, 0);
     padding: 10px 0;
     text-align: center;
-    position: relative;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
 }
 
 header h1 {
@@ -60,15 +64,14 @@ header h1 {
 }
 
 .container {
-    width: 90%;  /* Ajuste conforme necessário */
-    max-width: 800px; /* Define um limite de largura */
-    margin: 0 auto; /* Centraliza horizontalmente */
+    width: 90%;
+    max-width: 800px;
+    margin: 80px auto 0; /* Adiciona um espaço abaixo do header fixo */
     padding: 20px;
-    background: #ffffff; /* Opcional: apenas para destaque */
-    border-radius: 10px; /* Borda arredondada para um visual melhor */
-    flex-direction: column; /* Empilha os elementos verticalmente */
-    border-radius: 8px;
-    
+    background: #ffffff;
+    border-radius: 10px;
+    flex-direction: column;
+    opacity: 0.9; /* Torna o fundo um pouco transparente */
 }
 
 h1 {
@@ -116,7 +119,7 @@ h1 {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background-color: #dddddd; /* Cor da bolinha */
+    background-color: #ffffff; /* Cor da bolinha */
     transition: background-color 0.3s;
 }
 .radio-group input[type="radio"]:checked + label::before {
