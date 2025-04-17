@@ -31,4 +31,14 @@ class Form{
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function enviarNotificação($contador,$instrutor){
+        $stmt = $this->link->prepare("INSERT INTO notificacao (id_instrutor, $contador) VALUES (:id_user, :mensagem)");
+        $stmt->bindParam(':id_user', $_SESSION['usuario']['id']);
+        $stmt->bindParam(':mensagem', $contador);
+        if ($stmt->execute()) {
+            echo "Notificação enviada com sucesso!";
+        } else {
+            echo "Erro ao enviar notificação: " . implode('', $stmt->errorInfo());
+        }
+    }
 }

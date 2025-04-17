@@ -36,10 +36,9 @@ class usuario_instrutor{
      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-   public function checkRelationshipUsers($id_aluno, $id_instrutor){
-    $stmt = $this->link->prepare("SELECT 1 FROM usuario_instrutor WHERE id_Aluno = :id_aluno AND id_instrutor = :id_instrutor LIMIT 1");
+   public function checkRelationshipUsers($id_aluno){
+    $stmt = $this->link->prepare("SELECT 1 FROM usuario_instrutor WHERE id_Aluno = :id_aluno  LIMIT 1");
     $stmt->bindParam(':id_aluno', $id_aluno);
-    $stmt->bindParam(':id_instrutor', $id_instrutor);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
    }

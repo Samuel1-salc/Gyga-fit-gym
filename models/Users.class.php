@@ -12,7 +12,12 @@ class Users{
         $this->link = $this->con->getConexao();
     }
 
- 
+    public function getIPersonalByAluno($id_aluno){
+        $stmt = $this->link->prepare("SELECT id_instrutor  FROM usuario_instrutor WHERE id_Aluno = :id_aluno");
+        $stmt->bindParam(':id_aluno', $id_aluno);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
+    }
     public function getAlunoById($id){
         $stmt = $this->link->prepare("SELECT * FROM Alunos WHERE id = :id");
         $stmt->bindParam(':id', $id);

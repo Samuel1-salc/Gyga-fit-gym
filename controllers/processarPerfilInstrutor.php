@@ -8,13 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $usuario_instrutor = new usuario_instrutor();
 
-    if($usuario_instrutor->checkRelationshipUsers($id_aluno, $id_instrutor)){
-        $_SESSION['error'] = "Esse aluno já está cadastrado!";
+    if($usuario_instrutor->checkRelationshipUsers($id_aluno)){
+        $_SESSION['error'] = "Esse aluno já tem personal!";
         header("Location: ../view/telaPrincipal.php");
         exit();
     }else{
         $usuario_instrutor->adicionarAluno_Instrutor($id_aluno);
-        $_SESSION['success'] = "Aluno cadastrado com sucesso!";
+        $_SESSION['success'] = "Aluno cadastrado  com sucesso!";
         exit();
     }
 }
