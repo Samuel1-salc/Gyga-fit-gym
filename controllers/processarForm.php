@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     }
 
     $formulario = new Form();
-    $formulario->getForm($altura,$peso,$sexo,$id_user);
+    $formulario->cadastrarForm($altura,$peso,$sexo,$id_user);
     $_SESSION['aluno'] = $formulario->getFormById($_SESSION['usuario']['id']);
     header("Location: ../view/telaPrincipal.php");
     exit();

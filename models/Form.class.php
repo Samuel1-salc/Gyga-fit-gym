@@ -11,7 +11,7 @@ class Form{
         $this->link = $this->con->getConexao();
     }
 
-    public function getForm($altura,$peso,$sexo,$id_user){
+    public function cadastrarForm($altura,$peso,$sexo,$id_user){
         $stmt = $this->link->prepare("INSERT INTO formulario (altura, peso, sexo, id_user) VALUES (:altura, :peso, :sexo, :id_user)");
         $stmt->bindParam(':altura', $altura);
         $stmt->bindParam(':peso', $peso);
