@@ -20,8 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $usuarios = new User();
-    $user = $usuarios->getUserByCpf($cpf);
+    $usuarios = new Users();
+    if($usuarios->getDataAlunoByCpf($cpf)){
+        $user = $usuarios->getDataAlunoByCpf($cpf);
+    }else if($usuarios->getDataPersonalByCpf($cpf)){
+        $user = $usuarios->getDataPersonalByCpf($cpf);
+    }else{
+        $_SESSION['error'] = "Usuário não encontrado!";
+        //header("Location: ../view/telaPrincipal.php");
+        exit();
+    }
    
     // Verificação de usuário e senha
     if ($user && password_verify($senha, $user['senha'])) {

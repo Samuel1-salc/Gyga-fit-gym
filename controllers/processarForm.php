@@ -1,7 +1,11 @@
 <?php
 require_once __DIR__ . '/../models/Form.class.php';
+require_once __DIR__ . '/../models/Users.class.php';
+require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 session_start();
-
+$countForm = 0;
+$relacionamentoUsers = new usuario_instrutor();
+$usuarios = new Users();
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $altura = trim($_POST['altura']);
     $peso = trim($_POST['peso']);
@@ -14,8 +18,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     }
 
     $formulario = new Form();
-    $formulario->getForm($altura,$peso,$sexo,$id_user);
-    $_SESSION['aluno'] = $formulario->getFormById($_SESSION['usuario']['id']);
+    if(!($relacionamentoUsers->checkRelationshipUsers($id_user))){
+        echo "voce ainda não tem personal!";
+    }else{
+        $formulario->cadastrarForm($altura,$peso,$sexo,$id_user);
+        $_SESSION['aluno'] = $formulario->getFormById($_SESSION['usuario']['id']);
+    }
     header("Location: ../view/telaPrincipal.php");
     exit();
 }

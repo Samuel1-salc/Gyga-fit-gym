@@ -11,7 +11,7 @@ class Form{
         $this->link = $this->con->getConexao();
     }
 
-    public function getForm($altura,$peso,$sexo,$id_user){
+    public function cadastrarForm($altura,$peso,$sexo,$id_user){
         $stmt = $this->link->prepare("INSERT INTO formulario (altura, peso, sexo, id_user) VALUES (:altura, :peso, :sexo, :id_user)");
         $stmt->bindParam(':altura', $altura);
         $stmt->bindParam(':peso', $peso);
@@ -30,5 +30,15 @@ class Form{
         $stmt->bindParam(':id_user', $id_user);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function enviarNotificação($contador,$instrutor){
+        $stmt = $this->link->prepare("INSERT INTO notificacao (id_instrutor, $contador) VALUES (:id_user, :mensagem)");
+        $stmt->bindParam(':id_user', $_SESSION['usuario']['id']);
+        $stmt->bindParam(':mensagem', $contador);
+        if ($stmt->execute()) {
+            echo "Notificação enviada com sucesso!";
+        } else {
+            echo "Erro ao enviar notificação: " . implode('', $stmt->errorInfo());
+        }
     }
 }
