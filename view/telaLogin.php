@@ -21,18 +21,7 @@
                     <label for="cpf">cpf</label>
                     <input type="text" name = 'cpf' required>
 
-
                     <?php if (isset($_SESSION['error']) && strpos($_SESSION['error'], "CPF") !== false): ?>
-                    <div class="error-message"><?php echo $_SESSION['error']; ?></div>
-                    <?php endif; ?>
-
-                    
-                </div>
-                <div class="input-group">
-                    <label for="password">Senha</label>
-                    <input type="password" name = 'senha'  required>
-
-                    <?php if (isset($_SESSION['error']) && strpos($_SESSION['error'], "Senha") !== false): ?>
                     <div class="error-message"><?php echo $_SESSION['error']; ?></div>
                     <?php endif; ?>
                     

@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/Users.class.php';
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 session_start();
 $countForm = 0;
-$relacionamentoUsers = new usuario_instrutor();
+$relacionamentoUsers = new aluno_instrutor();
 $usuarios = new Users();
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $altura = trim($_POST['altura']);
