@@ -28,7 +28,11 @@ class Database {
                 
             );
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             echo "conexao bem sussedida\n";
+=======
+            
+>>>>>>> Stashed changes
 =======
             
 >>>>>>> Stashed changes

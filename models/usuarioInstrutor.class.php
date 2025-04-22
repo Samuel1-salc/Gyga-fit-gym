@@ -1,8 +1,11 @@
 <?php
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 require_once __DIR__ . "/models/User.class.php";
 require_once __DIR__ . "../config/database.class.php";
 =======
+=======
+>>>>>>> Stashed changes
 require_once __DIR__ . "/usuarios.class.php";
 require_once __DIR__ . "/../config/database.class.php";
 
