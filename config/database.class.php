@@ -27,7 +27,8 @@ class Database {
                 $this->pass
                 
             );
-            echo "conexao bem sucedida\n";
+        
+            //echo "conexao bem sucedida\n";//
 
             $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
