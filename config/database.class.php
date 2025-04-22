@@ -27,15 +27,6 @@ class Database {
                 $this->pass
                 
             );
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            echo "conexao bem sussedida\n";
-=======
-            
->>>>>>> Stashed changes
-=======
-            
->>>>>>> Stashed changes
 
             $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
