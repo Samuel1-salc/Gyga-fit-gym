@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $unidade = $_POST['campo6'] ?? '';
     $servico = $_POST['campo7'] ?? '';
     $data_entrada = $cadastrarPersonal->dataInicio();
-$data_saida = "";
+    $data_saida = "";
     $typeUser = "instrutor"; // Definindo o tipo de usuário como instrutor
 
 
