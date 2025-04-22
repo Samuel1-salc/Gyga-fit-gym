@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . "/models/User.class.php";
-require_once __DIR__ . "../config/database.class.php";
+require_once __DIR__ . "/Users.class.php";
+require_once __DIR__ . "/../config/database.class.php";
+
 
 class usuario_instrutor{
     private $con;
