@@ -2,218 +2,233 @@
 session_start();
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 
-// Simulação de usuário logado
-$_SESSION['usuario'] = [
-    'id' => 1,
-    'username' => 'Instrutor Teste',
-    'tipo' => 'instrutor',
-    'especialidade' => 'Musculação',
-    'disponibilidade' => 'Seg a Sex - 8h às 18h'
-];
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'instrutor') {
+    header('Location: login.php');
+    exit;
+}
 
 $instrutor = $_SESSION['usuario'];
+if (!isset($instrutor['especialidade'])) {
+    $instrutor['especialidade'] = 'Musculação e Funcional';
+}
+if (!isset($instrutor['disponibilidade'])) {
+    $instrutor['disponibilidade'] = 'Seg a Sex, 08h às 18h';
+}
+
 $usuarioInstrutor = new usuario_instrutor();
 
-// Simulação de alunos
 $alunos = [
     [
         'id_Aluno' => 101,
         'nome_aluno' => 'João da Silva',
         'contato_aluno' => 'joao@email.com',
         'data_solicitacao' => '2025-04-20',
-        'status' => 'pendente'
+        'status' => 'pendente',
+        'foto_aluno' => 'img/joao.jpg'
     ],
     [
         'id_Aluno' => 102,
         'nome_aluno' => 'Maria Oliveira',
         'contato_aluno' => 'maria@email.com',
         'data_solicitacao' => '2025-04-19',
-        'status' => 'em andamento'
+        'status' => 'em andamento',
+        'foto_aluno' => 'img/maria.jpg'
     ]
 ];
+
+usort($alunos, function ($a, $b) {
+    return strtotime($b['data_solicitacao']) - strtotime($a['data_solicitacao']);
+});
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Perfil do Instrutor</title>
+    <title>Painel do Instrutor</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../style/Tela-Principal.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 0;
-            background-image: url('/Gyga-fit-gym/view/img/0f0d989af5ce80b293f0de513b7a2bcb.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #f2f2f2;
+        }
+
+        .fundo-vermelho {
+            background-color:rgb(255, 0, 0);
+            padding: 40px 0;
         }
 
         header {
+            background-color: #000;
+            color: white;
+            padding: 10px 30px;
+        }
+
+        .header-logo {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            background: transparent;
+            gap: 15px;
         }
 
-        header h1 {
-            color: white;
-            font-size: 32px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .perfil-instrutor {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .perfil-instrutor h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .perfil-instrutor p {
-            font-size: 16px;
-            margin: 6px 0;
-        }
-
-        .tabela-alunos {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .tabela-alunos th, .tabela-alunos td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .tabela-alunos th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-        }
-
-        .tabela-alunos tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .tabela-alunos select, .tabela-alunos button {
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            margin-right: 5px;
-        }
-
-        .tabela-alunos button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .tabela-alunos button:hover {
-            background-color: #45a049;
-        }
-
-        h3 {
-            color: #fff;
-            text-shadow: 1px 1px 2px #000;
+        .header-logo img {
+            height: 50px;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 16px;
+            max-width: 1200px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
         }
 
+        .perfil-instrutor {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .perfil-instrutor h2 {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .perfil-conteudo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .foto-instrutor {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid red;
+        }
+
+        .perfil-instrutor p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .solicitacoes h3 {
+            color: red;
+            margin-bottom: 20px;
+        }
+
+        .card-aluno {
+            border: 2px solid red;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .card-info p {
+            margin: 0;
+        }
+
+        .card-botoes {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-botoes form {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-status {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: red;
+            color: white;
+            cursor: pointer;
+        }
+
+        select {
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <button class="btn-lateral btn-usuario" onclick="editarPerfil()">
-        <i class="fas fa-user"></i>
-    </button>
-
-    <h1>GYGA FIT</h1>
-
-    <button class="btn-lateral btn-config" onclick="abrirConfiguracoes()">
-        <i class="fas fa-cog"></i>
-    </button>
+    <div class="header-logo">
+        <img src="img/logo.png" alt="Logo GYGA FIT">
+        <h1>GYGA FIT - Painel do Instrutor</h1>
+    </div>
 </header>
 
-<div class="container">
-    <div class="perfil-instrutor">
-        <h2>Perfil do Instrutor</h2>
-        <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
-        <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['especialidade'] ?? 'Não informada') ?></p>
-        <p><strong>Quantidade de Alunos Atendidos:</strong> <?= count($alunos) ?></p>
-        <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($instrutor['disponibilidade'] ?? 'Não informada') ?></p>
+<div class="fundo-vermelho">
+    <div class="container">
+        <div class="perfil-instrutor">
+            <h2>Perfil do Instrutor</h2>
+            <div class="perfil-conteudo">
+                <img class="foto-instrutor" src="img/instrutor.jpg" alt="Foto do Instrutor">
+                <div>
+                    <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
+                    <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['especialidade']) ?></p>
+                    <p><strong>Quantidade de Alunos Atendidos:</strong> <?= count($alunos) ?></p>
+                    <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($instrutor['disponibilidade']) ?></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="solicitacoes">
+            <h3>Solicitações de Treino</h3>
+            <?php foreach ($alunos as $aluno): ?>
+                <div class="card-aluno">
+                    <div class="card-info">
+                        <img src="<?= htmlspecialchars($aluno['foto_aluno']) ?>" alt="Foto do aluno">
+                        <div>
+                            <p><strong><?= htmlspecialchars($aluno['nome_aluno']) ?></strong></p>
+                            <p><?= htmlspecialchars($aluno['data_solicitacao']) ?></p>
+                            <p>Status: <?= htmlspecialchars($aluno['status']) ?></p>
+                        </div>
+                    </div>
+                    <div class="card-botoes">
+                        <form method="POST" action="atualizarStatus.php">
+                            <input type="hidden" name="id_aluno" value="<?= $aluno['id_Aluno'] ?>">
+                            <select name="status">
+                                <option value="em andamento" <?= $aluno['status'] === 'em andamento' ? 'selected' : '' ?>>Em Andamento</option>
+                                <option value="finalizada" <?= $aluno['status'] === 'finalizada' ? 'selected' : '' ?>>Finalizada</option>
+                            </select>
+                            <button class="btn-status" type="submit"><i class="fas fa-check-circle"></i></button>
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
-
-    <h3>Solicitações de Treino</h3>
-
-    <?php if (!empty($alunos)): ?>
-        <table class="tabela-alunos">
-            <thead>
-                <tr>
-                    <th>Nome do Aluno</th>
-                    <th>Contato</th>
-                    <th>Data de Solicitação</th>
-                    <th>Status</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach (array_reverse($alunos) as $aluno): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($aluno['nome_aluno']) ?></td>
-                        <td><?= htmlspecialchars($aluno['contato_aluno']) ?></td>
-                        <td><?= htmlspecialchars($aluno['data_solicitacao'] ?? '---') ?></td>
-                        <td><?= htmlspecialchars($aluno['status'] ?? 'pendente') ?></td>
-                        <td>
-                            <form method="POST" action="atualizarStatus.php">
-                                <input type="hidden" name="id_aluno" value="<?= $aluno['id_Aluno'] ?>">
-                                <select name="status">
-                                    <option value="em andamento">Em Andamento</option>
-                                    <option value="finalizada">Finalizada</option>
-                                </select>
-                                <button type="submit">Atualizar</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>Nenhuma solicitação de treino encontrada.</p>
-    <?php endif; ?>
 </div>
-
-<script>
-    function editarPerfil() {
-        alert("Abrindo tela de edição de perfil...");
-    }
-
-    function abrirConfiguracoes() {
-        alert("Abrindo configurações...");
-    }
-</script>
 
 </body>
 </html>
