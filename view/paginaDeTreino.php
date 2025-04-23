@@ -1,5 +1,4 @@
-<?php
-?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,7 +26,11 @@
   <div class="container">
     <div class="aluno-info">
       <h3>Criar Plano de Treino</h3>
+
+      <?php $id_aluno = $_GET['id_aluno'] ?? ''; ?>  
+
       <form id="formPlano" action = "./../controllers/processarNovoTreino.php" method = "POST">
+        <input type="hidden" name="id_alunoNovoTreinoSalvar" value="<?= $id_aluno ?>">
         <label for="aluno">Nome do Aluno:</label>
         <input type="text" id="aluno" name="aluno" placeholder="Digite o nome do aluno" required>
 
@@ -53,7 +56,7 @@
         <label for="observacoes">Observações:</label>
         <textarea id="observacoes" name="observacoes" placeholder="Instruções ou cuidados específicos"></textarea>
 
-        <button type="submit" class="botao-progresso">Enviar Plano</button>
+        <button type="submit" name = "submit_PaginaDeTreino" class="botao-progresso">Enviar Plano</button>
         <div id="mensagemSucesso" class="mensagem-sucesso">
           O plano foi enviado com sucesso para seu aluno!
         </div>
