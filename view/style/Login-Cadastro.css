@@ -104,3 +104,31 @@ a:hover {
     color: rgb(0, 0, 0);
     font-size: 12px;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+  }
+
+  .dropdown select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    appearance: none; /* Remove estilo padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .dropdown::after {
+    content: "▼"; /* Seta para baixo */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }

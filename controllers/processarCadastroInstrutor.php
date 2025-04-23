@@ -1,28 +1,28 @@
 <?php
-require_once __DIR__ . '/../models/User.class.php';
+require_once __DIR__ . '/../models/Usuarios.class.php';
+require_once __DIR__ . '/../models/UserInstrutor.class.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = new Users();
-    $cadastrarPersonal = new UserPersonal();
+    $cadastrarPersonal = new  UserInstrutor();
 
-    $email = $_POST['campo1'] ?? '';
-    $username = $_POST['campo2'] ?? '';
-    $cpf = $_POST['campo3'] ?? '';
-    $senha = $_POST['campo4'] ?? '';
-    $confirmSenha = $_POST['campo5'] ?? '';
-    $phone = $_POST['campo7'] ?? '';
-    $unidade = $_POST['campo8'] ?? '';
-    $servico = $_POST['campo9'] ?? '';
-    $data_entrada = $_POST['campo10'] ?? '';
-    $data_saida = $_POST['campo11'] ?? '';
-    $typeUser = $_POST['campo12'] ?? '';
+    $username = $_POST['campo1'] ?? '';
+    $idade = $_POST['campo2'] ?? '';
+    $email = $_POST['campo3'] ?? '';
+    $phone = $_POST['campo4'] ?? '';
+    $cpf = $_POST['campo5'] ?? '';
+    $unidade = $_POST['campo6'] ?? '';
+    $servico = $_POST['campo7'] ?? '';
+    $data_entrada = $cadastrarPersonal->dataInicio();
+    $data_saida = "";
+    $typeUser = "instrutor"; // Definindo o tipo de usuário como instrutor
 
 
 
 
     // Validações
-    if (empty($email) || empty($username) || empty($cpf) || empty($senha) || empty($confirmSenha)) {
+    if (empty($email) || empty($username) || empty($cpf) ) {
         $_SESSION['error'] = "Preencha todos os campos!";
         
         exit();
@@ -36,17 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        
        
         exit();
-    } elseif (strlen($senha) < 6) {
-        $_SESSION['error'] = "A senha deve ter no mínimo 6 caracteres!";
-        header("Location: ../view/telaCadastro.php");
-        
-        exit();
-    } elseif ($senha !== $confirmSenha) {
-        $_SESSION['error'] = "As senhas não coincidem!";
-        
-        
-        exit();
-    } elseif ($usuario->chekByEmail($email,$TypeUser)) {
+    }  elseif ($usuario->chekByEmail($email,$typeUser)) {
         $_SESSION['error'] = "Este email já está cadastrado!";
        
         
@@ -60,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     else {
         // Cadastro
-        if ($cadastrarPersonal->cadastrarPersonal($Username, $Email, $Senha, $Cpf,$unidade,$servico,$data_entrada,$data_saida, $phone, $typeUser)) {
+        if ($cadastrarPersonal->cadastrarInstrutor($username, $email, $cpf,$unidade,$servico,$data_entrada,$data_saida, $phone, $typeUser)) {
             $_SESSION['success'] = "Cadastro realizado com sucesso!";
             header("Location: ../view/telaLogin.php");
             exit();

@@ -32,7 +32,7 @@ class Form{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function enviarNotificação($contador,$instrutor){
-        $stmt = $this->link->prepare("INSERT INTO notificacao (id_instrutor, $contador) VALUES (:id_user, :mensagem)");
+        $stmt = $this->link->prepare("INSERT INTO notificacao (id_instrutor, notificacoes) VALUES (:id_user, :notificacoes)");
         $stmt->bindParam(':id_user', $_SESSION['usuario']['id']);
         $stmt->bindParam(':mensagem', $contador);
         if ($stmt->execute()) {

@@ -1,14 +1,14 @@
 <?php
 session_start();
-require_once __DIR__ . '/../models/User.class.php';
+require_once __DIR__ . '/../models/Usuarios.class.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cpf = $_POST['cpf'] ?? '';
-    $senha = $_POST['senha'] ?? '';
+    
 
     // Validações
-    if (empty($cpf) || empty($senha)) {
+    if (empty($cpf) ) {
         $_SESSION['error'] = "Preencha todos os campos!";
         //header("Location: ../view/telaPrincipal.php");
         exit();
@@ -20,36 +20,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $usuarios = new Users();
-    if($usuarios->getDataAlunoByCpf($cpf)){
+    $usuarios = new Users();//!!!!!!!!!!
+
+
+    if(!empty($usuarios->getDataAlunoByCpf($cpf))){
         $user = $usuarios->getDataAlunoByCpf($cpf);
-    }else if($usuarios->getDataPersonalByCpf($cpf)){
+
+    }else if(!empty($usuarios->getDataPersonalByCpf($cpf))){
         $user = $usuarios->getDataPersonalByCpf($cpf);
+
     }else{
+
         $_SESSION['error'] = "Usuário não encontrado!";
         //header("Location: ../view/telaPrincipal.php");
         exit();
     }
    
     // Verificação de usuário e senha
-    if ($user && password_verify($senha, $user['senha'])) {
+    if (!empty($user)) {
         $_SESSION['usuario'] = $user;
-        $veryfyFirstLogin = $usuarios->firstLogin($user['id']);
-        $_SESSION['firstLogin'] = $veryfyFirstLogin;
-        if(empty($_SESSION['firstLogin']['id_user'])){
-            header("Location: ./../view/paginaFormulario.php");
-            echo "Primeiro login, preencha o formulário!";
-           
-        }else{
-            header("Location: ./../view/telaPrincipal.php");
-            
-        }
-        echo "Login efetuado com sucesso!";
-      
+
+       if($user['typeUser'] == 'aluno'){
+            header("Location: ../view/telaPrincipal.php");    
+            exit();   
+        }else if($user['typeUser'] == 'instrutor'){
+            header("Location: ../view/perfilInstrutor.php");
+            exit();
+        }   
        
-    } else {
+    }else {
         $_SESSION['error'] = "Senha incorreta ou usuário não encontrado!";
         echo "Senha incorreta ou usuário não encontrado!";
         
     }
+    
 }
+

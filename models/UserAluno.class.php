@@ -14,16 +14,15 @@ class UserAluno
 
     // Cadastra um novo usuário
     // Recebe os dados do formulário e insere no banco de dados
-    public function cadastrarAluno($Username, $Email, $Senha, $Cpf,$unidade,$plano,$data_inicio,$data_termino, $phone, $typeUser)
+    public function cadastrarAluno($Username, $Email,  $Cpf,$unidade,$plano,$data_inicio,$data_termino, $phone, $typeUser)
     {
         
-        // Criptografa a senha
-        $senha_hash = password_hash($Senha, PASSWORD_DEFAULT);
-        // Insere os dados no banco
-        $stmt = $this->link->prepare("INSERT INTO Alunos (username, email, senha, cpf,unidade,plano,data_nicio,data_termino, phone, typeUser) VALUES (:username, :email, :senha, :cpf,:unidade,:plano,:data_inicio,:data_termino:phone,:typeUser)");
+        
+    
+    
+        $stmt = $this->link->prepare("INSERT INTO aluno (username, email, cpf,unidade,plano,data_inicio,data_termino, phone, typeUser) VALUES (:username, :email,:cpf,:unidade,:plano,:data_inicio,:data_termino,:phone,:typeUser)");
         $stmt->bindParam(':username', $Username);
         $stmt->bindParam(':email', $Email);
-        $stmt->bindParam(':senha', $senha_hash);
         $stmt->bindParam(':cpf', $Cpf);
         $stmt->bindParam(':unidade', $unidade);
         $stmt->bindParam(':plano', $plano);
@@ -42,6 +41,22 @@ class UserAluno
             echo "Erro ao cadastrar: " . implode('', $stmt->errorInfo());
         }
     }
-    
+    function dataInicio(){
+        $data = new DateTime();
+        $data_formatada = $data->format('Y-m-d H:i:s');
+        return $data_formatada;
+    }
+    function dataTermino($data_incio,$plano){
+        $data_termino = '';
+        if($plano == 1){
+            $data_termino = date('Y-m-d H:i:s', strtotime($data_incio . ' + 1 month'));
+        }else if($plano == 2){
+            $data_termino = date('Y-m-d H:i:s', strtotime($data_incio . ' + 6 month'));
+        }else if($plano == 3){
+            $data_termino = date('Y-m-d H:i:s', strtotime($data_incio . ' + 12 month'));
+        }
+        return $data_termino;
+
+    }
 
 }
