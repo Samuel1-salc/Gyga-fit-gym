@@ -5,6 +5,7 @@ require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 session_start();
 $countForm = 0;
 $relacionamentoUsers = new aluno_instrutor();
+$adcAluno = new aluno_instrutor();
 $usuarios = new Users();
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $altura = trim($_POST['altura']);
@@ -20,6 +21,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $formulario = new Form();
     if(!($relacionamentoUsers->checkRelationshipUsers($id_user))){
         echo "voce ainda não tem personal!";
+        $adcAluno->adicionarAluno_Instrutor($id_aluno,$processo,$data_solicitacao);
     }else{
         $formulario->cadastrarForm($altura,$peso,$sexo,$id_user);
         $_SESSION['aluno'] = $formulario->getFormById($_SESSION['usuario']['id']);

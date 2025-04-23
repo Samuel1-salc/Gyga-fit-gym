@@ -1,7 +1,7 @@
 <?php
 
-require_once _DIR_ . "/usuarios.class.php";
-require_once _DIR_ . "/../config/database.class.php";
+require_once __DIR__ . "/usuarios.class.php";
+require_once __DIR__ . "/../config/database.class.php";
 
 
 
@@ -11,7 +11,7 @@ class aluno_instrutor{
 
     public function __construct()
     {
-        require_once _DIR_ . '/../config/database.class.php';
+        require_once __DIR__ . '/../config/database.class.php';
         $this->con = new Database();
         $this->link = $this->con->getConexao();
     }
