@@ -17,6 +17,14 @@ class Users{
         $tabela =  $stmt->fetchAll(PDO::FETCH_ASSOC); 
         return $tabela;
     }
+    public function getDataAlunosByNome($nameSearch){
+        $stmt = $this->link->prepare("SELECT id,username, email, plano FROM aluno WHERE username LIKE :nameSearch");
+        $nameSearch = "%$nameSearch%";
+        $stmt->bindParam(':nameSearch', $nameSearch, PDO::PARAM_STR);
+        $stmt->execute();
+        return  $stmt->fetchAll(PDO::FETCH_ASSOC); 
+        
+    }
 
     public function getAlunosByInstrutor($id_instrutor){
         $stmt = $this->link->prepare("SELECT nome_aluno, contato_aluno, data_solicitacao, processo FROM aluno_instrutor WHERE id_instrutor = :id_instrutor");
