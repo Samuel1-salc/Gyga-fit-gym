@@ -36,9 +36,9 @@ __
 
 | Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
 |-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
-| RF-1      | Perfil do Instrutor (RF - 1) | perfil do instrutor          Samuel/Hott         |                |                  |                | Em andamento   | Implementação do perfil do usuário                |
+| RF-1      | Perfil do Instrutor (RF - 1) | perfil do instrutor         | Samuel/Hott         |                |                  |                | Em andamento   | Implementação do perfil do usuário                |
 | RF-2      | Criação do Plano de Treino (RF - 2)                    | Formulário de criação| Mauricio/Heitor       |                |                  |                | Em andamento   | implementação do plano de treino para o user                               |
-| RF-4      | Visualização dos Planos de Treino (RF - 3)                 | Interface de Usuário (UI)   | Sophie/Samuel      |                |                  |                | Em andamento   | Exibir dados deo plano de treino da academia.                        |
+| RF-4      | Visualização dos Planos de Treino (RF - 3)                 | Interface de Usuário (UI)   | Sophia/Samuel      |                |                  |                | Em andamento   | Exibir dados deo plano de treino da academia.                        |
 | RF-5      | Criação do Formulário de Treino (RF - 4)             | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Em andamento      | Permitir ao aluno solicitar treino personalizado.                     |
 
 ___
