@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil - Instrutor | Oryx Fit</title>
+    <title>Editar Perfil - Instrutor | Gyga Fit</title>
     <link rel="stylesheet" href="./style/styleCadasto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -117,8 +117,8 @@
                 <div class="company-info">
                     <img src="./img/logo.png" alt="gyga Fit Logo" class="footer-logo">
                     <div class="company-text">
-                        <h3>Oryx Fit</h3>
-                        <p>Na Oryx Fit, acreditamos em tornar a academia acessível para todos. Nossa abordagem é simples e eficaz, ajudando você a atingir seus objetivos de saúde e bem-estar com facilidade.</p>
+                        <h3>Gyga Fit</h3>
+                        <p>Na Gyga Fit, acreditamos em tornar a academia acessível para todos. Nossa abordagem é simples e eficaz, ajudando você a atingir seus objetivos de saúde e bem-estar com facilidade.</p>
                     </div>
                 </div>
 

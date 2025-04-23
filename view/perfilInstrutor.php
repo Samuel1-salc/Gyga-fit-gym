@@ -9,9 +9,11 @@ $alunoInstrutor = new aluno_instrutor();
 $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
 $countAlunos = $alunoInstrutor->quantidadeAlunosAtendidos($instrutor['id']);
 
-if($instrutor['data_saida'] != '0000-00-00'){
+$data_saida = $instrutor['data_saida'] ?? null;
+
+if ($data_saida && $data_saida != '0000-00-00') {
     $disponibilidade = "indisponível";
-}else{
+} else {
     $disponibilidade = "disponível";
 }
 
@@ -42,7 +44,7 @@ if($instrutor['data_saida'] != '0000-00-00'){
                 <img class="foto-instrutor" src="img/instrutor.jpg" alt="Foto do Instrutor">
                 <div>
                     <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
-                    <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico']) ?></p>
+                    <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico'] ?? 'Não informado') ?></p>
                     <p><strong>Quantidade de Alunos Atendidos:</strong> <?= htmlspecialchars($countAlunos ?? 'Nenhum aluno encontrado') ?></p>
                     <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($disponibilidade) ?></p>
                 </div>
