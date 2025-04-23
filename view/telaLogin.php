@@ -18,7 +18,7 @@
             <form action="./../controllers/processarLogin.php" method="post">
            
                 <div class = "input-group">
-                    <label for="cpf">cpf</label>
+                    <label for="CPF">CPF</label>
                     <input type="text" name = 'cpf' required>
 
                     <?php if (isset($_SESSION['error']) && strpos($_SESSION['error'], "CPF") !== false): ?>
