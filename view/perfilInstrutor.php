@@ -68,7 +68,7 @@ if($instrutor['data_saida'] != '0000-00-00'){
                                 <option value="finalizada" <?= $aluno['processo'] === 'finalizada' ? 'selected' : '' ?>>Finalizada</option>
                             </select>
                             <button class="btn-status" type="submit"><i class="fas fa-check-circle"></i></button>
-                        
+                            <button class="btn-status" onclick="window.location.href='./paginaDeTreino.php'">Novo treino</button>
                     </div>
                 </div>
                 
@@ -76,6 +76,7 @@ if($instrutor['data_saida'] != '0000-00-00'){
         </div>
         <button class="btn-adcalunos" onclick="window.location.href='./alunos.php'">Adicionar Aluno</button>
     </div>
+    <button class="btn-status" onclick="window.location.href='./alunos.php'">Adicionar Aluno</button>
 </div>
 
 </body>

@@ -27,7 +27,7 @@
   <div class="container">
     <div class="aluno-info">
       <h3>Criar Plano de Treino</h3>
-      <form id="formPlano" onsubmit="enviarPlano(event)">
+      <form id="formPlano" action = "./../controllers/processarNovoTreino.php" method = "POST">
         <label for="aluno">Nome do Aluno:</label>
         <input type="text" id="aluno" name="aluno" placeholder="Digite o nome do aluno" required>
 

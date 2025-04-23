@@ -25,6 +25,14 @@ class Users{
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 
+    public function getAlunosINSTRUTOR($id_instrutor){
+        $stmt = $this->link->prepare("SELECT id_aluno, nome_aluno, contato_aluno, data_solicitacao, processo FROM aluno_instrutor WHERE id_instrutor = :id_instrutor");
+        $stmt->bindParam(':id_instrutor', $id_instrutor);
+        $stmt->execute();
+        $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $array;
+    }
+
     public function getIPersonalByAluno($id_aluno){
         $stmt = $this->link->prepare("SELECT id_instrutor  FROM aluno_instrutor WHERE id_Aluno = :id_aluno");
         $stmt->bindParam(':id_aluno', $id_aluno);
