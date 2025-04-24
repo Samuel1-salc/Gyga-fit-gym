@@ -33,9 +33,9 @@
     <div class="aluno-info">
         <h3>Informações do Aluno</h3>
         <p><strong>Nome:</strong><?php session_start(); echo $_SESSION['usuario']['username'] ?> </p>
-        <p><strong>Altura:</strong><?php   echo $_SESSION['aluno']['altura'] ?>  </p>
-        <p><strong>Peso:</strong><?php   echo $_SESSION['aluno']['peso'] ?> </p>
-        <p><strong>Sexo:</strong> <?php   echo $_SESSION['aluno']['sexo'] ?></p>
+        <p><strong>Altura:</strong><?php   echo $_SESSION['usuario']['altura'] ?>  </p>
+        <p><strong>Peso:</strong><?php   echo $_SESSION['usuario']['peso'] ?> </p>
+        <p><strong>Sexo:</strong> <?php   echo $_SESSION['usuario']['sexo'] ?></p>
         <button id = Form onclick="abrirform()">Novo Treino</button>
     </div>
 
