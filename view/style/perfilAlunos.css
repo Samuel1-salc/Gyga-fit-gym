@@ -1,0 +1,132 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+}
+
+.fundo-vermelho {
+    background-color: rgb(255, 0, 0);
+    padding: 40px 0;
+}
+
+header {
+    background-color: #000;
+    color: white;
+    padding: 10px 30px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-logo img {
+    height: 50px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+.solicitacoes h3 {
+    color: red;
+    margin-bottom: 20px;
+}
+
+/* ESTILO DAS CAIXAS DE ALUNO */
+.card-aluno {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cada aluno em uma caixa separada */
+.aluno-box {
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.aluno-box table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.aluno-box th,
+.aluno-box td {
+    text-align: left;
+    padding: 10px;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.aluno-box form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.aluno-box select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.aluno-box button {
+    padding: 6px 12px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid red;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus {
+    border-color: darkred;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: darkred;
+}

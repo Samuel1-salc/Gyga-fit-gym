@@ -43,7 +43,7 @@ class aluno_instrutor{
     }
 
    public function checkRelationshipUsers($id_aluno){
-    $stmt = $this->link->prepare("SELECT 1 FROM aluno_instrutor WHERE id_Aluno = :id_aluno  LIMIT 1");
+    $stmt = $this->link->prepare("SELECT id_instrutor,nome_instrutor FROM aluno_instrutor WHERE id_Aluno = :id_aluno  LIMIT 1");
     $stmt->bindParam(':id_aluno', $id_aluno);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);

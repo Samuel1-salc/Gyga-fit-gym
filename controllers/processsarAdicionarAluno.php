@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
+require_once __DIR__ . '/../models/Usuarios.class.php';
 
 $relacaoAlunoInstrutor = new aluno_instrutor();
 
@@ -24,4 +25,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
+} elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $user = new Users();
+    $search = $_GET['search'] ?? '';
+    $alunos = $user->getDataAlunosByNome($search);
+    if (empty($alunos)) {
+        $_SESSION['error'] = "Nenhum aluno encontrado!";
+    }else{
+        header("Location: ../view/alunos.php?search=$search");
+    }
+} else {
+    $_SESSION['error'] = "Método de requisição inválido!";
 }
