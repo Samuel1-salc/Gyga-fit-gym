@@ -5,7 +5,8 @@ require_once __DIR__ . '/../models/Usuarios.class.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cpf = $_POST['cpf'] ?? '';
-    
+
+    $_SESSION['error'] = '';
 
     // Validações
     if (empty($cpf) ) {
