@@ -36,71 +36,52 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 <head>
     <meta charset="UTF-8">
     <title>Painel do Instrutor</title>
-    <link rel="stylesheet" href="./style/perfilAlunos.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="./style/perfilAlunos.css?v=<?= time(); ?>">
 </head>
 <body>
 
-<header>
-    <div class="header-logo">
-        <img src="img/logo.png" alt="Logo GYGA FIT">
-        <h1>GYGA FIT - Painel de alunos</h1>
-    </div>
-</header>
+    <header>
+        <div class="header-container">
+            <div class="user-icon">
+               
+            </div>
+            <div class="logo">
+                <img src="./img/logo.png" alt="Gyga Fit Logo" class="logo-img">
+            </div>
+            <button class="header-button" onclick="toggleSidebar()">☰</button>
+                
+            </div>
+        </div>
+    </header>
 
-<div class="fundo-vermelho">
-    <div class="container">
-       
-        <div class="solicitacoes">
+<div class="main-container">
             <h3>Alunos</h3>
             <form method="GET" action="" class="search-bar">
                 <input type="text" name="search" placeholder="Pesquisar aluno..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
                 <button type="submit">Pesquisar</button>
             </form>
-        <?php if (!empty($alunos)): ?>
+            <div class="solicitacoes">
+        <?php foreach (array_reverse($alunos) as $aluno): ?>
             <div class="card-aluno">
-                <div class="aluno-box">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome do Aluno</th>
-                                <th>Contato</th>
-                                <th>Plano</th>
-                                <th>Disponibilidade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach (array_reverse($alunos) as $aluno): ?>
-                                <tr>
-                                
-                                    <td><?= htmlspecialchars($aluno['username']) ?></td>
-                                    <td><?= htmlspecialchars($aluno['email']) ?></td>
-                                    <td><?= htmlspecialchars(plano($aluno['plano']) ?? '---') ?></td>
-                                    <td><?= disponiblidade($aluno['id']) ?></td>
-
-                                    <td>
-                                
-                                    <?php if (disponiblidade($aluno['id']) == 'Disponível'): ?>
-                                            <form method="POST" action="../controllers/processsarAdicionarAluno.php">
-                                                <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($aluno['id'] ?? '') ?>">
-                                                <button type="submit">Adicionar</button>
-                                            </form>
-                                        <?php else: ?>
-                                            
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                <div class="card-info">               
+                    <p><?= htmlspecialchars($aluno['username']) ?></p>
+                    <p><?= htmlspecialchars($aluno['email']) ?></p>
+                    <p><?= htmlspecialchars(plano($aluno['plano']) ?? '---') ?></p>
+                    <p><?= disponiblidade($aluno['id']) ?></p>
                 </div>
-            </div>
-        <?php else: ?>
-            <p>Nenhuma solicitação de treino encontrada.</p>
-        <?php endif; ?>
-        </div>
-    </div>
-</div>
+                
+                <?php if (disponiblidade($aluno['id']) == 'Disponível'): ?>
+                    <form method="POST" action="../controllers/processsarAdicionarAluno.php">
+                        <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($aluno['id'] ?? '') ?>">
+                        <button type="submit">Adicionar</button>
+                    </form>
+                <?php endif; ?>
+            </div> <!-- Fechando card-aluno dentro do foreach -->
+        <?php endforeach; ?>
+    </div> <!-- solicitacoes -->
+</div><!-- main -->
 
 </body>
 </html>
