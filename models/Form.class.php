@@ -41,4 +41,5 @@ class Form{
             echo "Erro ao enviar notificação: " . implode('', $stmt->errorInfo());
         }
     }
+    
 }

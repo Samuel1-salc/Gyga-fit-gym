@@ -25,7 +25,7 @@
     
 <div class="container">
     <h1>Requerimento de Planilha de Treino</h1>
-    <form action="./../controllers/processarForm.php" method="post">
+    <form action="./../controllers/SolicitarTreino.php" method="post">
         <div class="form-group pergunta">
             <label>1. Qual a sua experiência na academia?</label>
             
