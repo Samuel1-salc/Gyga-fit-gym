@@ -24,7 +24,7 @@
             </div>
         </div>
     </header>
-
+    
     <main>
         <div class="info-container">
             <div class="aluno-info">
