@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['usuario'] = $user;
 
        if($user['typeUser'] == 'aluno'){
-            header("Location: ../view/paginaFormulario.php");    
+            header("Location: ../view/telaPrincipal.php");    
             exit();   
         }else if($user['typeUser'] == 'instrutor'){
             header("Location: ../view/perfilInstrutor.php");

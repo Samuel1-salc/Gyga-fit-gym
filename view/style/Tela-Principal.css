@@ -1,38 +1,56 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
 body {
-    background-color: #f0f0f0;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: #f9f9f9; /* Fundo claro */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    background-color: #000;
+    background-color: #333; /* Cor neutra para o cabeçalho */
     color: white;
-    padding: 15px 0;
-    border-bottom: 2px solid #ff0000;
-}
-
-main {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 0 20px;
-}
-
-.header-container {
+    padding: 10px 15px; /* Reduz a largura do cabeçalho */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+.header-container {
+    display: flex;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 100px;
+    position: relative; /* Permite posicionamento absoluto dos elementos filhos */
+    justify-content: flex-end; /* Alinha os elementos à direita */
+}
+
+.header-button {
+    position: absolute; /* Posiciona o botão de forma absoluta */
+    left: -600px; /* Alinha o botão à esquerda com espaçamento */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajusta o alinhamento vertical */
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.header-button:hover {
+    transform: translateY(-50%) scale(1.1); /* Mantém o alinhamento ao aplicar o hover */
 }
 
 .logo {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .logo-img {
@@ -41,41 +59,54 @@ main {
 }
 
 .info-container {
-    background-color: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border: 2px solid #ff0000;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ff4d4d;
 }
 
-.info-container button{
-    background-color: #ff0000;
+.info-container button {
+    background-color: #d21010;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 10px 15px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 4px;
     font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-h1 {
-    color: #ff0000;
+.info-container button:hover {
+    background-color: #d93636;
+    transform: scale(1.05);
+}
+
+h1, h3 {
+    color: #ff4d4d;
     font-size: 24px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 h2 {
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .treino, .aluno-info {
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    opacity: 0.8;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.treino img, .aluno-info img {
+    width: 120px; /* Ajusta o tamanho da imagem */
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
 }
 
 .footer-info {
@@ -89,15 +120,9 @@ h2 {
 }
 
 .footer-logo {
-    width: 100px;
-    height: 80px;
+    width: 80px;
+    height: auto;
     margin-right: 15px;
-}
-
-h3 {
-    color: #ff0000;
-    font-size: 24px;
-    margin-bottom: 30px;
 }
 
 .company-text h3 {
@@ -106,9 +131,9 @@ h3 {
 }
 
 .company-text p {
-    font-size: 12px;
-    color: #666;
-    line-height: 1.4;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
 }
 
 .footer-links {
@@ -120,6 +145,11 @@ h3 {
     color: #000;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #007bff;
 }
 
 .divider {
@@ -136,33 +166,161 @@ h3 {
 .social-icon {
     color: #000;
     font-size: 18px;
+    transition: color 0.2s ease;
+}
+
+.social-icon:hover {
+    color: #007bff;
 }
 
 .dias-semana {
     display: flex;
     justify-content: space-around;
-    background-color: #ddd;
+    background-color: #e0e0e0;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
 .dias-semana button {
-    background-color: #ff0000;
-    color: rgb(255, 255, 255);
+    background-color: #ff4d4d;
+    color: white;
     border: none;
-    padding: 10px;
+    padding: 8px 12px;
     cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 .dias-semana button:hover {
-    background-color: #180202;
+    background-color: #d93636;
+    transform: scale(1.05);
 }
 
 .botao-container {
     display: flex;
     justify-content: center;
-    gap: 10px; /* Espaçamento entre os botões */
-    margin-top: 20px; /* Espaçamento superior opcional */
+    gap: 10px;
+    margin-top: 20px;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -350px; /* Sidebar fechado por padrão no lado esquerdo */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra ajustada para o lado esquerdo */
+    transition: left 0.3s ease; /* Transição suave para abrir/fechar */
+    z-index: 1000;
+    overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo for maior que a altura */
+}
+
+.sidebar.open {
+    left: 0; /* Sidebar aberto */
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: white; /* Título em branco */
+    text-align: center; /* Centraliza o título */
+}
+
+.sidebar a {
+    display: block; /* Cada link ocupa uma linha */
+    color: white; /* Texto branco */
+    text-decoration: none; /* Remove o sublinhado */
+    margin-bottom: 10px; /* Espaçamento entre os links */
+    font-size: 14px; /* Tamanho da fonte ajustado */
+    padding: 10px; /* Adiciona padding para aumentar a área clicável */
+    border-radius: 4px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease, color 0.2s ease;
+}
+
+.sidebar a:hover {
+    background-color: #444; /* Fundo mais escuro no hover */
+    color: #007bff; /* Azul no hover */
+}
+
+.sidebar .close-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, color 0.2s ease;
+    display: block;
+    text-align: right; /* Alinha o botão de fechar à direita */
+}
+
+.sidebar .close-button:hover {
+    transform: scale(1.1);
+    color: #ff4d4d; /* Vermelho no hover */
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #333;
+    margin-top: auto;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+}
+
+footer img {
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+footer p {
+    font-size: 12px;
+    margin: 5px 0;
+    color: #d93636;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .info-container {
+        padding: 15px;
+    }
+
+    h1, h3 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .treino img, .aluno-info img {
+        width: 100px;
+        height: 100px;
+    }
+
+    footer {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .sidebar {
+        width: 200px; /* Reduz a largura do sidebar em telas menores */
+    }
+
+    .sidebar a {
+        font-size: 12px; /* Reduz o tamanho da fonte */
+        padding: 8px; /* Reduz o padding */
+    }
+
+    .sidebar .close-button {
+        font-size: 16px; /* Reduz o tamanho do botão de fechar */
+    }
 }

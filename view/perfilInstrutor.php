@@ -127,6 +127,8 @@ header {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Garante que o perfil ocupe toda a largura */
+    box-sizing: border-box; /* Inclui padding e bordas no cálculo de largura */
 }
 
 .perfil-instrutor img {
@@ -139,10 +141,13 @@ header {
 
 .perfil-instrutor .perfil-detalhes {
     flex: 1; /* Faz com que os detalhes ocupem o espaço restante */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os parágrafos */
 }
 
 .perfil-instrutor p {
-    margin: 5px 0;
+    margin: 0; /* Remove margens extras */
     font-size: 14px;
     color: #555;
 }
@@ -288,12 +293,28 @@ header {
 /* Responsividade */
 @media (max-width: 768px) {
     .main-content {
-        flex-direction: column; /* Empilha os elementos verticalmente */
-        gap: 15px;
+        flex-direction: column;
+    }
+
+    .perfil-instrutor, .solicitacoes {
+        max-width: 100%;
+    }
+
+    .card-aluno {
+        flex-direction: column; /* Empilha os elementos em telas menores */
+    }
+
+    .card-botoes {
+        align-items: flex-start; /* Alinha os botões à esquerda */
+    }
+
+    .btn-status, .btn-visualizar {
+        width: 100%; /* Botões ocupam toda a largura */
+        text-align: center;
     }
 
     .perfil-instrutor {
-        flex-direction: column; /* Alinha o perfil verticalmente */
+        flex-direction: column; /* Alinha o perfil verticalmente em telas menores */
         align-items: center; /* Centraliza os elementos */
         text-align: center; /* Centraliza o texto */
     }
@@ -304,42 +325,7 @@ header {
     }
 
     .perfil-instrutor .perfil-detalhes {
-        flex: none; /* Remove o comportamento de ocupar espaço restante */
         width: 100%; /* Garante que os detalhes ocupem toda a largura */
-    }
-
-    .solicitacoes {
-        padding: 10px; /* Reduz o padding */
-    }
-
-    .card-aluno {
-        flex-direction: column; /* Empilha os elementos do card */
-        align-items: center; /* Centraliza os elementos */
-        text-align: center; /* Centraliza o texto */
-    }
-
-    .card-info {
-        flex: none; /* Remove o comportamento de ocupar espaço restante */
-        width: 100%; /* Garante que as informações ocupem toda a largura */
-    }
-
-    .card-botoes {
-        align-items: center; /* Centraliza os botões */
-        width: 100%; /* Garante que os botões ocupem toda a largura */
-    }
-
-    .btn-status, .btn-visualizar {
-        width: 100%; /* Botões ocupam toda a largura */
-        text-align: center;
-    }
-
-    .sidebar {
-        width: 200px; /* Reduz a largura do sidebar */
-    }
-
-    footer {
-        padding: 10px; /* Reduz o padding */
-        font-size: 12px; /* Reduz o tamanho da fonte */
     }
 }
 
