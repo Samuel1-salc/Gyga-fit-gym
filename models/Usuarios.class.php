@@ -41,6 +41,13 @@ class Users{
         return $array;
     }
 
+    public function getNomePersonalByAluno($id_aluno){
+        $stmt = $this->link->prepare("SELECT nome_instrutor  FROM aluno_instrutor WHERE id_Aluno = :id_aluno");
+        $stmt->bindParam(':id_aluno', $id_aluno);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
+    }
+
     public function getIPersonalByAluno($id_aluno){
         $stmt = $this->link->prepare("SELECT id_instrutor  FROM aluno_instrutor WHERE id_Aluno = :id_aluno");
         $stmt->bindParam(':id_aluno', $id_aluno);
