@@ -77,7 +77,7 @@ function plano($plano){
     <main>
         <div class="info-container">
             <div class="aluno-info">
-                <img src="img/instrutor.jpg" alt="Foto do Instrutor">
+                
                 <h1>Informações do Aluno</h1>
                 <p><strong>Nome: </strong><?= htmlspecialchars($_SESSION['usuario']['username'])  ?? 'Usuário não autenticado'; ?></p>
                 <p><strong>Plano: </strong><?= htmlspecialchars(plano($_SESSION['usuario']['plano']))  ?? 'Não disponível'; ?></p>
