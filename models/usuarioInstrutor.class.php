@@ -14,6 +14,18 @@ class aluno_instrutor{
         require_once __DIR__ . '/../config/database.class.php';
         $this->con = new Database();
         $this->link = $this->con->getConexao();
+        
+    }
+
+    public function adcStatus($processo,$id_aluno){
+        $stmt = $this->link->prepare("UPDATE aluno_instrutor SET processo = :processo WHERE id_Aluno = :id_aluno");
+        $stmt->bindParam(':processo', $processo);
+        $stmt->bindParam(':id_aluno', $id_aluno);
+        if ($stmt->execute()) {
+            echo "Status atualizado com sucesso!";
+        } else {
+            echo "Erro ao atualizar status: " . implode('', $stmt->errorInfo());
+        }
     }
 
    public function adicionarAluno_Instrutor($id_aluno,$processo,$data_solicitacao){

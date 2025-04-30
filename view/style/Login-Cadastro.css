@@ -1,57 +1,62 @@
+/* Corpo da página */
 body {
-    margin: 2;
-    padding: 3;
-    font-family: Arial, sans-serif;
-    height: 100%;
-    background-color: #ffffff;
-    background-image: url();
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100vh; /* Preenche toda a altura da tela */
+    background-color: #f4f4f9; /* Fundo claro e suave */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Container do formulário */
 .container {
     width: 100%;
     max-width: 400px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para dar destaque */
     text-align: center;
-    padding: 60px;
-    
 }
 
+/* Logo */
 .logo {
-    
     padding: 20px;
-    background-color: #000000;
-    border-radius: 8px;
+    background-color: #ff0000;
+    border-radius: 50%; /* Logo em formato circular */
     display: inline-block;
     margin-bottom: 20px;
-    box-shadow: 0px 15px 15px rgba(255, 0, 0, 0.3); /* Sombra suave embaixo da imagem */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1); /* Sombra leve */
 }
 
 .logo img {
     width: 80px;
-    height: auto;
+    height: 80px; /* Tamanho fixo da imagem */
 }
 
+/* Caixa de login */
 .login-box {
-    background-color: #000000;
-    color: rgb(255, 255, 255);
-    padding: 40px;
+    background-color: #ffffff;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    margin: 0 0 10px;
-    font-size: 24px;
+    margin: 0 0 20px;
+    font-size: 28px;
+    color: #333; /* Cor escura para o título */
 }
 
 p {
-    color: #999;
-    margin-bottom: 20px;
+    color: #777; /* Cor mais suave para texto adicional */
+    margin-bottom: 30px;
     font-size: 14px;
 }
 
+/* Estilo dos campos de input */
 .input-group {
     margin-bottom: 20px;
     text-align: left;
@@ -61,74 +66,85 @@ label {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
+    color: #333;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #333;
-    background-color: #222;
-    color: white;
+    padding: 12px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    color: #333;
     border-radius: 4px;
     box-sizing: border-box;
+    font-size: 16px;
 }
 
+input:focus {
+    border-color: #ff0000; /* Cor da borda ao focar no campo */
+    outline: none;
+}
+
+/* Estilo do botão */
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #ff0000;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #5a0a03;
+    background-color: #cc0000; /* Cor mais escura no hover */
 }
 
+/* Link para recuperação de senha */
 a {
-    color: #999;
+    color: #ff0000;
     text-decoration: none;
     font-size: 14px;
 }
 
 a:hover {
-    color: #ff0000;
+    text-decoration: underline;
 }
 
+/* Rodapé */
 .footer {
     margin-top: 20px;
-    color: rgb(0, 0, 0);
+    color: #333;
     font-size: 12px;
 }
 
+/* Estilo do dropdown */
 .dropdown {
     position: relative;
     display: inline-block;
-    width: 200px;
-  }
-
-  .dropdown select {
     width: 100%;
-    padding: 10px;
+}
+
+.dropdown select {
+    width: 100%;
+    padding: 12px;
     font-size: 16px;
-    appearance: none; /* Remove estilo padrão do navegador */
+    appearance: none; /* Remover estilo padrão do navegador */
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
     border-radius: 4px;
     cursor: pointer;
-  }
+}
 
-  .dropdown::after {
+.dropdown::after {
     content: "▼"; /* Seta para baixo */
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-  }
+}

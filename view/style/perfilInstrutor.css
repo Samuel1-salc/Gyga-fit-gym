@@ -76,19 +76,16 @@ header {
 }
 
 .card-aluno {
-    border: 2px solid red;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-start; /* alinha ao topo */
+    gap: 20px;
+    flex-wrap: wrap; /* permite quebrar linhas se precisar */
+    position: relative;
 }
-
 .card-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    flex: 1;
+    min-width: 250px;
 }
 
 .card-info img {
@@ -104,7 +101,11 @@ header {
 
 .card-botoes {
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 10px;
+    min-width: 200px;
 }
 
 .card-botoes form {
@@ -112,6 +113,7 @@ header {
     align-items: center;
     gap: 5px;
 }
+
 
 .btn-status {
     padding: 6px 12px;
@@ -126,3 +128,40 @@ select {
     padding: 5px 10px;
     border-radius: 6px;
 }
+
+.btn-visualizar {
+    background-color: #c82333; /* vermelho escuro */
+    color: #ffffff;            /* texto branco */
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-visualizar:hover {
+    background-color: #a71d2a; /* vermelho mais escuro no hover */
+}
+
+.solicitacao-content {
+    background-color: #ffffff; /* fundo branco */
+    color: #1c1c1c;            /* texto preto suave */
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    border-left: 4px solid #c82333; /* barra de destaque vermelha */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* sombra leve */
+}
+
+.solicitacao-content p {
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+.solicitacao-content hr {
+    border: 0;
+    border-top: 1px solid #ccc; /* linha cinza suave */
+    margin: 10px 0;
+}
+
