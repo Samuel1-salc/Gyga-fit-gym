@@ -1,75 +1,53 @@
+<?php
+session_start();
+require_once __DIR__ . '/../models//Usuarios.class.php';
+require_once __DIR__ . '/../models//SolicitacaoTreino.class.php';
+$id_aluno = $_GET['id_aluno'] ?? null;
+
+if($id_aluno != null){
+    function getNomeAluno($id_aluno) {
+        
+        $users = new Users();
+        $aluno = $users->getNomeAluno($id_aluno);
+        return $aluno['username'] ?? 'Aluno não encontrado';
+    }
+    function getTreinos($id_aluno) {
+        
+        $solicitacao = new SolicitacaoTreino();
+        $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
+        return $formulario['treinos'] ?? 'Solicitação não encontrada';
+    }
+    function getExperiencia($id_aluno) {
+        
+        $solicitacao = new SolicitacaoTreino();
+        $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
+        return $formulario['experiencia'] ?? 'Solicitação não encontrada';
+    }
+    function getObjetivo($id_aluno) {
+        
+        $solicitacao = new SolicitacaoTreino();
+        $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
+        return $formulario['objetivo'] ?? 'Solicitação não encontrada';
+    }
+    
+    
+    $valorQtdTreinos = (int)getTreinos($id_aluno)?? 0;
+    $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupo de treino não encontrado';
+    $objetivo = (string)getObjetivo($id_aluno) ?? 'Objetivo não encontrado';
+    $experiencia = (string)getExperiencia($id_aluno) ?? 'Experiência não encontrada';
+}else{
+  throw new Exception("ID do aluno não foi fornecido.");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Criar Plano de Treino - GYGA FIT</title>
-  <link rel="stylesheet" href="./style/stylePaginaDeTreino.css">
-  <style>
-    .treino-box {
-      border: 2px solid #ccc;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 8px;
-    }
-
-    .exercicio-box {
-      border: 1px solid #aaa;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
-      background-color: #f9f9f9;
-    }
-
-    .exercicio-box strong {
-      color: #000;
-    }
-
-    .exercicio-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 5px;
-    }
-
-    .exercicio-group input {
-      flex: 1 1 30%;
-    }
-
-    .observacao {
-      margin-top: 15px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .observacao textarea {
-      width: 100%;
-      height: 80px;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #aaa;
-      background-color: #fff;
-      resize: vertical;
-    }
-
-    .botao-mais {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .mensagem-sucesso {
-      display: none;
-      margin-top: 15px;
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+  <link rel="stylesheet" href="./style/stylePaginaDeTreino.css?v=<?= time(); ?>" />
 </head>
 <body>
 
@@ -81,20 +59,12 @@
     <h2>Criar Plano de Treino</h2>
     <form id="formPlano">
 
-      <label for="nomeAluno">Nome do Aluno:</label>
-      <input type="text" id="nomeAluno" name="nomeAluno" placeholder="Digite aqui o nome do aluno" required>
+      <h4>Nome do Aluno: <?= htmlspecialchars(getNomeAluno($id_aluno)) ?> </h4>
+      <h4>Grupos de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
+      <h4>Objetivo: <?= htmlspecialchars($objetivo)?> </h4>
+      <h4>Experiência: <?= htmlspecialchars($experiencia  )?> </h4>
 
-      <label for="quantTreinos">Quantos dias na semana o aluno irá treinar?</label>
-      <select id="quantTreinos" name="quantTreinos" onchange="gerarTreinos()" required>
-        <option value="" disabled selected>Selecione</option>
-        <option value="1">1 dia</option>
-        <option value="2">2 dias</option>
-        <option value="3">3 dias</option>
-        <option value="4">4 dias</option>
-        <option value="5">5 dias</option>
-        <option value="6">6 dias</option>
-        <option value="7">7 dias</option>
-      </select>
+      <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos" oninput="gerarTreinos()" required>
 
       <div id="treinosContainer"></div>
 
@@ -110,7 +80,9 @@
       const container = document.getElementById("treinosContainer");
       container.innerHTML = "";
       const letras = ["A", "B", "C", "D", "E", "F", "G"];
-      const quant = parseInt(document.getElementById("quantTreinos").value);
+      const quant = <?= $valorQtdTreinos ?>; // Quantidade de treinos a serem gerados
+      
+      
 
       for (let i = 0; i < quant; i++) {
         const letra = letras[i];
@@ -164,6 +136,8 @@
         document.getElementById("treinosContainer").innerHTML = "";
       }, 3000);
     });
+    window.addEventListener("DOMContentLoaded", gerarTreinos);
+
   </script>
 
 </body>

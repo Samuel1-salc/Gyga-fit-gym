@@ -20,6 +20,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $name_aluno = $nome_aluno['username'] ?? '';
 
     $novoTreino -> enviarTreino($id_aluno,$name_aluno, $dia_da_semana, $exercicio, $series, $repeticoes, $observacoes, $dataNovoTreino);
+
+
+    
     }elseif(isset($_POST['submit_NovoTreino'])){
         $id_aluno = $_POST['id_alunoNovoTreino'] ?? '';
         header("Location: ../view/paginaDeTreino.php?id_aluno=$id_aluno");

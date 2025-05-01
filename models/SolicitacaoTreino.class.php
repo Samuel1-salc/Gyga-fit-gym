@@ -12,14 +12,15 @@ class SolicitacaoTreino
         $this->link = $this->con->getConexao();
     }
 
-    public function SolicitarTreino($id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura)
+    public function SolicitarTreino($data_created,$id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura)
     {
         try {
             $stmt = $this->link->prepare("
-                INSERT INTO formulario (id_aluno, experiencia, objetivo, treinos, sexo, peso, altura)
-                VALUES (:id_aluno, :experiencia, :objetivo, :treinos, :sexo, :peso, :altura)
+                INSERT INTO formulario (data_created,id_aluno, experiencia, objetivo, treinos, sexo, peso, altura)
+                VALUES (:data_created,:id_aluno, :experiencia, :objetivo, :treinos, :sexo, :peso, :altura)
             ");
 
+            $stmt->bindParam(':data_created', $data_created);
             $stmt->bindParam(':id_aluno', $id_aluno);
             $stmt->bindParam(':experiencia', $experiencia);
             $stmt->bindParam(':objetivo', $objetivo);
@@ -40,15 +41,43 @@ class SolicitacaoTreino
         }
     }
 
+ 
+
     public function getSolicitacaoTreino($id_aluno)
     {
+        if(!is_numeric($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno deve ser um número.");
+        }
+        if(empty($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
+        }
         try {
             $stmt = $this->link->prepare("
                 SELECT * FROM formulario WHERE id_aluno = :id_aluno
             ");
             $stmt->bindParam(':id_aluno', $id_aluno);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetchALL(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar solicitação de treino: " . $e->getMessage();
+            return false;
+        }
+    }
+    public function getFormularioForCriacaoDeTreino($id_aluno)
+    {
+        if(!is_numeric($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno deve ser um número.");
+        }
+        if(empty($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
+        }
+        try {
+            $stmt = $this->link->prepare("
+                SELECT * FROM formulario WHERE id_aluno = :id_aluno ORDER BY id DESC LIMIT 1
+            ");
+            $stmt->bindParam(':id_aluno', $id_aluno);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "Erro ao buscar solicitação de treino: " . $e->getMessage();
             return false;

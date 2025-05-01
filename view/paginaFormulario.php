@@ -1,3 +1,8 @@
+<?php
+session_start();
+require_once __DIR__ . '/../controllers/processarSolicitacaoDeTreino.php'
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -64,14 +69,21 @@
         <div class="form-group pergunta">
             <label>3. Quantos dias por semana pretende treinar?</label>
             <div class="radio-group">
-                <input type="radio" id="treinos2" name="treinos" value="2" required>
-                <label for="treinos2">2</label>
-                
-                <input type="radio" id="treinos3" name="treinos" value="3">
+                <input type="radio" id="treinos3" name="treinos" value="3" required>
                 <label for="treinos3">3</label>
                 
-                <input type="radio" id="treinos4" name="treinos" value="4 ou mais">
-                <label for="treinos4">4 ou mais</label>
+                <input type="radio" id="treinos4" name="treinos" value="4">
+                <label for="treinos4">4</label>
+                
+                <input type="radio" id="treinos5" name="treinos" value="5">
+                <label for="treinos5">5</label>
+
+                <input type="radio" id="treinos6" name="treinos" value="6">
+                <label for="treinos6">6</label>
+
+                <input type="radio" id="treinos7" name="treinos" value="7">
+                <label for="treinos7">7</label>
+
             </div>
         </div>
 
