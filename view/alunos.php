@@ -66,9 +66,9 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         <?php foreach (array_reverse($alunos) as $aluno): ?>
             <div class="card-aluno">
                 <div class="card-info">               
-                    <p><?= htmlspecialchars($aluno['username']) ?></p>
-                    <p><?= htmlspecialchars($aluno['email']) ?></p>
-                    <p><?= htmlspecialchars(plano($aluno['plano']) ?? '---') ?></p>
+                    <p><strong>Aluno: <?= htmlspecialchars($aluno['username']) ?></strong></p>
+                    <p><strong>Contato: <?= htmlspecialchars($aluno['email']) ?></strong></p>
+                    <p><strong>Plano: <?= htmlspecialchars(plano($aluno['plano']) ?? '---') ?></strong></p>
                     <p><?= disponiblidade($aluno['id']) ?></p>
                 </div>
                 
