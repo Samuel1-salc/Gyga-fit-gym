@@ -1,115 +1,150 @@
-* {
-    box-sizing: border-box;
-}
 
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    background-color: #f2f2f2;
+    background-color: #ffffff;
 }
 
-.fundo-vermelho {
-    background-color: rgb(255, 0, 0);
+.main-container {
+    background-color: rgb(255, 255, 255);
     padding: 40px 0;
 }
 
-header {
-    background-color: #000;
-    color: white;
-    padding: 10px 30px;
-}
-
-.header-logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.header-logo img {
-    height: 50px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
-
-.solicitacoes h3 {
-    color: red;
+.main-container h3 {
+    text-align: center;
+    color: #ff0000;
+    font-size: 24px;
     margin-bottom: 20px;
 }
 
-/* ESTILO DAS CAIXAS DE ALUNO */
-.card-aluno {
+
+header {
+    background-color: #333; /* Cor neutra para o cabeçalho */
+    color: white;
+    padding: 10px 15px; /* Reduz a largura do cabeçalho */
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Cada aluno em uma caixa separada */
-.aluno-box {
-    border: 2px solid red;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+.header-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 100px;
+    position: relative; /* Permite posicionamento absoluto dos elementos filhos */
+    justify-content: flex-end; /* Alinha os elementos à direita */
 }
 
-.aluno-box table {
-    width: 100%;
-    border-collapse: collapse;
+.header-button {
+    position: absolute; /* Posiciona o botão de forma absoluta */
+    left: -600px; /* Alinha o botão à esquerda com espaçamento */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajusta o alinhamento vertical */
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-.aluno-box th,
-.aluno-box td {
-    text-align: left;
-    padding: 10px;
-    font-size: 16px;
-    border-bottom: 1px solid #ddd;
+.header-button:hover {
+    transform: translateY(-50%) scale(1.1); /* Mantém o alinhamento ao aplicar o hover */
 }
 
-.aluno-box form {
+.logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
 }
 
-.aluno-box select {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.logo-img {
+    height: 40px;
+    width: auto;
 }
 
-.aluno-box button {
-    padding: 6px 12px;
-    background-color: red;
+
+
+
+/* ESTILO DAS CAIXAS DE ALUNO */
+.solicitacoes {
+    display: flex; /* Alinha os elementos em uma linha */
+    flex-direction: column; /* Garante que os elementos fiquem em formato de lista */
+    gap: 15px; /* Adiciona espaçamento entre os cards */
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 1200px; /* Define uma largura máxima para centralizar */
+}
+
+
+
+.card-aluno {
+    display: flex;
+    flex-direction: row; /* Alinha os elementos dentro do card horizontalmente */
+    justify-content: space-between; /* Espaça os elementos dentro do card */
+    align-items: center; /* Centraliza os elementos verticalmente */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+
+.card-info {
+    flex: 1; /* Faz com que as informações ocupem o espaço disponível */
+    display: flex;
+    flex-direction: column; /* Alinha as informações verticalmente */
+    gap: 5px; /* Espaçamento entre as informações */
+}
+
+.card-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+button[type="submit"] {
+    padding: 8px 12px;
+    background-color: #4caf50;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #388e3c;
 }
 
 .search-bar {
     display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-    margin-top: 10px;
+    align-items: center;
+    justify-content: center; /* Centraliza horizontalmente */
+    margin: 20px auto; /* Adiciona margem superior e inferior */
+    max-width: 1200px; /* Define o comprimento máximo */
+    gap: 20px; /* Espaçamento entre o campo de busca e o botão */
 }
-
 .search-bar input[type="text"] {
     flex: 1;
-    padding: 10px 15px;
-    border: 2px solid red;
+    padding: 12px 20px;
+    border: 2px solid rgb(255, 0, 0);
     border-radius: 6px;
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;
+    position: relative; /* Permite o uso de posicionamento absoluto para o ícone */
+    display: flex;
+    gap: 30px;
+    margin: 20px auto; /* Centraliza horizontalmente */
+    max-width: 1200px; /* Define o comprimento máximo */
+    
+
 }
 
 .search-bar input[type="text"]:focus {
@@ -117,16 +152,30 @@ header {
 }
 
 .search-bar button {
-    padding: 10px 20px;
-    background-color: red;
+    width: auto; /* Define a largura automática baseada no conteúdo */
+    padding: 12px 20px; /* Ajusta o tamanho do botão para combinar com o campo de busca */
+    background-color: rgb(255, 0, 0);
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-size: 15px; /* Ajusta o tamanho da fonte */
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    height: auto; /* Garante que o botão tenha a mesma altura do campo de busca */
+    flex-shrink: 0; /* Impede que o botão encolha no layout flex */
 }
+
 
 .search-bar button:hover {
     background-color: darkred;
 }
+
+
+@media (max-width: 768px) {
+    
+    .card-aluno {
+        flex-direction: column; /* Empilha os elementos em telas menores */
+    }
+}
+    
