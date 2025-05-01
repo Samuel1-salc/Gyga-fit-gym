@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', sans-serif;
+    line-height: 2.6;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    color: #ff0000;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-button {
+    background-color: #ff2f00;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.login-button:hover {
+    background-color: #e94e1f;
+}
+
+.imagens-sobre {
+    display: flex;
+    gap: 15px;              /* Espaço entre as imagens */
+    margin-top: 10px;
+}
+  
+.imagem-sobre {
+    width: 300px;           /* Mesma largura para ambas */
+    height: auto;           /* Mantém proporção da imagem */
+    object-fit: cover;      /* Garante aparência consistente */
+}
+
+.imagens-professores {
+    display: flex;
+    gap: 15px;              /* Espaço entre as imagens */
+    margin-top: 10px;
+}
+  
+.imagem-professores {
+    width: 300px;           /* Mesma largura para ambas */
+    height: auto;           /* Mantém proporção da imagem */
+    object-fit: cover;      /* Garante aparência consistente */
+}
+   
+section {
+    padding: 40px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+section h2 {
+    margin-bottom: 10px;
+    color: #ff5733;
+}
+
+section p {
+    max-width: 700px;
+}
+
+section img {
+    max-width: 100%;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #111;
+    color: #fff;
+}
