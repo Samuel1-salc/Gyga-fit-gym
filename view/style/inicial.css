@@ -4,8 +4,20 @@
     box-sizing: border-box;
 }
 
+h2, h3, p {
+    text-align: center;
+}
+
+section p {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 20px;
+}
+
 body {
-    font-family: 'Times New Roman', sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 2.6;
     background-color: #ffffff;
     color: #000000;
@@ -37,6 +49,13 @@ nav ul li a {
     font-weight: 500;
 }
 
+.descricao-sobre {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 20px;
+}
+
 .login-button {
     background-color: #ff2f00;
     padding: 10px 20px;
@@ -53,7 +72,9 @@ nav ul li a {
 
 .imagens-sobre {
     display: flex;
-    gap: 15px;              /* Espaço entre as imagens */
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-top: 10px;
 }
   
@@ -65,7 +86,9 @@ nav ul li a {
 
 .imagens-professores {
     display: flex;
-    gap: 15px;              /* Espaço entre as imagens */
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-top: 10px;
 }
   

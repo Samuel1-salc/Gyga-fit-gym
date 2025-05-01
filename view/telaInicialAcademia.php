@@ -25,8 +25,10 @@
 
     <section id="sobre">
         <h2>Sobre a Gyga Fit</h2>
-        <p>A Gyga Fit é uma academia moderna com foco em bem-estar, performance e saúde. Unidades equipadas e profissionais qualificados.</p>
-        
+        <div class="descricao-sobre">
+            <p>A Gyga Fit é uma academia moderna com foco em bem-estar, performance e saúde. Unidades equipadas e profissionais qualificados.</p>
+        </div>
+
         <div class="imagens-sobre">
             <img src="img/ACAD1.jpg" alt="Foto da academia Gyga Fit 1" class="imagem-sobre">
             <img src="img/ACAD2.jpg" alt="Foto da academia Gyga Fit 2" class="imagem-sobre">
@@ -34,6 +36,7 @@
             <img src="img/ACAD4.jpg" alt="Foto da academia Gyga Fit 4" class="imagem-sobre">
         </div>
     </section>
+
 
     <section id="unidades">
         <h2>Nossas Unidades</h2>
