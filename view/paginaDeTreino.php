@@ -101,9 +101,11 @@ if($id_aluno != null){
               <label for="obs${letra}">Observações:</label>
               <textarea name="obs${letra}" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
             </div>
-          </form>
+          
         `;
         container.appendChild(treinoDiv);
+
+      
       }
     }
 
@@ -115,14 +117,11 @@ if($id_aluno != null){
       <div class="exercicio-box">
         <strong>Exercício ${numero}</strong>
         <div class="exercicio-group">
-          <form class="exercicio-form" action="/../controllers/processarNovoTreino.php" method="POST">
             <input type="hidden" name="grupo" value="${letra}">
             <input type="hidden" name="numero" value="${numero}">
             <input type="text" name="exercicio" placeholder="Nome do exercício" required>
             <input type="number" name="series" placeholder="Séries" required>
             <input type="text" name="reps" placeholder="Repetições" required>
-            <button type="submit" class="botao-enviar">Salvar Exercício</button>
-          </form>
         </div>
       </div>
       `;
@@ -131,7 +130,6 @@ if($id_aluno != null){
     function adicionarExercicio(letra) {
       const container = document.getElementById(`exercicios${letra}`);
       contadorExercicios[letra]++;
-      `<input type="hidden" id="numeroExercicio" value= ${contatorExercicios[letra]} name="numeroExercicio" required>`
       container.insertAdjacentHTML('beforeend', gerarExercicioHTML(letra, contadorExercicios[letra]));
     }
 
@@ -144,6 +142,26 @@ if($id_aluno != null){
         document.getElementById("treinosContainer").innerHTML = "";
       }, 3000);
     });
+    function removerExercicio(letra, numero) {
+        const container = document.getElementById(`exercicios${letra}`);
+        const exercicio = document.querySelector(`#exercicios${letra} .exercicio-box:nth-child(${numero})`);
+
+        if (exercicio) {
+          exercicio.remove(); // Remove a div do exercício correspondente
+
+          // Atualiza o contador de exercícios
+          contadorExercicios[letra]--;
+
+          // Reorganiza os números dos exercícios restantes
+          const exerciciosRestantes = container.querySelectorAll('.exercicio-box');
+          exerciciosRestantes.forEach((ex, index) => {
+            const strong = ex.querySelector('strong');
+            strong.textContent = `Exercício ${index + 1}`; // Atualiza o número do exercício
+            const inputNumero = ex.querySelector('input[name="numero"]');
+            inputNumero.value = index + 1; // Atualiza o valor do input "numero"
+          });
+        }
+    }
     window.addEventListener("DOMContentLoaded", gerarTreinos);
 
   </script>
