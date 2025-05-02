@@ -9,19 +9,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_aluno = $_POST['id_aluno'] ?? '';
     $processo = $_POST['processo'] ?? '';
 
- 
-    
+
+
 
     $data_solicitacao = $relacaoAlunoInstrutor->dataDeSolicitacao();
 
-    if(!empty($relacaoAlunoInstrutor->checkRelationshipUsers($id_aluno))){
+    if (!empty($relacaoAlunoInstrutor->checkRelationshipUsers($id_aluno))) {
         $_SESSION['error'] = "Este aluno já tem instrutor!";
         //exit();
-    }else{
-        $relacaoAlunoInstrutor->adicionarAluno_Instrutor($id_aluno,$processo,$data_solicitacao);
+    } else {
+        $relacaoAlunoInstrutor->adicionarAluno_Instrutor($id_aluno, $processo, $data_solicitacao);
         $_SESSION['success'] = "Solicitação enviada com sucesso!";
-        //header("Location: ../view/perfilInstrutor2.php");
-        //exit();
+        header("Location: ../view/alunoSucessoInstrutor.php");
+        exit();
+
     }
 
 
@@ -31,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $alunos = $user->getDataAlunosByNome($search);
     if (empty($alunos)) {
         $_SESSION['error'] = "Nenhum aluno encontrado!";
-    }else{
+    } else {
         header("Location: ../view/alunos.php?search=$search");
     }
 } else {

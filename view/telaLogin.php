@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GYGA FIT cadastro</title>
-  <link rel="stylesheet" href="../view/style/Login-Cadastro.css"/>
 
   <style>
-    /* Estilos para o vídeo de introdução */
+    /* Estilo do vídeo de introdução */
     #video-intro {
       position: fixed;
       top: 0;
@@ -28,7 +27,6 @@
       object-fit: cover;
     }
 
-    /* Animação fade-out */
     .fade-out {
       animation: fadeOut 2s forwards;
     }
@@ -40,8 +38,22 @@
       }
     }
 
-    /* Estilos do conteúdo de login */
+    /* Corpo da página */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      height: 100vh;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       opacity: 0;
       transition: opacity 1s ease-in;
     }
@@ -50,57 +62,85 @@
       opacity: 1;
     }
 
-    /* Estilos gerais */
     .logo {
+      margin-bottom: 30px;
       text-align: center;
-      margin-top: 20px;
+    }
+
+    .logo img {
+      width: 200px;
+      height: auto;
     }
 
     .login-box {
-      margin: 20px auto;
-      padding: 20px;
-      max-width: 400px;
-      background: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
+      width: 100%;
+      max-width: 360px;
+      padding: 30px 20px;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      box-sizing: border-box;
     }
 
     .login-box h1 {
-      text-align: center;
-      margin-bottom: 15px;
+      font-size: 24px;
+      color: #000;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .login-box p {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 20px;
     }
 
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      text-align: left;
     }
 
     .input-group label {
       display: block;
       margin-bottom: 5px;
-      font-weight: bold;
+      font-size: 13px;
+      color: #444;
     }
 
     .input-group input {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 12px;
+      border: none;
+      border-radius: 20px;
+      background-color: #f1f1f1;
       font-size: 16px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border: 2px solid #ff0000;
+      background-color: #fff;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      border: none;
-      background-color: #4CAF50;
+      padding: 14px;
+      background-color: #ff0000;
       color: white;
-      font-size: 16px;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: bold;
       cursor: pointer;
-      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 0 #b30000;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #cc0000;
     }
 
     .footer {
@@ -157,7 +197,6 @@
   const videoIntro = document.getElementById('video-intro');
   const conteudoLogin = document.getElementById('conteudo-login');
 
-  // Aguarda o vídeo terminar
   const video = videoIntro.querySelector("video");
   video.addEventListener("ended", () => {
     videoIntro.classList.add("fade-out");
