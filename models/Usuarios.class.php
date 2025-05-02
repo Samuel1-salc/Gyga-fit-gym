@@ -11,6 +11,19 @@ class Users{
         $this->link = $this->con->getConexao();
     }
 
+    public function dataAtual(){
+        $data = new DateTime();
+        $data_formatada = $data->format('Y-m-d H:i:s');
+        return $data_formatada;
+    }
+
+    public function getNomeAluno($id_aluno){
+        $stmt = $this->link->prepare("SELECT username FROM aluno WHERE id = :id_aluno");
+        $stmt->bindParam(':id_aluno', $id_aluno);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
+    }
+
     public function getDataAlunosForPerfilAlunos(){
         $stmt = $this->link->prepare("SELECT id,username, email, plano FROM aluno");
         $stmt->execute();

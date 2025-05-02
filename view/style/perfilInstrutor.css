@@ -1,4 +1,3 @@
-
 * {
     box-sizing: border-box;
 }
@@ -6,162 +5,284 @@
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    background-color: #f2f2f2;
-}
-
-.fundo-vermelho {
-    background-color:rgb(255, 0, 0);
-    padding: 40px 0;
+    background-color: #f9f9f9; /* Fundo claro */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    background-color: #000;
+    background-color: #333; /* Cor neutra para o cabeçalho */
     color: white;
-    padding: 10px 30px;
+    padding: 10px 15px; /* Reduz a largura do cabeçalho */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header-logo {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .header-logo img {
-    height: 50px;
+    height: 40px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+.header-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.header-button:hover {
+    transform: scale(1.1);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column; /* Alinha os elementos verticalmente */
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .perfil-instrutor {
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    display: flex; /* Alinha o conteúdo do perfil horizontalmente */
+    flex-direction: row; /* Define o layout horizontal */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 20px; /* Espaçamento entre os elementos */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Garante que o perfil ocupe toda a largura */
+    box-sizing: border-box; /* Inclui padding e bordas no cálculo de largura */
 }
 
-.perfil-instrutor h2 {
-    color: red;
-    margin-bottom: 10px;
-}
-
-.perfil-conteudo {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 15px;
-}
-
-.foto-instrutor {
-    width: 100px;
-    height: 100px;
+.perfil-instrutor img {
+    width: 120px; /* Ajusta o tamanho da imagem */
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid red;
+    border: 2px solid #ccc;
+}
+
+.perfil-instrutor .perfil-detalhes {
+    flex: 1; /* Faz com que os detalhes ocupem o espaço restante */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os parágrafos */
 }
 
 .perfil-instrutor p {
-    margin: 5px 0;
-    font-size: 16px;
+    margin: 0; /* Remove margens extras */
+    font-size: 14px;
+    color: #555;
 }
 
-.solicitacoes h3 {
-    color: red;
-    margin-bottom: 20px;
+.solicitacoes {
+    flex: 1;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card-aluno {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* alinha ao topo */
+    flex-direction: row; /* Alinha os elementos horizontalmente */
+    align-items: flex-start;
     gap: 20px;
-    flex-wrap: wrap; /* permite quebrar linhas se precisar */
-    position: relative;
-}
-.card-info {
-    flex: 1;
-    min-width: 250px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
 }
 
-.card-info img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
+.card-info {
+    flex: 2; /* Ocupa mais espaço */
 }
 
 .card-info p {
     margin: 0;
+    font-size: 14px;
+    color: #555;
 }
 
 .card-botoes {
+    flex: 1; /* Ocupa menos espaço */
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
     gap: 10px;
-    min-width: 200px;
+    align-items: flex-end; /* Alinha os botões à direita */
 }
 
-.card-botoes form {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.btn-status, .btn-visualizar {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
 
 .btn-status {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    background-color: red;
+    background-color: #ff4d4d;
     color: white;
-    cursor: pointer;
 }
 
-select {
-    padding: 5px 10px;
-    border-radius: 6px;
+.btn-status:hover {
+    background-color: #d93636;
+    transform: scale(1.05);
 }
 
 .btn-visualizar {
-    background-color: #c82333; /* vermelho escuro */
-    color: #ffffff;            /* texto branco */
-    border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    background-color: #4caf50;
+    color: white;
 }
 
 .btn-visualizar:hover {
-    background-color: #a71d2a; /* vermelho mais escuro no hover */
+    background-color: #388e3c;
+    transform: scale(1.05);
 }
 
-.solicitacao-content {
-    background-color: #ffffff; /* fundo branco */
-    color: #1c1c1c;            /* texto preto suave */
-    padding: 12px;
-    border-radius: 6px;
-    margin-top: 8px;
-    border-left: 4px solid #c82333; /* barra de destaque vermelha */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* sombra leve */
+.btn-add-aluno {
+    padding: 6px 12px; /* Botão menor */
+    font-size: 13px; /* Ajusta o tamanho da fonte */
+    border-radius: 4px;
+    background-color: #007bff; /* Azul para destaque */
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block; /* Garante que o botão ocupe uma linha */
+    margin: 15px auto 0; /* Centraliza o botão e adiciona margem superior */
+    text-align: center;
 }
 
-.solicitacao-content p {
-    margin: 6px 0;
-    line-height: 1.4;
+.btn-add-aluno:hover {
+    background-color: #0056b3; /* Azul mais escuro no hover */
+    transform: scale(1.05); /* Leve aumento no hover */
 }
 
-.solicitacao-content hr {
-    border: 0;
-    border-top: 1px solid #ccc; /* linha cinza suave */
-    margin: 10px 0;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Sidebar fechado por padrão no lado esquerdo */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra ajustada para o lado esquerdo */
+    transition: left 0.3s ease; /* Transição suave para abrir/fechar */
+    z-index: 1000;
 }
 
+.sidebar.open {
+    left: 0; /* Sidebar aberto */
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: white; /* Título em branco */
+}
+
+.sidebar a {
+    display: block; /* Cada link ocupa uma linha */
+    color: white; /* Texto branco */
+    text-decoration: none; /* Remove o sublinhado */
+    margin-bottom: 10px; /* Espaçamento entre os links */
+    font-size: 14px; /* Tamanho da fonte ajustado */
+    transition: color 0.2s ease;
+}
+
+.sidebar a:hover {
+    color: #007bff; /* Azul no hover */
+}
+
+.sidebar .close-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.sidebar .close-button:hover {
+    transform: scale(1.1);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .perfil-instrutor, .solicitacoes {
+        max-width: 100%;
+    }
+
+    .card-aluno {
+        flex-direction: column; /* Empilha os elementos em telas menores */
+    }
+
+    .card-botoes {
+        align-items: flex-start; /* Alinha os botões à esquerda */
+    }
+
+    .btn-status, .btn-visualizar {
+        width: 100%; /* Botões ocupam toda a largura */
+        text-align: center;
+    }
+
+    .perfil-instrutor {
+        flex-direction: column; /* Alinha o perfil verticalmente em telas menores */
+        align-items: center; /* Centraliza os elementos */
+        text-align: center; /* Centraliza o texto */
+    }
+
+    .perfil-instrutor img {
+        width: 100px; /* Reduz o tamanho da imagem */
+        height: 100px;
+    }
+
+    .perfil-instrutor .perfil-detalhes {
+        width: 100%; /* Garante que os detalhes ocupem toda a largura */
+    }
+}
+
+footer {
+    
+    color: white;
+    text-align: center;
+    padding: 10px 20px; /* Reduz o padding */
+    margin-top: auto; /* Garante que o footer fique no final da página */
+    max-width: 800px; /* Limita a largura máxima */
+    margin-left: auto; /* Centraliza horizontalmente */
+    margin-right: auto; /* Centraliza horizontalmente */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+footer img {
+    height: 30px; /* Reduz o tamanho do logo */
+    margin-bottom: 5px; /* Reduz o espaçamento abaixo do logo */
+}
+
+footer p {
+    font-size: 12px; /* Fonte menor */
+    margin: 5px 0;
+    color: #d93636; /* Texto com cor mais suave */
+}

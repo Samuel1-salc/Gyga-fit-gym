@@ -84,4 +84,68 @@
       display: none;
       text-align: center;
     }
+
+    .treino-box {
+      border: 2px solid #ccc;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+
+    .exercicio-box {
+      border: 1px solid #aaa;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+
+    .exercicio-box strong {
+      color: #000;
+    }
+
+    .exercicio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .exercicio-group input {
+      flex: 1 1 30%;
+    }
+
+    .observacao {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .observacao textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      background-color: #fff;
+      resize: vertical;
+    }
+
+    .botao-mais {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .mensagem-sucesso {
+      display: none;
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
   
