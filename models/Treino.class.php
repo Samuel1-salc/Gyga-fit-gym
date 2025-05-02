@@ -12,19 +12,25 @@ class Treino
         $this->link = $this->con->getConexao();
     }
 
-    public function cadastrarTreino($idAluno, $exercicio, $serie, $repeticoes, $carga, $obs, $data_criacao)
+    public function cadastrarTreino($id_instrutor,$id_aluno,$id_treino_criado, $grupo_treino, $exercicio, $nome_exercicio, $series, $repeticoes,$observacao, $data_criacao)
     {
-        $stmt = $this->link->prepare("INSERT INTO treinos (id_aluno, exercicio, serie, repeticoes, carga, observacoes, data_criacao) 
-                                      VALUES (:id_aluno, :exercicio, :serie, :repeticoes, :carga, :observacoes, :data_criacao)");
-
-        $stmt->bindParam(':id_aluno', $idAluno);
+        $stmt = $this->link->prepare("INSERT INTO plano_de_treino (id_instrutor,id_aluno, id_treino_criado, grupo_treino,exercicio,nome_exercicio,series,repeticoes,observacao,data_criacao)
+        VALUES (:id_instrutor, :id_aluno, :id_treino_criado, :grupo_treino, :exercicio, :nome_exercicio, :series, :repeticoes, :observacao, :data_criacao)"); 
+        $stmt->bindParam(':id_instrutor', $id_instrutor);
+        $stmt->bindParam(':id_aluno', $id_aluno);
+        $stmt->bindParam(':id_treino_criado', $id_treino_criado);
+        $stmt->bindParam(':grupo_treino', $grupo_treino);
         $stmt->bindParam(':exercicio', $exercicio);
-        $stmt->bindParam(':serie', $serie);
+        $stmt->bindParam(':nome_exercicio', $nome_exercicio);
+        $stmt->bindParam(':series', $series);
         $stmt->bindParam(':repeticoes', $repeticoes);
-        $stmt->bindParam(':carga', $carga);
-        $stmt->bindParam(':observacoes', $obs);
+        $stmt->bindParam(':observacao', $observacao);
         $stmt->bindParam(':data_criacao', $data_criacao);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            echo "Cadastro realizado com sucesso!";
+        } else {
+            echo "Erro ao cadastrar: " . implode('', $stmt->errorInfo());
+        }
     }
 }

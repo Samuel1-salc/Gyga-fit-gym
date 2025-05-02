@@ -57,7 +57,7 @@ if($id_aluno != null){
 
   <div class="container">
     <h2>Criar Plano de Treino</h2>
-    <form id="formPlano">
+    <form id="formPlano" action="/../controllers/processarNovoTreino.php" method="POST">
 
       <h4>Nome do Aluno: <?= htmlspecialchars(getNomeAluno($id_aluno)) ?> </h4>
       <h4>Grupos de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
@@ -67,8 +67,8 @@ if($id_aluno != null){
       <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos" oninput="gerarTreinos()" required>
 
       <div id="treinosContainer"></div>
-
-      <button type="submit" class="botao-progresso">Enviar dados de treino</button>
+      
+      <button type="submit" name = "submit_PaginaDeTreino" class="botao-progresso">Enviar dados de treino</button>
       <div id="mensagemSucesso" class="mensagem-sucesso">
         Seus dados foram enviados para seu gráfico de evolução mensal!
       </div>
@@ -89,17 +89,19 @@ if($id_aluno != null){
         const treinoDiv = document.createElement("div");
         treinoDiv.className = "treino-box";
         treinoDiv.id = `treino${letra}`;
+        
 
         treinoDiv.innerHTML = `
-          <h3>Treino ${letra}</h3>
-          <div id="exercicios${letra}">
-            ${gerarExercicioHTML(letra, 1)}
-          </div>
-          <button type="button" class="botao-mais" onclick="adicionarExercicio('${letra}')">+ Adicionar exercício</button>
-          <div class="observacao">
-            <label for="obs${letra}">Observações:</label>
-            <textarea name="obs${letra}" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
-          </div>
+            <h3>Treino ${letra}</h3>
+            <div id="exercicios${letra}">
+              ${gerarExercicioHTML(letra, 1)}
+            </div>
+            <button type="button" class="botao-mais" onclick="adicionarExercicio('${letra}')">+ Adicionar exercício</button>
+            <div class="observacao">
+              <label for="obs${letra}">Observações:</label>
+              <textarea name="obs${letra}" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
+            </div>
+          </form>
         `;
         container.appendChild(treinoDiv);
       }
@@ -110,20 +112,26 @@ if($id_aluno != null){
     function gerarExercicioHTML(letra, numero) {
       if (!contadorExercicios[letra]) contadorExercicios[letra] = 1;
       return `
-        <div class="exercicio-box">
-          <strong>Exercício ${numero}</strong>
-          <div class="exercicio-group">
-            <input type="text" name="exercicio_${letra}[]" placeholder="Nome do exercício" required>
-            <input type="number" name="series_${letra}[]" placeholder="Séries" required>
-            <input type="text" name="reps_${letra}[]" placeholder="Repetições" required>
-          </div>
+      <div class="exercicio-box">
+        <strong>Exercício ${numero}</strong>
+        <div class="exercicio-group">
+          <form class="exercicio-form" action="/../controllers/processarNovoTreino.php" method="POST">
+            <input type="hidden" name="grupo" value="${letra}">
+            <input type="hidden" name="numero" value="${numero}">
+            <input type="text" name="exercicio" placeholder="Nome do exercício" required>
+            <input type="number" name="series" placeholder="Séries" required>
+            <input type="text" name="reps" placeholder="Repetições" required>
+            <button type="submit" class="botao-enviar">Salvar Exercício</button>
+          </form>
         </div>
+      </div>
       `;
     }
 
     function adicionarExercicio(letra) {
       const container = document.getElementById(`exercicios${letra}`);
       contadorExercicios[letra]++;
+      `<input type="hidden" id="numeroExercicio" value= ${contatorExercicios[letra]} name="numeroExercicio" required>`
       container.insertAdjacentHTML('beforeend', gerarExercicioHTML(letra, contadorExercicios[letra]));
     }
 
