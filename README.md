@@ -220,6 +220,28 @@ para que eu possa fazer um plano de treino com base nas informações do formul�
 - A tela do aluno deve ser dinamicamente alterada a partir do treino estabelecido pelo instrutor.
 
 ___
+### Tela inicial da academia (RF - 7)
+**como** um visitante ou usuário da academia
+**eu quero** poder ter acesso as informações institucionais da academia.
+
+#### Regras de Negócio
+- Deve conter informações institucionais da acemia de forma clara e organizada.
+- Deverá ter acesso a tela de login casa um usuário já cadastrado na academia ter acesso ao sistema.
+
+#### Tarefas:
+**Backend/Frontend (João Hott):**
+
+
+-Criar html e css para criação de uma ladding page.
+-Criar interface funcional para acessar a tela de login.
+
+
+#### Critérios de Aceitação:
+
+- Deve conter informações institucionais, como horários de funcionamento, instrutores, localidade, e uma apresentação da academia.
+- Deve também conter um acesso a tela de login.
+- Deverá ser pública para usuários visitantes poderem conhecer mais sobre a academia.
+___
 
 ### Tela de acesso ao painel administrativo (RF - 8)
 **como** um gerente administrativo da academia
