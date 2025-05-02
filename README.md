@@ -36,10 +36,10 @@ __
 
 | Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
 |-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
-| RF-1      | Perfil do Instrutor (RF - 1) | perfil do instrutor         | Samuel/Hott         |                |                  |                | Em andamento   | Implementação do perfil do usuário                |
+| RF-1      | Perfil do Instrutor (RF - 1) | perfil do instrutor         | Samuel/Hott         |                |                  |                | Concluído| Implementação do perfil do usuário                |
 | RF-2      | Criação do Plano de Treino (RF - 2)                    | Formulário de criação| Mauricio/Heitor       |                |                  |                | Em andamento   | implementação do plano de treino para o user                               |
-| RF-4      | Visualização dos Planos de Treino (RF - 3)                 | Interface de Usuário (UI)   | Sophia/Samuel      |                |                  |                | Em andamento   | Exibir dados deo plano de treino da academia.                        |
-| RF-5      | Criação do Formulário de Treino (RF - 4)             | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Em andamento      | Permitir ao aluno solicitar treino personalizado.                     |
+| RF-3      | Visualização dos Planos de Treino                 | Interface de Usuário (UI)   | Sophia/Samuel      |                |                  |                | Conclída pela metade  | Exibir dados do plano de treino da academia.                        |
+| RF-4      | Criação do Formulário de Treino (RF - 4)             | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Concluída     | Permitir ao aluno solicitar treino personalizado.                     |
 
 ___
 
@@ -174,13 +174,13 @@ ___
 
 | Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
 |-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
-| RF-1      | Cadastro de novo usuário (Aluno, Instrutor, ADM) | Cadastro de Usuário       |   Samuel e Sophia        |                |                  |                | Em andamento   | Implementar com campos obrigatórios e tipo de usuário.                |
-| RF-2      | Recuperação de senha/conta                    | Funcionalidade de Recuperação | Mauricio e Heitor     |                |                  |                | Em andamento   | Envio de email com link de redefinição.                               |
-| RF-4      | Visualizar Perfis do sistema                 | Interface de Usuário (UI)   | João Hott      |                |                  |                | Em andamento   | Exibir dados de usuários e perfil da academia.                        |
-| RF-5      | Criação do Formulário de Treino              | Solicitação de Treino       | Hallef Kayk    |                |                  |                | Planejado      | Permitir ao aluno solicitar treino personalizado.                     |
+| RF-5      | Sistema de gerente  | tela do administração      |   Samuel e Sophia        |                |                  |                | Em andamento   | Implementar com campos obrigatórios e tipo de usuário.                |
+| RF-6      | Sistema de criação de treinos                   | Funcionalidade de implementação de treino dada a solicitação | Mauricio e Heitor     |                |                  |                | Em andamento   |                              |
+| RF-7      | Tela Inicial da academia                | Interface de Usuário (UI)   | João Hott      |                |                  |                | Conluída  | Exibir dados de usuários e perfil da academia.                        |                   |
+| RF-8      | tela de acesso ao painel administrativo | Manipular a tela de login       | haleef-kayke/sophia |                |                  |                | Planejando      | Permitir que a tela de login seja manipulada caso seja gerente                  |
 ___
 
-### Sistema de cadastro de usuários(RF - 5)
+### Sistema de gerente(RF - 5)
 **como** um usário gerente **eu quero** cadastrar novos clientes(assinantes do plano da academia) para enfim os clientes terem acesso ao aplicativo.
 **também quero** cadastrar instrutores(funcionários da academia com acesso ao sistema), para efim os mesmos terem acesso ao sistema e acessar os privilégios de instrutor.
 
@@ -199,71 +199,52 @@ ___
 - Os usuários deverão receber confirmação de cadastro.
 ___
 
-### Recuperação de senha (RF - 6)
-**como** um usuário cadastrado **eu quero** recuperar o acesso à minha conta caso eu esqueça minha senha,
-para que eu possa redefinir minha senha com segurança e continuar utilizando o sistema.
+### Sistema de criação de planos de treino (RF - 6)
+**como** um usuário instrutor **eu quero** criar um plano de treino para meu aluno, caso ele tenha enviado o formulário de solicitação de treio
+para que eu possa fazer um plano de treino com base nas informações do formulário.
 
 #### Regra de Negócio
-- O sistema deve permitir a recuperação de senha por meio do email cadastrado.
-- O link de recuperação deve ter tempo de expiração e ser enviado para o email correspondente.
-- A redefinição só será possível após validação do token de recuperação enviado por email.
+- O sistema deve instruir o instrutor como ele deve fazer o plano de treino a partir das especificações dos alunos.
+- A criação do plano de treino só deverá estar habilitada caso o aluno faça sua solicitação de treino.
+- O plano de treino deve ser enviado para o aluno acessar em sua tela de alun.
 
 #### Tarefas:
 **backend/FrontEnd:**
 
-- Implementar endpoint para solicitação de recuperação de senha (Mauricio)
-- Gerar token temporário e enviar email com link de redefinição (Mauricio)
-- Criar página de redefinição de senha com validação de token (Mauricio)
+- Implementar metodo post dinamicamente para o back-end poder gravar essas informações.
+- Gerar variaveis temporárias de armazenamento dos dados.
+- Implementar um front-end dinâmico para inserção e criação dos grupos de exercícios.
 
 #### Critérios de aceitação:
-- O usuário deve receber um email com um link único de recuperação.
-- O link deve expirar após um determinado tempo (ex: 1 hora).
-- O usuário deve conseguir redefinir sua senha com sucesso ao acessar o link.
+- O usuário deve receber uma notificação dentro do sistema.
+- A tela do aluno deve ser dinamicamente alterada a partir do treino estabelecido pelo instrutor.
+
 ___
 
-### Visualizar Perfis no Sistema (RF - 7)
-**como** um aluno, instrutor ou visitante do sistema
-**eu quero** visualizar os perfis correspondentes
-para que eu possa acompanhar informações relevantes à minha função ou à academia.
+### Tela de acesso ao painel administrativo (RF - 8)
+**como** um gerente administrativo da academia
+**eu quero** poder ter acesso ao painel administrativo.
 
 #### Regras de Negócio
-**Perfil do Aluno:**
-- Deve exibir informações pessoais: nome, email, plano atual e histórico de treinos.
-- Deve ser acessível apenas pelo próprio aluno, após login.
-
-**Perfil do Instrutor:**
-- Deve exibir informações pessoais do instrutor.
-- Deve mostrar a lista de alunos vinculados e treinos criados.
-- Acesso restrito ao próprio instrutor logado.
-
-**Perfil da Academia:**
-- Deve exibir informações institucionais: nome da academia, endereço, horário de funcionamento, planos disponíveis e contatos.
-- Pode ser acessado por qualquer tipo de usuário, inclusive visitantes sem login.
+- Deve fazer uma verificação dupla e mais segura com senha criptografada.
+- Deverá reconhecer o cpf do gerente e direcionar para o painel administrativo.
 
 #### Tarefas:
 **Backend/Frontend (João Hott):**
 
--Criar endpoint para retorno dos dados de perfil do aluno.
--Criar endpoint para retorno dos dados de perfil do instrutor.
--Criar endpoint para retorno das informações institucionais da academia.
--Criar interface para exibição do perfil do aluno.
--Criar interface para exibição do perfil do instrutor.
--Criar interface pública para exibição do perfil da academia.
--Aplicar filtros de exibição com base no tipo de usuário.
+
+-Criar html e css para o painel de verificação com senha.
+-Criar interface para a verificação de gerente da academia.
+
 
 #### Critérios de Aceitação:
-**Aluno:**
-- Deve visualizar corretamente: nome, email, plano atual e histórico de treinos.
 
-**Instrutor:**
-- Deve visualizar corretamente: seus dados e a lista de alunos vinculados.
-
-**Academia:**
-- Deve exibir corretamente: nome, endereço, horário de funcionamento, planos e contatos.
-- O conteúdo exibido deve respeitar o nível de permissão do usuário.
-- O acesso aos perfis pessoais (aluno e instrutor) deve exigir autenticação.
-- A visualização do perfil da academia deve estar disponível publicamente.
+- Deve exigir senha do gerente.
+- Deve fazer a verificação da senha do sistema.
+- Deve redirecionar para a tela de painel administrativo caso a verificação esteja correta.
+- Deverá ser uma tela que intermediará entre tela de login e painel administrativo.
 ___
+
 
 
 
