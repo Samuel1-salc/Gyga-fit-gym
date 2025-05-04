@@ -129,7 +129,7 @@
                             <button class="btn-visualizar" onclick="toggleSolicitacao('<?= $aluno['id_aluno'] ?>')">Visualizar</button>
                             <form action="../controllers/processarNovoTreino.php" method="POST">
                                 <input type="hidden" name="id_alunoNovoTreino" value="<?= $aluno['id_aluno'] ?>">
-                                <button class="btn-status" name="submit_NovoTreino" type="submit">Novo Treino</button>
+                                <input class="btn-status" value = 'Novo Treino'name="submit_NovoTreino" type="submit"></input>
                             </form>
                         </div>
                     </div>
