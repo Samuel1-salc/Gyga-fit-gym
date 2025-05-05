@@ -57,21 +57,23 @@ if($id_aluno != null){
 
   <div class="container">
     <h2>Criar Plano de Treino</h2>
-    <form id="formPlano" action="/../controllers/processarNovoTreino.php" method="POST">
+    <form id="formPlano" action="./../controllers//processarNovoTreino.php" method="POST">
 
       <h4>Nome do Aluno: <?= htmlspecialchars(getNomeAluno($id_aluno)) ?> </h4>
       <h4>Grupos de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
       <h4>Objetivo: <?= htmlspecialchars($objetivo)?> </h4>
       <h4>Experiência: <?= htmlspecialchars($experiencia  )?> </h4>
 
+      <!-- Campo oculto para o ID do aluno -->
+      <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($id_aluno) ?>">
+
+      <!-- Campo oculto para a quantidade de treinos -->
       <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos" oninput="gerarTreinos()" required>
 
       <div id="treinosContainer"></div>
       
-      <button type="submit" name = "submit_PaginaDeTreino" class="botao-progresso">Enviar dados de treino</button>
-      <div id="mensagemSucesso" class="mensagem-sucesso">
-        Seus dados foram enviados para seu gráfico de evolução mensal!
-      </div>
+     
+      <button type="submit" name="submit_plano" class="botao-progresso">Enviar dados de treino</button>
     </form>
   </div>
 
@@ -99,7 +101,7 @@ if($id_aluno != null){
             <button type="button" class="botao-mais" onclick="adicionarExercicio('${letra}')">+ Adicionar exercício</button>
             <div class="observacao">
               <label for="obs${letra}">Observações:</label>
-              <textarea name="obs${letra}" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
+              <textarea name="obs[${letra}]" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
             </div>
           
         `;
@@ -117,11 +119,10 @@ if($id_aluno != null){
       <div class="exercicio-box">
         <strong>Exercício ${numero}</strong>
         <div class="exercicio-group">
-            <input type="hidden" name="grupo" value="${letra}">
-            <input type="hidden" name="numero" value="${numero}">
-            <input type="text" name="exercicio" placeholder="Nome do exercício" required>
-            <input type="number" name="series" placeholder="Séries" required>
-            <input type="text" name="reps" placeholder="Repetições" required>
+          <input type="hidden" name="dados[${letra}][${numero}][num_exercicio]" value="${numero}">
+          <input type="text" name="dados[${letra}][${numero}][nome_exercicio]" placeholder="Nome do exercício" required>
+          <input type="number" name="dados[${letra}][${numero}][series_exercicio]" placeholder="Séries" required>
+          <input type="text" name="dados[${letra}][${numero}][repeticoes_exercicio]" placeholder="Repetições" required>
         </div>
       </div>
       `;
@@ -134,7 +135,7 @@ if($id_aluno != null){
     }
 
     document.getElementById("formPlano").addEventListener("submit", function (e) {
-      e.preventDefault();
+      //e.preventDefault();
       document.getElementById("mensagemSucesso").style.display = "block";
       setTimeout(() => {
         document.getElementById("mensagemSucesso").style.display = "none";
