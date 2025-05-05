@@ -35,7 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $observacoes = $_POST['obs'] ?? [];
 
         $sucesso = true;
-
+        // Verifica se os dados estão vazios
+        if (!empty($dados)) {
             foreach ($dados as $letra => $exercicios) {
                 
                 echo "Processando letra: $letra<br>";
@@ -52,15 +53,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $exercicio['repeticoes_exercicio'],
                         $observacao,
                         $data_criacao
-                    )) {
-                        $sucesso = false;
-                        //break 2; // Sai dos dois loops
-                    }
+                    ));
                 }
             }
+        } else {
+            echo "Nenhum dado recebido para o treino.";
+            $sucesso = false;
+        }
        
         if ($sucesso) {
-            header("Location: ../view/alunoSucessoInstrutor.php");
+            header("Location: ./../../view/alunoSucessoInstrutor.php");
             exit();
         } else {
             echo "Erro ao cadastrar o plano de treino!";
