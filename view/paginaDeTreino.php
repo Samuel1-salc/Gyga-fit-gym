@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../models//Usuarios.class.php';
 require_once __DIR__ . '/../models//SolicitacaoTreino.class.php';
+require_once __DIR__ . '/../models//Treino.class.php';
 $id_aluno = $_GET['id_aluno'] ?? null;
 
 if($id_aluno != null){
@@ -31,10 +32,27 @@ if($id_aluno != null){
     }
     
     
-    $valorQtdTreinos = (int)getTreinos($id_aluno)?? 0;
-    $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupo de treino não encontrado';
+    $valorQtdTreinos = (int) (getTreinos($id_aluno) ?? 0);
+    $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupos de treino não encontrado';
     $objetivo = (string)getObjetivo($id_aluno) ?? 'Objetivo não encontrado';
     $experiencia = (string)getExperiencia($id_aluno) ?? 'Experiência não encontrada';
+
+    $classTreino = new Treino();
+    $grupo_muscular = $classTreino->getGrupo_muscular();
+    $exercicios = $classTreino->getExercicios();
+
+
+    if (!is_array($grupo_muscular) || !is_array($exercicios)) {
+      throw new Exception("Os dados de grupo muscular ou exercícios são inválidos.");
+    }else{
+      echo '<pre>';
+      print_r($grupo_muscular);
+      print_r($exercicios);
+      echo '</pre>';
+    }
+
+     
+
 }else{
   throw new Exception("ID do aluno não foi fornecido.");
 }
@@ -48,6 +66,19 @@ if($id_aluno != null){
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Criar Plano de Treino - GYGA FIT</title>
   <link rel="stylesheet" href="./style/stylePaginaDeTreino.css?v=<?= time(); ?>" />
+  <style>
+    .dropdown {
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      width: 300px;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
 
@@ -68,7 +99,8 @@ if($id_aluno != null){
       <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($id_aluno) ?>">
 
       <!-- Campo oculto para a quantidade de treinos -->
-      <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos" oninput="gerarTreinos()" required>
+      <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos">
+
 
       <div id="treinosContainer"></div>
       
@@ -115,16 +147,52 @@ if($id_aluno != null){
 
     function gerarExercicioHTML(letra, numero) {
       if (!contadorExercicios[letra]) contadorExercicios[letra] = 1;
-      return `
-      <div class="exercicio-box">
-        <strong>Exercício ${numero}</strong>
-        <div class="exercicio-group">
-          <input type="hidden" name="dados[${letra}][${numero}][num_exercicio]" value="${numero}">
-          <input type="text" name="dados[${letra}][${numero}][nome_exercicio]" placeholder="Nome do exercício" required>
-          <input type="number" name="dados[${letra}][${numero}][series_exercicio]" placeholder="Séries" required>
-          <input type="text" name="dados[${letra}][${numero}][repeticoes_exercicio]" placeholder="Repetições" required>
+
+      const grupoMuscularOptions = <?= json_encode($grupo_muscular, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+      const exercicioOptions = <?= json_encode($exercicios, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+
+      console.log(grupoMuscularOptions);
+      console.log(exercicioOptions);
+
+      const grupoOptions = grupoMuscularOptions.map(grupo =>
+         `<option value="${grupo.grupo_muscular}">${grupo.grupo_muscular}</option>`
+      ).join('');
+
+      const exercicioSelectOptions = exercicioOptions.map(ex =>
+        `<option value="${ex.id}" data-grupo="${ex.grupo_muscular}">${ex.nome_exercicio}</option>`
+      ).join('');
+
+        return `
+        <div class="exercicio-box">
+          <strong>Exercício ${numero}</strong>
+          <div class="exercicio-group">
+            <input type="hidden" name="dados[${letra}][${numero}][num_exercicio]" value="${numero}">
+            
+            <div class="dropdown">
+              <label for = "grupoMuscular">Selecione o grupo muscular:</label>
+              <select name="dados[${letra}][${numero}][grupo_muscular]" required>
+                <option value="">Selecione</option>
+                ${grupoOptions}
+              </select>
+            </div>
+
+            <div class="dropdown">
+              <label for = "buscaExercicio">Exercício:</label>
+              <input type="text" name="dados[${letra}][${numero}][nome_exercicio]" placeholder="Nome do exercício" required>
+            </div>
+
+            <div class="dropdown">
+              <label for = "exercicios ">Selecione o exercício:</label>
+              <select name="dados[${letra}][${numero}][nome_exercicio]" required>
+                <option value="">Selecione</option>
+                ${exercicioSelectOptions}
+              </select>
+            </div>
+
+            <input type="number" name="dados[${letra}][${numero}][series_exercicio]" placeholder="Séries" required>
+            <input type="text" name="dados[${letra}][${numero}][repeticoes_exercicio]" placeholder="Repetições" required>
+          </div>
         </div>
-      </div>
       `;
     }
 
@@ -163,6 +231,32 @@ if($id_aluno != null){
           });
         }
     }
+    const grupoMuscularDropdown = document.getElementById('grupoMuscular');
+    const buscaExercicioInput = document.getElementById('buscaExercicio');
+    const exerciciosDropdown = document.getElementById('exercicios');
+
+    // Filtrar exercícios por grupo muscular
+    grupoMuscularDropdown.addEventListener('change', () => {
+      const grupoSelecionado = grupoMuscularDropdown.value.toLowerCase();
+      const opcoes = exerciciosDropdown.querySelectorAll('option');
+
+      opcoes.forEach(opcao => {
+        const grupo = opcao.getAttribute('data-grupo').toLowerCase();
+        opcao.style.display = grupoSelecionado === '' || grupo === grupoSelecionado ? '' : 'none';
+      });
+    });
+
+    // Filtrar exercícios pelo campo de busca
+    buscaExercicioInput.addEventListener('input', () => {
+      const busca = buscaExercicioInput.value.toLowerCase();
+      const opcoes = exerciciosDropdown.querySelectorAll('option');
+
+      opcoes.forEach(opcao => {
+        const texto = opcao.textContent.toLowerCase();
+        opcao.style.display = texto.includes(busca) ? '' : 'none';
+      });
+    });
+
     window.addEventListener("DOMContentLoaded", gerarTreinos);
 
   </script>
