@@ -97,24 +97,21 @@
 
             <div class="solicitacoes">
                 <h3>Solicitações de Treino</h3>
-                <?php foreach ($aluno as $aluno): ?>
+                <?php foreach ($aluno as $alunoAtual): ?>
                     
                     <div class="card-aluno">
                         <div class="card-info">
                             <div>
-                                <p><strong><?= htmlspecialchars($aluno['nome_aluno']) ?></strong></p>
-                                <p><?= htmlspecialchars($aluno['data_solicitacao']) ?></p>
-                                <p>Status: <?= htmlspecialchars($aluno['processo']) ?></p>
-                                <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($aluno['id_aluno'])) ?></p>
-                                <?php $data_plano_de_treino = $treino->getDataTreinos($aluno['id_aluno']); $data_solicitacao_treino = (new SolicitacaoTreino())->getDataTimeSolicitacaoTreino($aluno['id_aluno']);?>
+                                <p><strong><?= htmlspecialchars($alunoAtual['nome_aluno']) ?></strong></p>
+                                <p><?= htmlspecialchars($alunoAtual['data_solicitacao']) ?></p>
+                                <p>Status: <?= htmlspecialchars($alunoAtual['processo']) ?></p>
+                                <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($alunoAtual['id_aluno'])) ?></p>
+                                <?php $data_plano_de_treino = $treino->getDataTreinos($alunoAtual['id_aluno']); $data_solicitacao_treino = (new SolicitacaoTreino())->getDataTimeSolicitacaoTreino($alunoAtual['id_aluno']);?>
                                 <?php
                                 if(!empty($data_plano_de_treino) && !empty($data_solicitacao_treino)){
 
                                     $dataPlanoTreino = new DateTime($data_plano_de_treino['data_criacao']);
                                     $dataSolicitacaoTreino = new DateTime($data_solicitacao_treino['data_created']);
-
-                                    var_dump($data_solicitacao_treino);
-                                    var_dump($data_plano_de_treino);
                                
                                     if($dataSolicitacaoTreino->getTimestamp() > $dataPlanoTreino->getTimestamp()):
                                 ?>
@@ -123,12 +120,15 @@
                                     <?php else: ?>
                                         <p style="color: green;">Solicitação de treino atendida</p>
                                     <?php endif; ?>
-                                <?php }?>
+                                <?php }elseif(empty($data_plano_de_treino) && !empty($data_solicitacao_treino)){?>
+                                    <p style="color: red;">Solicitação de treino não atendida</p>
+                                    <div class="icon-notificacao" name = "planoNaoAtendido" id = "planoNaoAtendido" style="display: none;"></div>
+                                <?php } ?>
 
                                 <!-- Container oculto da solicitação -->
-                                <div id="solicitacao-<?= $aluno['id_aluno'] ?>" class="solicitacao-content" style="display: none; margin-top: 10px;">
+                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-content" style="display: none; margin-top: 10px;">
                                     <?php
-                                        $solicitacoes = (new SolicitacaoTreino())->getSolicitacaoTreino($aluno['id_aluno']);
+                                        $solicitacoes = (new SolicitacaoTreino())->getSolicitacaoTreino($alunoAtual['id_aluno']);
                                         if ($solicitacoes):
                                             foreach ($solicitacoes as $sol):
                                     ?>
@@ -148,9 +148,9 @@
                             </div>
                         </div>
                         <div class="card-botoes">
-                            <button class="btn-visualizar" onclick="toggleSolicitacao('<?= $aluno['id_aluno'] ?>')">Visualizar</button>
+                            <button class="btn-visualizar" onclick="toggleSolicitacao('<?= $alunoAtual['id_aluno'] ?>')">Visualizar</button>
                             <form action="../controllers/processarNovoTreino.php" method="POST">
-                                <input type="hidden" name="id_alunoNovoTreino" value="<?= $aluno['id_aluno'] ?>">
+                                <input type="hidden" name="id_alunoNovoTreino" value="<?= $alunoAtual['id_aluno'] ?>">
                                 <input class="btn-status" value = 'Novo Treino'name="submit_NovoTreino" type="submit"></input>
                             </form>
                         </div>

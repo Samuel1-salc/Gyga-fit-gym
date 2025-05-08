@@ -74,7 +74,7 @@ class SolicitacaoTreino
         }
         try {
             $stmt = $this->link->prepare("
-                SELECT data_created FROM formulario WHERE id_aluno = :id_aluno
+                SELECT data_created FROM formulario WHERE id_aluno = :id_aluno ORDER BY data_created DESC LIMIT 1
             ");
             $stmt->bindParam(':id_aluno', $id_aluno);
             $stmt->execute();
