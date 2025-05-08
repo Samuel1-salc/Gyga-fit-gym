@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Treino.class.php';
 require_once __DIR__ . '/../models/Usuarios.class.php';
+require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
 $novoTreino = new Treino();
 session_start();
 
@@ -62,6 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
        
         if ($sucesso) {
+            $id_solicitacao = $_POST['id_solicitacao'] ?? null;
+            if ($id_solicitacao) {
+                $atualizado = new SolicitacaoTreino();
+                $atualizado->atualizarStatusSolicitacao($id_aluno, "Atendido");
+            }
             header("Location: ./../../view/alunoSucessoInstrutor.php");
             exit();
         } else {
