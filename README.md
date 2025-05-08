@@ -178,11 +178,9 @@ ___
 | RF-6      | Sistema de criação de treinos                   | Funcionalidade de implementação de treino dada a solicitação | Samuel e Heitor     |                |                  |                | Em andamento   |                              |
 | RF-7      | Tela Inicial da academia                | Interface de Usuário (UI)   | João Hott      |                |                  |                | Conluída  | Exibir dados de usuários e perfil da academia.                        |                   |
 | RF-8      | tela de acesso ao painel administrativo | Manipular a tela de login       | haleef-kayke/Samuel |                |                  |                | Planejando      | Permitir que a tela de login seja manipulada caso seja gerente                  |
-___
 | RF-9      | Roteamento de páginas| Manipular páginas a partir do index.php       | mauricio |                |                  |                | Planejando      | Configurações de niveis de acesso as paginas                  |
-___
 | RF-10      | Visualização dos Planos de Treino                 | Interface de Usuário (UI)   | Hott/Samuel      |                |                  |                | Em andamento  | Exibir dados do plano de treino da academia.  
-
+___
 ### Sistema de gerente(RF - 5)
 **como** um usário gerente **eu quero** cadastrar novos clientes(assinantes do plano da academia) para enfim os clientes terem acesso ao aplicativo.
 **também quero** cadastrar instrutores(funcionários da academia com acesso ao sistema), para efim os mesmos terem acesso ao sistema e acessar os privilégios de instrutor.
