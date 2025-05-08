@@ -12,12 +12,12 @@ class SolicitacaoTreino
         $this->link = $this->con->getConexao();
     }
 
-    public function SolicitarTreino($data_created,$id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura)
+    public function SolicitarTreino($data_created,$id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura,$status)
     {
         try {
             $stmt = $this->link->prepare("
-                INSERT INTO formulario (data_created,id_aluno, experiencia, objetivo, treinos, sexo, peso, altura)
-                VALUES (:data_created,:id_aluno, :experiencia, :objetivo, :treinos, :sexo, :peso, :altura)
+                INSERT INTO formulario (data_created,id_aluno, experiencia, objetivo, treinos, sexo, peso, altura,status)
+                VALUES (:data_created,:id_aluno, :experiencia, :objetivo, :treinos, :sexo, :peso, :altura,:status)
             ");
 
             $stmt->bindParam(':data_created', $data_created);
@@ -28,6 +28,7 @@ class SolicitacaoTreino
             $stmt->bindParam(':sexo', $sexo);
             $stmt->bindParam(':peso', $peso);
             $stmt->bindParam(':altura', $altura);
+            $stmt->bindParam(':status', $status);
 
             if ($stmt->execute()) {
                 return true;
@@ -41,7 +42,19 @@ class SolicitacaoTreino
         }
     }
 
- 
+    public function getTodosFormularios()
+    {
+        try {
+            $stmt = $this->link->prepare("
+                SELECT id_aluno, status FROM formulario 
+            ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar solicitações de treino: " . $e->getMessage();
+            return false;
+        }
+    }
 
     public function getSolicitacaoTreino($id_aluno)
     {
@@ -118,6 +131,35 @@ class SolicitacaoTreino
         } catch (PDOException $e) {
             echo "Erro ao contar solicitações de treino: " . $e->getMessage();
             return 0;
+        }
+    }
+    public function contarPendentes($statuss)
+    {
+        try {
+            $stmt = $this->link->prepare("
+             SELECT COUNT(*) as total FROM formulario WHERE status = :status
+            ");
+            $stmt->bindParam(':status', $statuss);
+            $stmt->execute();
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $resultado['total'] ?? 0;
+        } catch (PDOException $e) {
+            echo "Erro ao contar solicitações de treino: " . $e->getMessage();
+            return 0;
+        }
+    }
+    public function atualizarStatusSolicitacao($id_aluno, $status)
+    {
+        try {
+            $stmt = $this->link->prepare("
+                UPDATE formulario SET status = :status WHERE id_aluno = :id_aluno
+            ");
+            $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':id_aluno', $id_aluno);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erro ao atualizar status da solicitação: " . $e->getMessage();
+            return false;
         }
     }
 }

@@ -49,11 +49,43 @@
         return $solicitacaoTreino->contarSolicitacoesTreino($id_aluno);
     }
 
-    //888888888888888888888888888888888888888888888888888888//
-    //Instancuar o objeto de treino
-    $treino = new Treino();
+    function countPendentes(){
+        $status = 'em andamento';
+        $solicitacaoTreino = new SolicitacaoTreino();
+        return $solicitacaoTreino->contarPendentes($status);
+    }
+
     
 
+    //888888888888888888888888888888888888888888888888888888//
+    //Instancuar o objeto de treino
+    
+    
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $search = $_GET['search'];
+        $aluno = $alunoInstrutor->getNameAlunoForPainelInstrutor($search);
+    } else {
+        $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
+    }
+
+    if (isset($_GET['status'])) {
+        $filtro = strtolower($_GET['status']);
+    
+        if ($filtro === 'todos') {
+            $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
+        } else {
+            $formulario = new SolicitacaoTreino();
+            $todosFormularios = $formulario->getTodosFormularios(); // você pode precisar criar esse método se ele não existir
+            $aluno = [];
+    
+            foreach ($todosFormularios as $a) {
+                if (strtolower($a['status']) === strtolower($filtro)) {
+                    $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($a['id_aluno']);
+                }
+            }
+        }
+    }
+    
 
 ?>
 
@@ -91,39 +123,43 @@
                     <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
                     <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico'] ?? 'Não informado') ?></p>
                     <p><strong>Quantidade de Alunos Atendidos:</strong> <?= htmlspecialchars($countAlunos ?? 'Nenhum aluno encontrado') ?></p>
+                    <p><strong>Pendentes:</strong> <?= htmlspecialchars(countPendentes() ?? '0') ?></p>
                     <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($disponibilidade) ?></p>
                 </div>
             </div>
 
             <div class="solicitacoes">
+            <form method="GET" action="" class="search-bar">
+                <?php
+                    $search = $_GET['search'] ?? '';
+                    $statusSelecionado = strtolower($_GET['status'] ?? '');
+                ?>
+                <input type="text" name="search" placeholder="Pesquisar aluno..." value="<?= htmlspecialchars($search) ?>">
+                <button type="submit">Pesquisar</button>
+                <select name="status" id="status" onchange="this.form.submit()">
+                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="atendido" <?= $statusSelecionado === 'atendido' ? 'selected' : '' ?>>Atendido</option>
+                    <option value="todos" <?= $statusSelecionado === 'todos' ? 'selected' : '' ?>>Todos</option>
+                </select>
+        
+                
+            </form>
                 <h3>Solicitações de Treino</h3>
                 <?php foreach ($aluno as $alunoAtual): ?>
                     
                     <div class="card-aluno">
                         <div class="card-info">
                             <div>
+                                <?php $formulario = new SolicitacaoTreino(); $status = $formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno']);?>
+                                <?php if(!empty($status) && isset($status['status']) && $status['status'] === 'em andamento'): ?>
+                                    <div class = "icon-notificacao"> </div>
+                                <?php endif; ?>
                                 <p><strong><?= htmlspecialchars($alunoAtual['nome_aluno']) ?></strong></p>
                                 <p><?= htmlspecialchars($alunoAtual['data_solicitacao']) ?></p>
-                                <p>Status: <?= htmlspecialchars($alunoAtual['processo']) ?></p>
                                 <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($alunoAtual['id_aluno'])) ?></p>
-                                <?php $data_plano_de_treino = $treino->getDataTreinos($alunoAtual['id_aluno']); $data_solicitacao_treino = (new SolicitacaoTreino())->getDataTimeSolicitacaoTreino($alunoAtual['id_aluno']);?>
-                                <?php
-                                if(!empty($data_plano_de_treino) && !empty($data_solicitacao_treino)){
-
-                                    $dataPlanoTreino = new DateTime($data_plano_de_treino['data_criacao']);
-                                    $dataSolicitacaoTreino = new DateTime($data_solicitacao_treino['data_created']);
-                               
-                                    if($dataSolicitacaoTreino->getTimestamp() > $dataPlanoTreino->getTimestamp()):
-                                ?>
-                                        <p style="color: red;">Solicitação de treino não atendida</p>
-                                        <div class="icon-notificacao" name = "planoNaoAtendido" id = "planoNaoAtendido" style="display: none;"></div>
-                                    <?php else: ?>
-                                        <p style="color: green;">Solicitação de treino atendida</p>
-                                    <?php endif; ?>
-                                <?php }elseif(empty($data_plano_de_treino) && !empty($data_solicitacao_treino)){?>
-                                    <p style="color: red;">Solicitação de treino não atendida</p>
-                                    <div class="icon-notificacao" name = "planoNaoAtendido" id = "planoNaoAtendido" style="display: none;"></div>
-                                <?php } ?>
+                                
+                              
+                                    
 
                                 <!-- Container oculto da solicitação -->
                                 <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-content" style="display: none; margin-top: 10px;">
@@ -136,7 +172,26 @@
                                             <p><strong>Objetivo:</strong> <?= htmlspecialchars($sol['objetivo']) ?></p>
                                             <p><strong>Dias de treino:</strong> <?= htmlspecialchars($sol['treinos']) ?></p>
                                             <p><strong>Peso:</strong> <?= htmlspecialchars($sol['peso']) ?></p>
-                                            <p><strong>Altura:</strong> <?= htmlspecialchars($sol['altura']) ?></p>
+                                            <p><strong>Altura:</strong> <?= htmlspecialchars($sol['altura']) ?></p> 
+                                    
+                                                <?php 
+                                                    $status = strtolower($sol['status']);
+                                                    switch ($status) {
+                                                        case 'em andamento':
+                                                            $cor = 'red';
+                                                            
+                                                            break;
+                                                        case 'atendido':
+                                                            $cor = 'green';
+                                                            break;
+                                                        default:
+                                                            $cor = 'gray';
+                                                    }
+                                                ?>
+                                                <p style="color: <?= $cor ?>;">Solicitação: <?= htmlspecialchars($sol['status']) ?></p>
+                                                
+                                            
+                                                                                        
                                             <hr>
                                     <?php
                                             endforeach;
@@ -148,11 +203,17 @@
                             </div>
                         </div>
                         <div class="card-botoes">
+                        <?php $formulario = new SolicitacaoTreino();?>
+                        <?php if($formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno'])):?>
                             <button class="btn-visualizar" onclick="toggleSolicitacao('<?= $alunoAtual['id_aluno'] ?>')">Visualizar</button>
-                            <form action="../controllers/processarNovoTreino.php" method="POST">
-                                <input type="hidden" name="id_alunoNovoTreino" value="<?= $alunoAtual['id_aluno'] ?>">
-                                <input class="btn-status" value = 'Novo Treino'name="submit_NovoTreino" type="submit"></input>
-                            </form>
+                            <?php $statusParaNovoTreino = $formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno']) ?>
+                            <?php if($statusParaNovoTreino['status'] == 'em andamento'): ?>
+                                <form action="../controllers/processarNovoTreino.php" method="POST">
+                                    <input type="hidden" name="id_alunoNovoTreino" value="<?= $alunoAtual['id_aluno'] ?>">
+                                    <input class="btn-status" value = 'Novo Treino'name="submit_NovoTreino" type="submit"></input>
+                                </form>
+                            <?php endif; ?>
+                        <?php endif; ?>
                         </div>
                     </div>
                     

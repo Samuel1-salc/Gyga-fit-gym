@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data_created = $users->dataAtual();
 
     if($checkRelacao->checkRelationshipUsers($id_aluno)){
-        $SolicitarTreino->SolicitarTreino($data_created,$id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura); 
+        $SolicitarTreino->SolicitarTreino($data_created,$id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura,$status = "em andamento"); 
         $processo = 'em andamento';
         $checkRelacao->adcStatus($processo,$id_aluno); 
     }else{

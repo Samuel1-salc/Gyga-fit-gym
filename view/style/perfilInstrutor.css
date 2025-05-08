@@ -86,6 +86,72 @@ header {
     font-size: 14px;
     color: #555;
 }
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza horizontalmente */
+    margin: 20px auto; /* Adiciona margem superior e inferior */
+    max-width: 1200px; /* Define o comprimento máximo */
+    gap: 20px; /* Espaçamento entre o campo de busca e o botão */
+}
+.search-bar input[type="text"] {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid rgb(255, 0, 0);
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    position: relative; /* Permite o uso de posicionamento absoluto para o ícone */
+    display: flex;
+    gap: 30px;
+    margin: 20px auto; /* Centraliza horizontalmente */
+    max-width: 1200px; /* Define o comprimento máximo */
+    
+
+}
+
+.search-bar input[type="text"]:focus {
+    border-color: darkred;
+}
+
+.search-bar button {
+    width: auto; /* Define a largura automática baseada no conteúdo */
+    padding: 12px 20px; /* Ajusta o tamanho do botão para combinar com o campo de busca */
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px; /* Ajusta o tamanho da fonte */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: auto; /* Garante que o botão tenha a mesma altura do campo de busca */
+    flex-shrink: 0; /* Impede que o botão encolha no layout flex */
+}
+
+
+.search-bar button:hover {
+    background-color: darkred;
+    
+}
+#status{
+    background-color: rgb(255, 0, 0);
+    transition: background-color 0.3s ease;
+    font-size: 13px;
+    padding: 5px 5px;
+    border-radius: 4px;
+    color: rgb(245, 245, 245); /* Cor do texto para o item selecionado */
+    font-weight: bold;
+    border: none;
+}
+
+#status option:checked {
+    background-color: rgb(243, 51, 51); /* Cor de fundo para o item selecionado */
+    color: rgb(245, 245, 245); /* Cor do texto para o item selecionado */
+    
+    
+}
 
 .solicitacoes {
     flex: 1;
@@ -94,6 +160,8 @@ header {
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .card-aluno {
     display: flex;
@@ -106,6 +174,15 @@ header {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
 }
+.icon-notificacao {
+    width: 10px; /* Largura da bolinha */
+    height: 10px; /* Altura da bolinha */
+    background-color: red; /* Cor vermelha */
+    border-radius: 50%; /* Torna o elemento circular */
+    display: inline-block; /* Garante que seja exibido como um elemento inline */
+    margin-left: 5px; /* Espaçamento opcional */
+    position: 80px;
+  }
 
 .card-info {
     flex: 2; /* Ocupa mais espaço */
@@ -286,3 +363,4 @@ footer p {
     margin: 5px 0;
     color: #d93636; /* Texto com cor mais suave */
 }
+

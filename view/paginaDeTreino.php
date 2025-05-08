@@ -22,13 +22,19 @@ if($id_aluno != null){
         
         $solicitacao = new SolicitacaoTreino();
         $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
-        return $formulario['experiencia'] ?? 'Solicitação não encontrada';
+        return $formulario['experiencia'] ?? 'experiencia não encontrada';
     }
     function getObjetivo($id_aluno) {
         
         $solicitacao = new SolicitacaoTreino();
         $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
-        return $formulario['objetivo'] ?? 'Solicitação não encontrada';
+        return $formulario['objetivo'] ?? 'experiencia não encontrada';
+    }
+    function getIdformulario($id_aluno) {
+        
+        $solicitacao = new SolicitacaoTreino();
+        $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
+        return $formulario['id'] ?? 'id não encontrado';
     }
     
     
@@ -36,6 +42,7 @@ if($id_aluno != null){
     $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupos de treino não encontrado';
     $objetivo = (string)getObjetivo($id_aluno) ?? 'Objetivo não encontrado';
     $experiencia = (string)getExperiencia($id_aluno) ?? 'Experiência não encontrada';
+    $id_solicitacao = (int)getIdformulario($id_aluno) ?? 0;
 
     $classTreino = new Treino();
     $grupo_muscular = $classTreino->getGrupo_muscular();
@@ -88,6 +95,7 @@ if($id_aluno != null){
       <h4>Grupos de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
       <h4>Objetivo: <?= htmlspecialchars($objetivo)?> </h4>
       <h4>Experiência: <?= htmlspecialchars($experiencia  )?> </h4>
+      <input type="hidden" name="id_solicitacao" value="<?= $id_solicitacao?>">
 
       <!-- Campo oculto para o ID do aluno -->
       <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($id_aluno) ?>">
