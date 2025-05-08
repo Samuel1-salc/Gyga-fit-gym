@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../models//Usuarios.class.php';
 require_once __DIR__ . '/../models//SolicitacaoTreino.class.php';
+require_once __DIR__ . '/../models//Treino.class.php';
 $id_aluno = $_GET['id_aluno'] ?? null;
 
 if($id_aluno != null){
@@ -31,10 +32,21 @@ if($id_aluno != null){
     }
     
     
-    $valorQtdTreinos = (int)getTreinos($id_aluno)?? 0;
-    $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupo de treino não encontrado';
+    $valorQtdTreinos = (int) (getTreinos($id_aluno) ?? 0);
+    $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupos de treino não encontrado';
     $objetivo = (string)getObjetivo($id_aluno) ?? 'Objetivo não encontrado';
     $experiencia = (string)getExperiencia($id_aluno) ?? 'Experiência não encontrada';
+
+    $classTreino = new Treino();
+    $grupo_muscular = $classTreino->getGrupo_muscular();
+    $exercicios = $classTreino->getExercicios();
+
+
+    if (!is_array($grupo_muscular) || !is_array($exercicios)) {
+      throw new Exception("Os dados de grupo muscular ou exercícios são inválidos.");
+    }
+     
+
 }else{
   throw new Exception("ID do aluno não foi fornecido.");
 }
@@ -48,6 +60,19 @@ if($id_aluno != null){
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Criar Plano de Treino - GYGA FIT</title>
   <link rel="stylesheet" href="./style/stylePaginaDeTreino.css?v=<?= time(); ?>" />
+  <style>
+    .dropdown {
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      width: 300px;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
 
@@ -68,7 +93,9 @@ if($id_aluno != null){
       <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($id_aluno) ?>">
 
       <!-- Campo oculto para a quantidade de treinos -->
-      <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos" oninput="gerarTreinos()" required>
+      <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos">
+
+    
 
       <div id="treinosContainer"></div>
       
@@ -115,17 +142,40 @@ if($id_aluno != null){
 
     function gerarExercicioHTML(letra, numero) {
       if (!contadorExercicios[letra]) contadorExercicios[letra] = 1;
+
+      const grupoMuscularOptions = <?= json_encode($grupo_muscular, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+      const exercicioOptions = <?= json_encode($exercicios, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+
+     
+      
+
+      const grupoOptions = grupoMuscularOptions.map(grupo =>
+        `<option value="${grupo.grupo_muscular.replace(/"/g, '&quot;')}">${grupo.grupo_muscular}</option>`
+      ).join('');
+
+      const exercicioSelectOptions = exercicioOptions.map(ex =>
+        `<option value="${ex.id}" data-grupo="${ex.grupo_muscular}">${ex.nome_exercicio}</option>`
+      ).join('');
+
       return `
       <div class="exercicio-box">
         <strong>Exercício ${numero}</strong>
         <div class="exercicio-group">
           <input type="hidden" name="dados[${letra}][${numero}][num_exercicio]" value="${numero}">
-          <input type="text" name="dados[${letra}][${numero}][nome_exercicio]" placeholder="Nome do exercício" required>
+          <select name="dados[${letra}][${numero}][grupo_muscular]" class="grupo-muscular-dropdown"  data-letra="${letra}" data-numero="${numero}" required>
+            <option value="" disabled selected>Selecione o grupo muscular</option>
+            ${grupoOptions}
+          </select>
+          <select name="dados[${letra}][${numero}][nome_exercicio]" class="exercicio-dropdown" required>
+            <option value="" disabled selected>Selecione o exercício</option>
+            ${exercicioSelectOptions}
+          </select>
           <input type="number" name="dados[${letra}][${numero}][series_exercicio]" placeholder="Séries" required>
           <input type="text" name="dados[${letra}][${numero}][repeticoes_exercicio]" placeholder="Repetições" required>
         </div>
       </div>
       `;
+
     }
 
     function adicionarExercicio(letra) {
@@ -133,6 +183,28 @@ if($id_aluno != null){
       contadorExercicios[letra]++;
       container.insertAdjacentHTML('beforeend', gerarExercicioHTML(letra, contadorExercicios[letra]));
     }
+    document.addEventListener('change', function (e) {
+        if (e.target.classList.contains('grupo-muscular-dropdown')) {
+          const grupoSelecionado = e.target.value; // Grupo muscular selecionado
+          const letra = e.target.getAttribute('data-letra');
+          const numero = e.target.getAttribute('data-numero');
+
+          // Encontre o dropdown de exercícios correspondente
+          const exercicioDropdown = document.querySelector(
+            `select[name="dados[${letra}][${numero}][nome_exercicio]"]`
+          );
+
+          // Filtrar os exercícios com base no grupo muscular selecionado
+          const exercicioOptions = <?= json_encode($exercicios, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+          const exerciciosFiltrados = exercicioOptions
+            .filter(ex => ex.grupo_muscular === grupoSelecionado)
+            .map(ex => `<option value="${ex.id}">${ex.nome_exercicio}</option>`)
+            .join('');
+
+          // Atualizar o dropdown de exercícios
+          exercicioDropdown.innerHTML = `<option value="">Selecione</option>${exerciciosFiltrados}`;
+        }
+      });
 
     document.getElementById("formPlano").addEventListener("submit", function (e) {
       //e.preventDefault();
@@ -163,6 +235,7 @@ if($id_aluno != null){
           });
         }
     }
+    
     window.addEventListener("DOMContentLoaded", gerarTreinos);
 
   </script>
