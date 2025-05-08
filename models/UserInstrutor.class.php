@@ -1,10 +1,25 @@
 <?php
 
+/**
+ * Classe responsável pelas operações relacionadas ao cadastro de instrutores.
+ * Permite cadastrar um novo instrutor e obter a data/hora atual formatada.
+ */
 class UserInstrutor
 {
+    /**
+     * @var Database $con Instância da conexão com o banco de dados.
+     */
     private $con;
+
+    /**
+     * @var PDO $link Link da conexão PDO.
+     */
     private $link;
 
+    /**
+     * Construtor da classe UserInstrutor.
+     * Inicializa a conexão com o banco de dados.
+     */
     public function __construct()
     {
         require_once __DIR__ . '/../config/database.class.php';
@@ -12,8 +27,20 @@ class UserInstrutor
         $this->link = $this->con->getConexao();
     }
 
-    // Cadastra um novo usuário
-    // Recebe os dados do formulário e insere no banco de dados
+    /**
+     * Cadastra um novo instrutor no banco de dados.
+     *
+     * @param string $Username Nome do instrutor.
+     * @param string $Email Email do instrutor.
+     * @param string $Cpf CPF do instrutor.
+     * @param string $unidade Unidade da academia.
+     * @param string $servico Especialidade/serviço do instrutor.
+     * @param string $data_entrada Data de entrada do instrutor (Y-m-d H:i:s).
+     * @param string|null $data_saida Data de saída do instrutor (Y-m-d H:i:s) ou null.
+     * @param string $phone Telefone do instrutor.
+     * @param string $typeUser Tipo de usuário (ex: 'instrutor').
+     * @return void
+     */
     public function cadastrarInstrutor($Username, $Email, $Cpf, $unidade, $servico, $data_entrada, $data_saida, $phone, $typeUser)
     {
         // Se data_saida estiver vazia, converte para null
@@ -41,7 +68,11 @@ class UserInstrutor
         }
     }
 
-    // Retorna a data e hora atual formatada
+    /**
+     * Retorna a data e hora atual formatada.
+     *
+     * @return string Data e hora atual no formato Y-m-d H:i:s.
+     */
     public function dataInicio()
     {
         $data = new DateTime();

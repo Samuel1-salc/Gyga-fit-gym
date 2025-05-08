@@ -1,65 +1,110 @@
 <?php
+/**
+ * Página responsável por carregar os dados iniciais para a criação de um plano de treino
+ * com base na solicitação de um aluno específico.
+ * 
+ * Esta página:
+ * - Verifica a existência de um ID de aluno via GET;
+ * - Recupera informações da solicitação de treino do aluno;
+ * - Obtém dados como nome, experiência, objetivo e grupos musculares disponíveis;
+ * - Prepara os dados para exibição e envio via formulário;
+ * - Lança exceções em caso de ausência de dados críticos.
+ * 
+ * @package GYGA FIT
+ * @author [Samuel/heitor]
+ * @version 1.0
+ */
+
 session_start();
+
 require_once __DIR__ . '/../models//Usuarios.class.php';
 require_once __DIR__ . '/../models//SolicitacaoTreino.class.php';
 require_once __DIR__ . '/../models//Treino.class.php';
+
 $id_aluno = $_GET['id_aluno'] ?? null;
 
-if($id_aluno != null){
+if ($id_aluno != null) {
+
+    /**
+     * Retorna o nome do aluno com base no ID.
+     *
+     * @param int $id_aluno
+     * @return string
+     */
     function getNomeAluno($id_aluno) {
-        
         $users = new Users();
         $aluno = $users->getNomeAluno($id_aluno);
         return $aluno['username'] ?? 'Aluno não encontrado';
     }
+
+    /**
+     * Retorna a quantidade ou grupos de treino solicitados.
+     *
+     * @param int $id_aluno
+     * @return mixed
+     */
     function getTreinos($id_aluno) {
-        
         $solicitacao = new SolicitacaoTreino();
         $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
         return $formulario['treinos'] ?? 'Solicitação não encontrada';
     }
+
+    /**
+     * Retorna o nível de experiência do aluno.
+     *
+     * @param int $id_aluno
+     * @return string
+     */
     function getExperiencia($id_aluno) {
-        
         $solicitacao = new SolicitacaoTreino();
         $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
         return $formulario['experiencia'] ?? 'experiencia não encontrada';
     }
+
+    /**
+     * Retorna o objetivo de treino do aluno.
+     *
+     * @param int $id_aluno
+     * @return string
+     */
     function getObjetivo($id_aluno) {
-        
         $solicitacao = new SolicitacaoTreino();
         $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
-        return $formulario['objetivo'] ?? 'experiencia não encontrada';
+        return $formulario['objetivo'] ?? 'objetivo não encontrado';
     }
+
+    /**
+     * Retorna o ID da solicitação de treino.
+     *
+     * @param int $id_aluno
+     * @return int|string
+     */
     function getIdformulario($id_aluno) {
-        
         $solicitacao = new SolicitacaoTreino();
         $formulario = $solicitacao->getFormularioForCriacaoDeTreino($id_aluno);
         return $formulario['id'] ?? 'id não encontrado';
     }
-    
-    
-    $valorQtdTreinos = (int) (getTreinos($id_aluno) ?? 0);
-    $grupoTreino = (string)getTreinos($id_aluno) ?? 'Grupos de treino não encontrado';
-    $objetivo = (string)getObjetivo($id_aluno) ?? 'Objetivo não encontrado';
-    $experiencia = (string)getExperiencia($id_aluno) ?? 'Experiência não encontrada';
-    $id_solicitacao = (int)getIdformulario($id_aluno) ?? 0;
 
+    // Coleta e organiza os dados do aluno e da solicitação de treino
+    $valorQtdTreinos = (int) (getTreinos($id_aluno) ?? 0);
+    $grupoTreino = (string) getTreinos($id_aluno) ?? 'Grupos de treino não encontrado';
+    $objetivo = (string) getObjetivo($id_aluno) ?? 'Objetivo não encontrado';
+    $experiencia = (string) getExperiencia($id_aluno) ?? 'Experiência não encontrada';
+    $id_solicitacao = (int) getIdformulario($id_aluno) ?? 0;
+
+    // Carrega os dados de apoio para montar o plano de treino
     $classTreino = new Treino();
     $grupo_muscular = $classTreino->getGrupo_muscular();
     $exercicios = $classTreino->getExercicios();
 
-
     if (!is_array($grupo_muscular) || !is_array($exercicios)) {
-      throw new Exception("Os dados de grupo muscular ou exercícios são inválidos.");
+        throw new Exception("Os dados de grupo muscular ou exercícios são inválidos.");
     }
-     
 
-}else{
-  throw new Exception("ID do aluno não foi fornecido.");
+} else {
+    throw new Exception("ID do aluno não foi fornecido.");
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

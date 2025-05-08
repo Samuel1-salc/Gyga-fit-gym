@@ -1,10 +1,25 @@
 <?php
 
+/**
+ * Classe responsável pelas operações relacionadas às solicitações de treino dos alunos.
+ * Permite criar, buscar, contar e atualizar solicitações de treino.
+ */
 class SolicitacaoTreino
 {
+    /**
+     * @var PDO $link Instância da conexão PDO.
+     */
     private $link;
+
+    /**
+     * @var Database $con Instância da conexão com o banco de dados.
+     */
     private $con;
 
+    /**
+     * Construtor da classe SolicitacaoTreino.
+     * Inicializa a conexão com o banco de dados.
+     */
     public function __construct()
     {
         require_once __DIR__ . '/../config/database.class.php';
@@ -12,7 +27,21 @@ class SolicitacaoTreino
         $this->link = $this->con->getConexao();
     }
 
-    public function SolicitarTreino($data_created,$id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura,$status)
+    /**
+     * Solicita um novo treino para o aluno.
+     *
+     * @param string $data_created Data de criação da solicitação (Y-m-d H:i:s).
+     * @param int $id_aluno ID do aluno.
+     * @param string $experiencia Nível de experiência do aluno.
+     * @param string $objetivo Objetivo do aluno.
+     * @param int $treinos Quantidade de treinos desejados.
+     * @param string $sexo Sexo do aluno.
+     * @param float $peso Peso do aluno.
+     * @param float $altura Altura do aluno.
+     * @param string $status Status da solicitação.
+     * @return bool Retorna true em caso de sucesso ou false em caso de erro.
+     */
+    public function SolicitarTreino($data_created, $id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura, $status)
     {
         try {
             $stmt = $this->link->prepare("
@@ -42,6 +71,11 @@ class SolicitacaoTreino
         }
     }
 
+    /**
+     * Busca todos os formulários de solicitação de treino.
+     *
+     * @return array|false Retorna um array com todos os formulários ou false em caso de erro.
+     */
     public function getTodosFormularios()
     {
         try {
@@ -56,6 +90,13 @@ class SolicitacaoTreino
         }
     }
 
+    /**
+     * Busca todas as solicitações de treino de um aluno.
+     *
+     * @param int $id_aluno ID do aluno.
+     * @return array|false Retorna um array com as solicitações ou false em caso de erro.
+     * @throws InvalidArgumentException Se o ID do aluno for inválido.
+     */
     public function getSolicitacaoTreino($id_aluno)
     {
         if(!is_numeric($id_aluno)) {
@@ -77,6 +118,13 @@ class SolicitacaoTreino
         }
     }
 
+    /**
+     * Busca a data e hora da última solicitação de treino de um aluno.
+     *
+     * @param int $id_aluno ID do aluno.
+     * @return array|false Retorna um array com a data da última solicitação ou false em caso de erro.
+     * @throws InvalidArgumentException Se o ID do aluno for inválido.
+     */
     public function getDataTimeSolicitacaoTreino($id_aluno)
     {
         if(!is_numeric($id_aluno)) {
@@ -98,6 +146,13 @@ class SolicitacaoTreino
         }
     }
 
+    /**
+     * Busca o formulário mais recente para criação de treino de um aluno.
+     *
+     * @param int $id_aluno ID do aluno.
+     * @return array|false Retorna um array com o formulário ou false em caso de erro.
+     * @throws InvalidArgumentException Se o ID do aluno for inválido.
+     */
     public function getFormularioForCriacaoDeTreino($id_aluno)
     {
         if(!is_numeric($id_aluno)) {
@@ -118,6 +173,13 @@ class SolicitacaoTreino
             return false;
         }
     }
+
+    /**
+     * Conta o número de solicitações de treino de um aluno.
+     *
+     * @param int $id_aluno ID do aluno.
+     * @return int Retorna o total de solicitações.
+     */
     public function contarSolicitacoesTreino($id_aluno)
     {
         try {
@@ -133,6 +195,13 @@ class SolicitacaoTreino
             return 0;
         }
     }
+
+    /**
+     * Conta o número de solicitações de treino com determinado status.
+     *
+     * @param string $statuss Status a ser contado (ex: 'em andamento', 'atendido').
+     * @return int Retorna o total de solicitações com o status informado.
+     */
     public function contarPendentes($statuss)
     {
         try {
@@ -148,6 +217,14 @@ class SolicitacaoTreino
             return 0;
         }
     }
+
+    /**
+     * Atualiza o status da solicitação de treino de um aluno.
+     *
+     * @param int $id_aluno ID do aluno.
+     * @param string $status Novo status da solicitação.
+     * @return bool Retorna true em caso de sucesso ou false em caso de erro.
+     */
     public function atualizarStatusSolicitacao($id_aluno, $status)
     {
         try {

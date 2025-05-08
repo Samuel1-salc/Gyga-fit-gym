@@ -1,3 +1,58 @@
+<?php
+/**
+ * Página HTML: Página Inicial - Gyga Fit
+ *
+ * Esta é a página de apresentação institucional da academia Gyga Fit.
+ * Apresenta seções sobre a academia, unidades, equipe de professores, aulas oferecidas,
+ * horários de funcionamento e endereços com mapas integrados via Google Maps.
+ *
+ * Estrutura do Documento:
+ * - Cabeçalho:
+ *   - Logotipo da academia
+ *   - Menu de navegação com âncoras para as seções da página
+ *   - Botão para redirecionar à tela de login (telaLogin.php)
+ *
+ * - Seções:
+ *   1. Sobre:
+ *      - Breve descrição institucional
+ *      - Galeria de imagens da academia
+ *
+ *   2. Unidades:
+ *      - Texto informativo sobre as localizações da academia
+ *
+ *   3. Professores:
+ *      - Apresentação da equipe com galeria de imagens
+ *
+ *   4. Aulas:
+ *      - Modalidades de atividades físicas oferecidas
+ *
+ *   5. Horários:
+ *      - Funcionamento semanal da academia
+ *
+ *   6. Endereço:
+ *      - Endereços das três unidades (Centro, Norte, Sul)
+ *      - Iframes do Google Maps com localização geográfica
+ *
+ * - Rodapé:
+ *   - Direitos autorais da academia
+ *
+ * Tecnologias Utilizadas:
+ * - HTML5, CSS3
+ * - Layout responsivo via meta viewport
+ * - CSS externo localizado em: /Gyga-fit-gym/view/style/inicial.css
+ * - Iframes com Google Maps (via embed)
+ *
+ * Observações:
+ * - Esta página não possui backend (apenas visual).
+ * - Pode ser usada como página inicial pública da academia antes do login.
+ * - O botão de login direciona para telaLogin.php (onde o sistema pode autenticar usuários).
+ *
+ * @package GygaFit
+ * @subpackage Views
+ * @version 1.0
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
