@@ -1,3 +1,56 @@
+<?php
+/**
+ * Página HTML: Editar Perfil - Instrutor | Gyga Fit
+ *
+ * Esta página exibe um formulário para que o instrutor atualize suas informações pessoais
+ * dentro do sistema Gyga Fit. Os dados são enviados via POST para o script de backend
+ * responsável por processar e armazenar as alterações no perfil.
+ *
+ * Estrutura do documento:
+ * - Cabeçalho:
+ *   - Ícone do usuário
+ *   - Logotipo da academia
+ *   - Ícone de menu (hambúrguer)
+ *
+ * - Seção principal:
+ *   - Visualização da foto de perfil
+ *   - Botão para troca de imagem (ainda sem funcionalidade JS)
+ *   - Informações pessoais organizadas em formulário
+ *
+ * - Formulário:
+ *   - Método: POST
+ *   - Ação: ./../controllers/processarCadastroInstrutor.php
+ *   - Campos:
+ *     - campo1: Nome (input text)
+ *     - campo2: Idade (input number)
+ *     - campo3: E-mail (input email)
+ *     - campo4: Celular (input tel)
+ *     - campo5: CPF (input text)
+ *     - campo6: Unidade (select - Centro, Norte, Sul)
+ *     - campo7: Serviço (select - Personal Trainer, Nutricionista, Fisioterapeuta)
+ *
+ * - Rodapé:
+ *   - Informações institucionais da empresa
+ *   - Links úteis: Fale Conosco, Política de Privacidade
+ *   - Redes sociais: Facebook, Pinterest, Instagram, YouTube
+ *
+ * Requisitos e tecnologias:
+ * - CSS externo: style/styleCadasto.css
+ * - Ícones: Font Awesome (versão 6.4.0)
+ * - Compatível com dispositivos móveis (viewport configurado)
+ *
+ * Observações:
+ * - A foto de perfil atualmente é estática (sem upload implementado).
+ * - Este arquivo é um front-end puro e precisa ser conectado a um back-end funcional.
+ *
+ * @package GygaFit
+ * @subpackage Views
+ * @version 1.0
+ */
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

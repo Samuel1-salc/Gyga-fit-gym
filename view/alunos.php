@@ -1,4 +1,22 @@
 <?php
+/**
+ * Página responsável por exibir a lista de alunos para o painel do instrutor.
+ * Permite pesquisar alunos pelo nome, exibe informações de contato, plano e disponibilidade,
+ * e possibilita adicionar um aluno ao instrutor caso esteja disponível.
+ *
+ * Dependências:
+ * - Usuarios.class.php: Classe para operações gerais de usuários.
+ * - usuarioInstrutor.class.php: Classe para operações de relacionamento entre aluno e instrutor.
+ *
+ * Fluxo:
+ * 1. Inicia a sessão e instancia as classes necessárias.
+ * 2. Se houver busca por nome, filtra os alunos; caso contrário, exibe todos.
+ * 3. Função `disponiblidade($id_aluno)`: Verifica se o aluno já possui instrutor.
+ * 4. Função `plano($plano)`: Retorna o nome do plano conforme o valor.
+ * 5. Exibe os alunos em cards, mostrando informações e botão para adicionar se disponível.
+ *
+ * @package view
+ */
 require_once __DIR__ . '/../models/Usuarios.class.php';
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 session_start();

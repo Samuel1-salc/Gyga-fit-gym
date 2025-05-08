@@ -1,92 +1,97 @@
 <?php
-    session_start();
-    require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
-    require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
-    require_once __DIR__ . '/../models/Treino.class.php';
+/**
+ * painelInstrutor.php
+ *
+ * Página de painel para instrutores, onde é possível visualizar informações
+ * dos alunos, solicitações de treino, filtrar por status, pesquisar alunos
+ * e iniciar a criação de treinos.
+ *
+ * @author [Seu Nome]
+ * @version 1.0
+ * @package painelInstrutor
+ */
 
+session_start();
 
-//888888888888888888888888888888888888888888888888888888//
+require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
+require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
+require_once __DIR__ . '/../models/Treino.class.php';
+
 // Verifica se o usuário está logado e é um instrutor
+$instrutor = $_SESSION['usuario'];
+$alunoInstrutor = new aluno_instrutor();
 
-    $instrutor = $_SESSION['usuario'];
-    $alunoInstrutor = new aluno_instrutor();
+$aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
+$countAlunos = $alunoInstrutor->quantidadeAlunosAtendidos($instrutor['id']);
 
+$data_saida = $instrutor['data_saida'] ?? null;
+$disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível" : "disponível";
+
+/**
+ * Verifica se existe uma solicitação de treino para um aluno
+ *
+ * @param int $id_aluno ID do aluno
+ * @return string Retorna "solicitEnviada" se já houver solicitação, "solicitNaoEnviada" caso contrário
+ */
+function adcAlunoSolicitacao($id_aluno) {
+    $solicitacaoTreino = new SolicitacaoTreino();
+    $relacaoAlunoInstrutor = new aluno_instrutor();
+
+    if ($solicitacaoTreino->getSolicitacaoTreino($id_aluno)) {
+        return "solicitEnviada";
+    } else {
+        return "solicitNaoEnviada";
+    }
+}
+
+/**
+ * Conta quantas solicitações de treino um aluno possui
+ *
+ * @param int $id_aluno ID do aluno
+ * @return int Número de solicitações
+ */
+function countSolicitacaoTreino($id_aluno) {
+    $solicitacaoTreino = new SolicitacaoTreino();
+    return $solicitacaoTreino->contarSolicitacoesTreino($id_aluno);
+}
+
+/**
+ * Conta o total de solicitações de treino com status "em andamento"
+ *
+ * @return int Número de solicitações pendentes
+ */
+function countPendentes() {
+    $status = 'em andamento';
+    $solicitacaoTreino = new SolicitacaoTreino();
+    return $solicitacaoTreino->contarPendentes($status);
+}
+
+// Pesquisa por nome de aluno
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $search = $_GET['search'];
+    $aluno = $alunoInstrutor->getNameAlunoForPainelInstrutor($search);
+} else {
     $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
-    $countAlunos = $alunoInstrutor->quantidadeAlunosAtendidos($instrutor['id']);
+}
 
-    $data_saida = $instrutor['data_saida'] ?? null;
+// Filtro por status
+if (isset($_GET['status'])) {
+    $filtro = strtolower($_GET['status']);
 
-    if ($data_saida && $data_saida != '0000-00-00') {
-        $disponibilidade = "indisponível";
-    } else {
-        $disponibilidade = "disponível";
-    }
-
-//888888888888888888888888888888888888888888888888888888//
-// Objeto para verificar solicitações de treino
-
-
-    function adcAlunoSolicitacao($id_aluno){
-        
-        $solicitacaoTreino = new SolicitacaoTreino();
-        $relacaoAlunoInstrutor = new aluno_instrutor();
-
-        if( $solicitacaoTreino->getSolicitacaoTreino($id_aluno)){
-            $processo = 'em andamento';
-            $data_solicitacao = $relacaoAlunoInstrutor->dataDeSolicitacao();
-            //$relacaoAlunoInstrutor->adicionarAluno_Instrutor($id_aluno,$processo,$data_solicitacao);
-            return "solicitEnviada";
-        }else{
-            return "solicitNaoEnviada";
-        }
-    }
-    
-
-    //888888888888888888888888888888888888888888888888888888//
-    //contar solicitações de treino
-    function countSolicitacaoTreino($id_aluno){
-        $solicitacaoTreino = new SolicitacaoTreino();
-        return $solicitacaoTreino->contarSolicitacoesTreino($id_aluno);
-    }
-
-    function countPendentes(){
-        $status = 'em andamento';
-        $solicitacaoTreino = new SolicitacaoTreino();
-        return $solicitacaoTreino->contarPendentes($status);
-    }
-
-    
-
-    //888888888888888888888888888888888888888888888888888888//
-    //Instancuar o objeto de treino
-    
-    
-    if (isset($_GET['search']) && !empty($_GET['search'])) {
-        $search = $_GET['search'];
-        $aluno = $alunoInstrutor->getNameAlunoForPainelInstrutor($search);
-    } else {
+    if ($filtro === 'todos') {
         $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
-    }
+    } else {
+        $formulario = new SolicitacaoTreino();
+        $todosFormularios = $formulario->getTodosFormularios(); // este método deve existir
+        $aluno = [];
 
-    if (isset($_GET['status'])) {
-        $filtro = strtolower($_GET['status']);
-    
-        if ($filtro === 'todos') {
-            $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
-        } else {
-            $formulario = new SolicitacaoTreino();
-            $todosFormularios = $formulario->getTodosFormularios(); // você pode precisar criar esse método se ele não existir
-            $aluno = [];
-    
-            foreach ($todosFormularios as $a) {
-                if (strtolower($a['status']) === strtolower($filtro)) {
-                    $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($a['id_aluno']);
-                }
+        foreach ($todosFormularios as $a) {
+            if (strtolower($a['status']) === $filtro) {
+                $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($a['id_aluno']);
             }
         }
     }
-    
-
+}
 ?>
 
 <!DOCTYPE html>

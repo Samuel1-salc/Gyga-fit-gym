@@ -1,3 +1,43 @@
+<?php
+/**
+ * Página HTML: Editar Perfil - Instrutor | Gyga Fit
+ *
+ * Esta página permite que o instrutor visualize e edite suas informações de perfil,
+ * incluindo nome, idade, e-mail, celular, CPF, unidade e plano.
+ *
+ * O formulário envia os dados para o controlador PHP responsável por processar as alterações.
+ *
+ * Estrutura:
+ * - Header: Ícone do usuário, logo da academia e ícone de menu.
+ * - Seção principal: Foto de perfil e formulário de edição de dados.
+ * - Footer: Informações da empresa e redes sociais.
+ *
+ * Formulário:
+ * - Método: POST
+ * - Ação: ./../controllers/processarCadastroAluno.php
+ * - Campos:
+ *   - campo1: Nome
+ *   - campo2: Idade
+ *   - campo3: E-mail
+ *   - campo4: Celular
+ *   - campo5: CPF
+ *   - campo6: Unidade (Centro, Norte, Sul)
+ *   - campo7: Plano (Mensal, Semestral, Anual)
+ *
+ * Requisitos de imagem de perfil:
+ * - Formatos aceitos: JPG, PNG
+ * - Tamanho recomendado: 800x800 px
+ *
+ * Observações:
+ * - A página depende do arquivo CSS `styleCadasto.css` para estilo.
+ * - Utiliza FontAwesome para os ícones visuais.
+ *
+ * @package GygaFit
+ * @subpackage Views
+ * @version 1.0
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

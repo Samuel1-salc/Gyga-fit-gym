@@ -1,4 +1,35 @@
 <?php
+/**
+ * Página principal do aluno no sistema GYGA FIT.
+ * Exibe informações do aluno logado, incluindo plano, tempo restante, instrutor responsável e unidade.
+ * Permite ao aluno visualizar o cronograma de treinos, solicitar novo treino e acessar funcionalidades do menu lateral.
+ *
+ * Funcionalidades:
+ * - Exibe nome, plano, tempo restante do plano, nome do instrutor e unidade do aluno.
+ * - Mostra cronograma de treinos com botões para alternar entre Treino A, B e C.
+ * - Permite solicitar um novo treino através de botão dedicado.
+ * - Oferece menu lateral com opções de alterar perfil, configurações e menu da academia.
+ * - Exibe informações institucionais e links de contato no rodapé.
+ *
+ * Dependências:
+ * - Usuarios.class.php: Classe para operações gerais de usuários.
+ *
+ * Fluxo:
+ * 1. Inicia a sessão e carrega os dados do usuário logado.
+ * 2. Define funções auxiliares para exibir nome do plano, calcular tempo restante e buscar nome do instrutor.
+ * 3. Renderiza informações do aluno e cronograma de treinos.
+ * 4. Disponibiliza botões para solicitar novo treino e concluir ações.
+ * 5. Exibe rodapé com informações da empresa e links sociais.
+ *
+ * Observações:
+ * - O acesso a esta página pressupõe que o usuário esteja autenticado e com dados válidos na sessão.
+ * - O layout utiliza CSS externo e fontes do Google Fonts.
+ * - Funções JavaScript são usadas para manipular a sidebar.
+ *
+ * @package view
+ * @author
+ * @version 1.0
+ */
 session_start();
 require_once __DIR__ . '/../models/Usuarios.class.php';
 $usuarios = new Users();

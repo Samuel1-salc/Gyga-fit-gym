@@ -1,3 +1,40 @@
+<?php
+/**
+ * Página de login do sistema GYGA FIT.
+ * Exibe uma introdução em vídeo e, após o término, apresenta o formulário de login para o usuário.
+ * Permite o acesso de alunos e instrutores ao sistema utilizando o CPF.
+ *
+ * Funcionalidades:
+ * - Exibe vídeo de introdução ao acessar a página.
+ * - Após o vídeo, mostra o formulário de login com campo para CPF.
+ * - Exibe mensagens de erro relacionadas ao CPF, caso existam na sessão.
+ * - Utiliza CSS interno para estilização responsiva e moderna.
+ * - Inclui animação de fade-out para transição do vídeo para o formulário.
+ * - Mostra rodapé com informações institucionais.
+ *
+ * Dependências:
+ * - processarLogin.php: Script responsável por validar o login do usuário.
+ * - Pasta /view/video/: Contém o vídeo de introdução.
+ * - Pasta /view/img/: Contém a logo da academia.
+ *
+ * Fluxo:
+ * 1. Exibe o vídeo de introdução ao carregar a página.
+ * 2. Após o término do vídeo, oculta o vídeo e exibe o formulário de login.
+ * 3. Usuário preenche o CPF e envia o formulário.
+ * 4. Se houver erro de CPF, exibe mensagem de erro.
+ * 5. Após login bem-sucedido, usuário é redirecionado para a tela principal correspondente.
+ *
+ * Observações:
+ * - O campo CPF é obrigatório.
+ * - Mensagens de erro são exibidas dinamicamente conforme o conteúdo da sessão.
+ * - O layout é responsivo e utiliza animações para melhor experiência do usuário.
+ *
+ * @package view
+ * @author
+ * @version 1.0
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
