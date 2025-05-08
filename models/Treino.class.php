@@ -53,4 +53,37 @@ class Treino
             return false;
         }
     }
+    
+    public function getExercicios(){
+        try {
+            $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar exercícios: " . $e->getMessage();
+            return false;
+        }
+    }
+    public function getGrupo_muscular(){
+        try {
+            $stmt = $this->link->prepare("SELECT DISTINCT grupo_muscular FROM exercicios");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar exercícios: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getExerciciosByGrupoMuscular($grupo_muscular){
+        try {
+            $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios WHERE grupo_muscular = :grupo_muscular");
+            $stmt->bindParam(':grupo_muscular', $grupo_muscular);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar exercícios: " . $e->getMessage();
+            return false;
+        }
+    }
 }
