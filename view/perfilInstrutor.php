@@ -2,6 +2,7 @@
     session_start();
     require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
     require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
+    require_once __DIR__ . '/../models/Treino.class.php';
 
 
 //888888888888888888888888888888888888888888888888888888//
@@ -48,7 +49,10 @@
         return $solicitacaoTreino->contarSolicitacoesTreino($id_aluno);
     }
 
-
+    //888888888888888888888888888888888888888888888888888888//
+    //Instancuar o objeto de treino
+    $treino = new Treino();
+    
 
 
 ?>
@@ -102,6 +106,24 @@
                                 <p><?= htmlspecialchars($aluno['data_solicitacao']) ?></p>
                                 <p>Status: <?= htmlspecialchars($aluno['processo']) ?></p>
                                 <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($aluno['id_aluno'])) ?></p>
+                                <?php $data_plano_de_treino = $treino->getDataTreinos($aluno['id_aluno']); $data_solicitacao_treino = (new SolicitacaoTreino())->getDataTimeSolicitacaoTreino($aluno['id_aluno']);?>
+                                <?php
+                                if(!empty($data_plano_de_treino) && !empty($data_solicitacao_treino)){
+
+                                    $dataPlanoTreino = new DateTime($data_plano_de_treino['data_criacao']);
+                                    $dataSolicitacaoTreino = new DateTime($data_solicitacao_treino['data_created']);
+
+                                    var_dump($data_solicitacao_treino);
+                                    var_dump($data_plano_de_treino);
+                               
+                                    if($dataSolicitacaoTreino->getTimestamp() > $dataPlanoTreino->getTimestamp()):
+                                ?>
+                                        <p style="color: red;">Solicitação de treino não atendida</p>
+                                        <div class="icon-notificacao" name = "planoNaoAtendido" id = "planoNaoAtendido" style="display: none;"></div>
+                                    <?php else: ?>
+                                        <p style="color: green;">Solicitação de treino atendida</p>
+                                    <?php endif; ?>
+                                <?php }?>
 
                                 <!-- Container oculto da solicitação -->
                                 <div id="solicitacao-<?= $aluno['id_aluno'] ?>" class="solicitacao-content" style="display: none; margin-top: 10px;">

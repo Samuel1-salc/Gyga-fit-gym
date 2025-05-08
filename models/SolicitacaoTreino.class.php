@@ -63,6 +63,28 @@ class SolicitacaoTreino
             return false;
         }
     }
+
+    public function getDataTimeSolicitacaoTreino($id_aluno)
+    {
+        if(!is_numeric($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno deve ser um número.");
+        }
+        if(empty($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
+        }
+        try {
+            $stmt = $this->link->prepare("
+                SELECT data_created FROM formulario WHERE id_aluno = :id_aluno
+            ");
+            $stmt->bindParam(':id_aluno', $id_aluno);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar solicitação de treino: " . $e->getMessage();
+            return false;
+        }
+    }
+
     public function getFormularioForCriacaoDeTreino($id_aluno)
     {
         if(!is_numeric($id_aluno)) {
