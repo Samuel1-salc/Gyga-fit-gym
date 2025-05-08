@@ -174,11 +174,14 @@ ___
 
 | Código RF | Requisito Funcional                          | Tipo de Funcionalidade      | Responsável   | Data de Início | Data de Término | Duração (dias) | Status        | Notas                                                                 |
 |-----------|----------------------------------------------|------------------------------|----------------|----------------|------------------|----------------|----------------|------------------------------------------------------------------------|
-| RF-5      | Sistema de gerente  | tela do administração      |   Samuel e Sophia        |                |                  |                | Em andamento   | Implementar com campos obrigatórios e tipo de usuário.                |
-| RF-6      | Sistema de criação de treinos                   | Funcionalidade de implementação de treino dada a solicitação | Mauricio e Heitor     |                |                  |                | Em andamento   |                              |
+| RF-5      | Sistema de gerente  | tela do administração      |   Heitor e Sophia        |                |                  |                | Em andamento   | Implementar com campos obrigatórios e tipo de usuário.                |
+| RF-6      | Sistema de criação de treinos                   | Funcionalidade de implementação de treino dada a solicitação | Samuel e Heitor     |                |                  |                | Em andamento   |                              |
 | RF-7      | Tela Inicial da academia                | Interface de Usuário (UI)   | João Hott      |                |                  |                | Conluída  | Exibir dados de usuários e perfil da academia.                        |                   |
-| RF-8      | tela de acesso ao painel administrativo | Manipular a tela de login       | haleef-kayke/sophia |                |                  |                | Planejando      | Permitir que a tela de login seja manipulada caso seja gerente                  |
+| RF-8      | tela de acesso ao painel administrativo | Manipular a tela de login       | haleef-kayke/Samuel |                |                  |                | Planejando      | Permitir que a tela de login seja manipulada caso seja gerente                  |
 ___
+| RF-9      | Roteamento de páginas| Manipular páginas a partir do index.php       | mauricio |                |                  |                | Planejando      | Configurações de niveis de acesso as paginas                  |
+___
+| RF-10      | Visualização dos Planos de Treino                 | Interface de Usuário (UI)   | Hott/Samuel      |                |                  |                | Em andamento  | Exibir dados do plano de treino da academia.  
 
 ### Sistema de gerente(RF - 5)
 **como** um usário gerente **eu quero** cadastrar novos clientes(assinantes do plano da academia) para enfim os clientes terem acesso ao aplicativo.
@@ -267,6 +270,68 @@ ___
 - Deverá ser uma tela que intermediará entre tela de login e painel administrativo.
 ___
 
+### Organização da lógica de acesso (RF - 9)
+**como** desenvolvedor do sistema  
+**eu quero** criar e implementar o arquivo index.php  
+**para que** ele centralize a lógica de verificação de sessão e redirecionamento de usuários com base no tipo de acesso.
+
+#### Regras de Negócio
+- O `index.php` deverá funcionar como ponto de entrada principal do sistema.
+- Deve verificar se há uma sessão ativa e identificar o tipo de usuário (aluno, instrutor ou visitante).
+- Usuários não autenticados devem ser redirecionados para a tela de login.
+- Usuários autenticados devem ser encaminhados automaticamente para sua respectiva interface.
+- Deve ser possível expandir o sistema com rotas simples via GET.
+
+#### Tarefas:
+**Backend (Mauricio):**
+
+- Criar o `index.php` como entrada única do sistema.
+- Implementar verificação de sessão e tipo de usuário.
+- Redirecionar para as telas apropriadas (aluno, instrutor, erro, login).
+- Criar um sistema de rotas simples para organização das páginas.
+- Integrar as páginas internas com proteção contra acesso direto.
+- Adicionar opção de logout via `index.php`.
+
+#### Critérios de Aceitação:
+
+- O sistema deve ser iniciado pelo `index.php` e proteger o acesso a páginas internas.
+- Deve redirecionar corretamente alunos e instrutores com base na sessão.
+- Visitantes devem ser redirecionados automaticamente para a tela de login.
+- As páginas não devem ser acessíveis diretamente sem login.
+- Deve existir um sistema básico de rotas e logout no `index.php`.
+___
+
+### Visualização dos Planos de Treino (RF - 10)
+
+**Como** um aluno assinante, **eu quero** acessar uma interface onde eu possa visualizar meus planos de treino personalizados, para que eu consiga seguir corretamente os exercícios recomendados pelo instrutor.
+
+#### Regras de Negócio
+
+- Apenas alunos autenticados com assinatura ativa poderão acessar seus planos de treino.
+- A interface deve exibir todos os planos de treino criados para o aluno, ordenados do mais recente para o mais antigo.
+- Cada plano deve conter as informações completas inseridas pelo instrutor: divisão semanal, exercícios, séries, repetições e observações.
+- O aluno deve conseguir visualizar planos anteriores como histórico.
+- Caso o aluno envie uma nova solicitação de treino, a interface deve indicar que um novo plano está em criação ou aguardando resposta do instrutor.
+
+#### Tarefas
+
+**Back-end/front-end :**
+ 
+- Criar recuperação dos planos de treino vinculados ao aluno autenticado.
+- Criar interface com visualização clara e organizada dos treinos por data e status.
+- Exibir os detalhes completos de cada plano criado.
+- Adicionar indicador de status para planos pendentes, em andamento ou finalizados.
+- Armazenar e exibir o histórico de treinos anteriores do aluno.
+
+#### Critérios de Aceitação
+
+- O aluno deve conseguir acessar a interface de treinos após login e ver seus planos personalizados.
+- A listagem deve exibir corretamente os planos com data de criação e status.
+- Ao selecionar um plano, o aluno deve visualizar todos os detalhes preenchidos pelo instrutor.
+- Planos anteriores devem permanecer acessíveis como histórico.
+- A interface deve indicar se há um novo plano sendo criado ou aguardando resposta do instrutor.
+
+___
 
 
 
