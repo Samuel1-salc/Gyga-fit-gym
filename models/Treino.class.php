@@ -53,37 +53,25 @@ class Treino
             return false;
         }
     }
-    
-    public function getExercicios(){
-        try {
-            $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios");
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erro ao buscar exercícios: " . $e->getMessage();
-            return false;
+    public function getDataTreinos($id_aluno)
+    {
+        if(!is_numeric($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno deve ser um número.");
         }
-    }
-    public function getGrupo_muscular(){
-        try {
-            $stmt = $this->link->prepare("SELECT DISTINCT grupo_muscular FROM exercicios");
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erro ao buscar exercícios: " . $e->getMessage();
-            return false;
+        if(empty($id_aluno)) {
+            throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
         }
-    }
-
-    public function getExerciciosByGrupoMuscular($grupo_muscular){
         try {
-            $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios WHERE grupo_muscular = :grupo_muscular");
-            $stmt->bindParam(':grupo_muscular', $grupo_muscular);
+            $stmt = $this->link->prepare("
+                SELECT data_criacao FROM plano_de_treino WHERE id_aluno = :id_aluno
+            ");
+            $stmt->bindParam(':id_aluno', $id_aluno);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Erro ao buscar exercícios: " . $e->getMessage();
+            echo "Erro ao buscar treinos: " . $e->getMessage();
             return false;
         }
     }
 }
+
