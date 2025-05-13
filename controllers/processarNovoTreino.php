@@ -76,9 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $exercicio['repeticoes_exercicio'],
                         $observacao,
                         $data_criacao
-                    )) {
-                        $sucesso = false;
-                    }
+                    ))  ;
+                        
                 }
             }
         } else {
