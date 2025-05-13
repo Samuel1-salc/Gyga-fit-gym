@@ -133,24 +133,34 @@ if ($id_aluno != null) {
   </header>
 
   <div class="container">
-    <h2>Criar Plano de Treino</h2>
+    <h2 style="color: red;">Criar Plano de Treino</h2>
     <form id="formPlano" action="./../controllers//processarNovoTreino.php" method="POST">
-
-      <h4>Nome do Aluno: <?= htmlspecialchars(getNomeAluno($id_aluno)) ?> </h4>
-      <h4>Dias de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
-      <h4>Objetivo: <?= htmlspecialchars($objetivo)?> </h4>
-      <h4>Experiência: <?= htmlspecialchars($experiencia  )?> </h4>
-      <input type="hidden" name="id_solicitacao" value="<?= $id_solicitacao?>">
+      <div class="card-aluno">
+        <div class="card-info">
+            <h3 style="color: black;" > <?= htmlspecialchars(getNomeAluno($id_aluno)) ?></h3>
+            <h4 style="color: red;">
+              Dias de treino: <span style="color: black;"><?= htmlspecialchars($grupoTreino) ?></span>
+            </h4>
+            <h4 style="color: red;">
+              Objetivo:<span  style="color: black;">  <?= htmlspecialchars($objetivo)?></span>
+            </h4>
+            <h4 style="color: red;">
+              Experiência: <span style="color: black;">  <?= htmlspecialchars($experiencia  )?> </span>
+            </h4>
+            <input type="hidden" name="id_solicitacao" value="<?= $id_solicitacao?>">
+          </div>
+      </div>
 
       <!-- Campo oculto para o ID do aluno -->
       <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($id_aluno) ?>">
 
       <!-- Campo oculto para a quantidade de treinos -->
-      <input type="hidden" id="quantTreinos" value="<?= $valorQtdTreinos ?>" name="quantTreinos">
+      
 
     
 
       <div id="treinosContainer"></div>
+      <button type="button" class="botao-mais-treino" onclick="adicionarTreino()">+ Treino</button>
       
      
       <button type="submit" name="submit_plano" class="botao-progresso">Enviar dados de treino</button>
@@ -158,40 +168,33 @@ if ($id_aluno != null) {
   </div>
 
   <script>
-    function gerarTreinos() {
-      const container = document.getElementById("treinosContainer");
-      container.innerHTML = "";
-      const letras = ["A", "B", "C", "D", "E", "F", "G"];
-      const quant = <?= $valorQtdTreinos ?>; // Quantidade de treinos a serem gerados
-      
-      
+    let treinoIndex = 0;
+    const letras = ["A", "B", "C", "D", "E", "F", "G"];
+    const contadorExercicios = {};
 
-      for (let i = 0; i < quant; i++) {
-        const letra = letras[i];
-        const treinoDiv = document.createElement("div");
-        treinoDiv.className = "treino-box";
-        treinoDiv.id = `treino${letra}`;
-        
-
-        treinoDiv.innerHTML = `
-            <h3>Treino ${letra}</h3>
+    function gerarTreinoHTML(letra) {
+      return `
+        <div class="treino-box" id="treino${letra}">
+            <h3 style="color: red;">Treino ${letra}</h3>
             <div id="exercicios${letra}">
-              ${gerarExercicioHTML(letra, 1)}
+                ${gerarExercicioHTML(letra, 1)}
             </div>
-            <button type="button" class="botao-mais" onclick="adicionarExercicio('${letra}')">+ Adicionar exercício</button>
+            <button type="button" class="botao-mais" onclick="adicionarExercicio('${letra}')">+ Exercício</button>
             <div class="observacao">
-              <label for="obs${letra}">Observações:</label>
-              <textarea name="obs[${letra}]" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
+                <label for="obs${letra}">Observações:</label>
+                <textarea name="obs[${letra}]" placeholder="Alguma instrução ou detalhe do treino ${letra}"></textarea>
             </div>
-          
-        `;
-        container.appendChild(treinoDiv);
-
+            <button type="button" class="botao-menos-treino" onclick="removerTreino('${letra}')">
+              <span class="icone-remover">&times;</span>
+            </button>
+        </div>
+        
+    `;
       
-      }
+      
     }
 
-    const contadorExercicios = {};
+    
 
     function gerarExercicioHTML(letra, numero) {
       if (!contadorExercicios[letra]) contadorExercicios[letra] = 1;
@@ -225,6 +228,9 @@ if ($id_aluno != null) {
           </select>
           <input type="number" name="dados[${letra}][${numero}][series_exercicio]" placeholder="Séries" required>
           <input type="text" name="dados[${letra}][${numero}][repeticoes_exercicio]" placeholder="Repetições" required>
+           <button type="button" class="botao-menos" onclick="removerExercicio('${letra}', ${contadorExercicios[letra]})">
+            <span class="icone-remover">&times;</span>
+          </button>
         </div>
       </div>
       `;
@@ -236,6 +242,20 @@ if ($id_aluno != null) {
       contadorExercicios[letra]++;
       container.insertAdjacentHTML('beforeend', gerarExercicioHTML(letra, contadorExercicios[letra]));
     }
+    function adicionarTreino() {
+      const container = document.getElementById("treinosContainer");
+      if (treinoIndex >= letras.length) {
+          alert("Limite máximo de treinos atingido.");
+          return;
+      }
+
+      const letra = letras[treinoIndex];
+      container.insertAdjacentHTML('beforeend', gerarTreinoHTML(letra));
+      treinoIndex++;
+    }
+
+  
+
     document.addEventListener('change', function (e) {
         if (e.target.classList.contains('grupo-muscular-dropdown')) {
           const grupoSelecionado = e.target.value; // Grupo muscular selecionado
@@ -259,7 +279,7 @@ if ($id_aluno != null) {
         }
       });
 
-    document.getElementById("formPlano").addEventListener("submit", function (e) {
+      document.getElementById("formPlano").addEventListener("submit", function (e) {
       //e.preventDefault();
       document.getElementById("mensagemSucesso").style.display = "block";
       setTimeout(() => {
@@ -283,13 +303,49 @@ if ($id_aluno != null) {
           exerciciosRestantes.forEach((ex, index) => {
             const strong = ex.querySelector('strong');
             strong.textContent = `Exercício ${index + 1}`; // Atualiza o número do exercício
-            const inputNumero = ex.querySelector('input[name="numero"]');
-            inputNumero.value = index + 1; // Atualiza o valor do input "numero"
+            const inputNumero = ex.querySelector(`input[name="dados[${letra}][${index + 1}][num_exercicio]"]`);
+            if (inputNumero) {
+              inputNumero.value = index + 1; // Atualiza o valor do input "numero"
+        }
           });
         }
     }
+    function removerTreino(letra) {
+        const container = document.getElementById("treinosContainer");
+        const treino = document.getElementById(`treino${letra}`);
+
+        if (treino) {
+            treino.remove(); // Remove a div do treino correspondente
+
+            // Atualiza o índice dos treinos restantes
+            const treinosRestantes = container.querySelectorAll('.treino-box');
+            treinosRestantes.forEach((treino, index) => {
+                const letraAtual = String.fromCharCode(65 + index); // Gera a letra (A, B, C, ...)
+                treino.id = `treino${letraAtual}`; // Atualiza o ID do treino
+                const titulo = treino.querySelector('h3');
+                titulo.textContent = `Treino ${letraAtual}`; // Atualiza o título do treino
+
+                // Atualiza os atributos dos exercícios dentro do treino
+                const exercicios = treino.querySelectorAll('.exercicio-box');
+                exercicios.forEach((exercicio, exIndex) => {
+                    const strong = exercicio.querySelector('strong');
+                    strong.textContent = `Exercício ${exIndex + 1}`; // Atualiza o número do exercício
+
+                    const inputNumero = exercicio.querySelector(`input[name^="dados[${letra}][${exIndex + 1}]"]`);
+                    if (inputNumero) {
+                        inputNumero.name = `dados[${letraAtual}][${exIndex + 1}][num_exercicio]`; // Atualiza o nome do input
+                    }
+                });
+            });
+
+            // Atualiza o índice global de treinos
+            treinoIndex--;
+        }
+    }
     
-    window.addEventListener("DOMContentLoaded", gerarTreinos);
+    document.addEventListener("DOMContentLoaded", function () {
+      adicionarTreino(); // Inicializa com o primeiro treino
+    });
 
   </script>
 
