@@ -76,20 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $exercicio['repeticoes_exercicio'],
                         $observacao,
                         $data_criacao
-                    )) {
-                        $sucesso = false;
-                        echo "Erro ao cadastrar exercício: ";
-                        echo '<pre>';
-                        print_r([
-                            'letra' => $letra,
-                            'num_exercicio' => $exercicio['num_exercicio'],
-                            'nome_exercicio' => $exercicio['nome_exercicio'],
-                            'series' => $exercicio['series_exercicio'],
-                            'repeticoes' => $exercicio['repeticoes_exercicio'],
-                            'observacao' => $observacao
-                        ]);
-                        echo '</pre>';
-                    }
+                    ))  ;
+                        
                 }
             }
         } else {
