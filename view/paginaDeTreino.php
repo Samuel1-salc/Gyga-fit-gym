@@ -137,7 +137,7 @@ if ($id_aluno != null) {
     <form id="formPlano" action="./../controllers//processarNovoTreino.php" method="POST">
 
       <h4>Nome do Aluno: <?= htmlspecialchars(getNomeAluno($id_aluno)) ?> </h4>
-      <h4>Grupos de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
+      <h4>Dias de treino: <?= htmlspecialchars($grupoTreino)?> </h4>
       <h4>Objetivo: <?= htmlspecialchars($objetivo)?> </h4>
       <h4>Experiência: <?= htmlspecialchars($experiencia  )?> </h4>
       <input type="hidden" name="id_solicitacao" value="<?= $id_solicitacao?>">
