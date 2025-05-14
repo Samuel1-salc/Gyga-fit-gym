@@ -78,8 +78,15 @@ $treinosUser = new Treino();
 $id_treino_criado_arr = $treinosUser->getIdTreinoCriado($_SESSION['usuario']['id']);
 $id_ultimo_treino = $id_treino_criado_arr['id_treino_criado'] ?? null;
 $id_ultimo_treino = $id_ultimo_treino ? (int)$id_ultimo_treino : null;
-$treinos = $treinosUser->getTreinoByIdTreino($id_ultimo_treino);
-$letrasTreino = $treinosUser->getLetrasDotreino($id_ultimo_treino);
+
+// Só busca treinos/letras se houver id_treino_criado
+if ($id_ultimo_treino) {
+    $treinos = $treinosUser->getTreinoByIdTreino($id_ultimo_treino);
+    $letrasTreino = $treinosUser->getLetrasDotreino($id_ultimo_treino);
+} else {
+    $treinos = [];
+    $letrasTreino = [];
+}
 
 
 

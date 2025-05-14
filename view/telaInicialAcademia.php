@@ -75,7 +75,7 @@
                 <li><a href="#endereco">Endereço</a></li>
             </ul>
         </nav>
-        <a href="view/telaLogin.php" class="login-button">Login</a>
+        <a href="telaLogin.php" class="login-button">Login</a>
     </header>
 
     <section id="sobre">
