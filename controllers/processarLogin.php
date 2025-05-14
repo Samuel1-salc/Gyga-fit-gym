@@ -2,17 +2,7 @@
 /**
  * Script responsável por processar o login de usuários (alunos e instrutores).
  * Realiza validações do CPF recebido via POST, busca o usuário no banco de dados
- * e redireciona para a tela apropriada conforme o tipo de usuário.
- *
- * Dependências:
- * - Usuarios.class.php: Classe para operações gerais de usuários.
- *
- * Fluxo:
- * 1. Recebe o CPF do formulário via POST.
- * 2. Valida o CPF (campo obrigatório e tamanho).
- * 3. Busca o usuário (aluno ou instrutor) pelo CPF.
- * 4. Se encontrado, armazena os dados do usuário na sessão e redireciona para a tela correspondente.
- * 5. Se não encontrado, armazena mensagem de erro na sessão e interrompe o script.
+ * e redireciona para o index.php que fará o roteamento com base no tipo.
  *
  * @package controllers
  */
@@ -28,12 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validação dos campos obrigatórios
     if (empty($cpf)) {
         $_SESSION['error'] = "Preencha todos os campos!";
+        header("Location: ../index.php?page=telaLogin");
         exit();
     }
 
     // Validação do tamanho do CPF
     if (strlen($cpf) != 11) {
         $_SESSION['error'] = "CPF inválido!";
+        header("Location: ../index.php?page=telaLogin");
         exit();
     }
 
@@ -46,23 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $usuarios->getDataPersonalByCpf($cpf);
     } else {
         $_SESSION['error'] = "Usuário não encontrado!";
+        header("Location: ../index.php?page=telaLogin");
         exit();
     }
 
-    // Redireciona conforme o tipo de usuário
-    if (!empty($user)) {
-        $_SESSION['usuario'] = $user;
-
-        if ($user['typeUser'] == 'aluno') {
-            header("Location: ../view/telaPrincipal.php");
-            exit();
-        } else if ($user['typeUser'] == 'instrutor') {
-            header("Location: ../view/perfilInstrutor.php");
-            exit();
-        }
-    } else {
-        $_SESSION['error'] = "Senha incorreta ou usuário não encontrado!";
-        echo "Senha incorreta ou usuário não encontrado!";
-    }
+    // Usuário encontrado → salva na sessão e deixa o index.php cuidar do redirecionamento
+    $_SESSION['usuario'] = $user;
+    header("Location: ../index.php"); // Acesso à home → index decide para onde mandar
+    exit();
 }
-
