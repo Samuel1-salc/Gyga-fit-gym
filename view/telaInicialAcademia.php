@@ -10,7 +10,7 @@
  * - Cabeçalho:
  *   - Logotipo da academia
  *   - Menu de navegação com âncoras para as seções da página
- *   - Botão para redirecionar à tela de login (telaLogin.php)
+ *   - Botão para redirecionar à tela de login (via index.php)
  *
  * - Seções:
  *   1. Sobre:
@@ -45,7 +45,7 @@
  * Observações:
  * - Esta página não possui backend (apenas visual).
  * - Pode ser usada como página inicial pública da academia antes do login.
- * - O botão de login direciona para telaLogin.php (onde o sistema pode autenticar usuários).
+ * - O botão de login direciona para index.php?page=telaLogin (mantendo entrada única).
  *
  * @package GygaFit
  * @subpackage Views
@@ -75,7 +75,8 @@
                 <li><a href="#endereco">Endereço</a></li>
             </ul>
         </nav>
-        <a href="telaLogin.php" class="login-button">Login</a>
+        <!-- Corrigido: botão de login redireciona via index.php -->
+        <a href="../index.php?page=telaLogin" class="login-button">Login</a>
     </header>
 
     <section id="sobre">
@@ -91,7 +92,6 @@
             <img src="img/ACAD4.jpg" alt="Foto da academia Gyga Fit 4" class="imagem-sobre">
         </div>
     </section>
-
 
     <section id="unidades">
         <h2>Nossas Unidades</h2>

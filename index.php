@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// Página solicitada via GET (rota simples)
-$page = $_GET['page'] ?? 'home';
+// Página acessada via GET; padrão = telaInicial
+$page = $_GET['page'] ?? 'telaInicial';
 
-// Redireciona para a interface conforme o tipo de usuário logado
+// Redirecionamento inteligente com base no tipo de usuário
 function redirecionarUsuario() {
     $tipo = $_SESSION['usuario']['typeUser'] ?? '';
 
@@ -20,26 +20,38 @@ function redirecionarUsuario() {
     }
 }
 
-// Rota de logout
+// Logout
 if ($page === 'logout') {
     session_destroy();
-    header("Location: index.php?page=telaLogin");
+    header("Location: index.php?page=telaInicial");
     exit();
 }
 
-// Se não estiver logado e tentar acessar qualquer coisa que não seja a tela de login → redireciona
-if (!isset($_SESSION['usuario']) && $page !== 'telaLogin') {
-    header("Location: index.php?page=telaLogin");
-    exit();
-}
-
-// Se estiver logado e tentar acessar a home → redireciona para a interface correta
-if (isset($_SESSION['usuario']) && $page === 'home') {
+// Se o usuário já estiver logado e cair na página pública, redireciona
+if (isset($_SESSION['usuario']) && $page === 'telaInicial') {
     redirecionarUsuario();
 }
 
-// Roteamento centralizado
+// Lista de páginas que exigem autenticação
+$rotasProtegidas = ['telaPrincipal', 'perfilInstrutor'];
+
+if (in_array($page, $rotasProtegidas)) {
+    if (!isset($_SESSION['usuario'])) {
+        header("Location: index.php?page=telaLogin");
+        exit();
+    }
+}
+
+// Roteamento das páginas
 switch ($page) {
+    case 'telaInicial':
+        include 'view/telaInicialAcademia.php';
+        break;
+
+    case 'telaLogin':
+        include 'view/telaLogin.php';
+        break;
+
     case 'telaPrincipal':
         if ($_SESSION['usuario']['typeUser'] === 'aluno') {
             include 'view/telaPrincipal.php';
@@ -54,10 +66,6 @@ switch ($page) {
         } else {
             header("Location: index.php?page=erro");
         }
-        break;
-
-    case 'telaLogin':
-        include 'view/telaLogin.php';
         break;
 
     case 'erro':
