@@ -339,7 +339,7 @@ ___
 
 ___ 
 
-| Código RF | Requisito Funcional                              | Tipo de Funcionalidade                                      | Responsável                   | Data de Início | Data de Término | Duração (dias) | Status       |
+| Código RF | Requisito Funcional                              | Tipo de Funcionalidade                                      | Responsável                   | Data prevista | Data de Término | Duração (dias) | Status       |
 |-----------|--------------------------------------------------|-------------------------------------------------------------|-------------------------------|----------------|------------------|----------------|--------------|
 | RF-11      | Menu da Academia com login dos alunos            | Tela de login e redirecionamento para o painel do aluno     | Samuel                        | 21/05           |                  |                | Em andamento |
 | RF-12      | Menu de Aluno e Instrutor, editar perfil e foto  | Interface de usuário para edição de perfil                  | Hott                          | 21/05           |                  |                | Em andamento |
