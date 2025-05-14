@@ -45,7 +45,7 @@
         <div class="tab-content" id="alunos-content">
             <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>PAINEL DE ALUNOS</h2>
-                <button class="btn-cadastrar">
+                <button class="btn-cadastrar" onclick="window.location.href='telaCadastroAluno.php'"> 
                     <i class="fas fa-plus"></i>
                     <span>Cadastrar Aluno</span>
                 </button>
@@ -53,35 +53,23 @@
 
             <div class="aluno-card">
                 <div class="aluno-avatar">
-                    <img src="https://via.placeholder.com/100/333333/FFFFFF?text=J" alt="José">
+                    <img src="./img/instrutor.jpg" alt="José">
                 </div>
                 <div class="aluno-info">
                     <h3>José</h3>
                     <p>Plano: anual</p>
                     <p>Tempo restante: 1 mês</p>
                 </div>
-                <div class="aluno-action">
-                    <button class="btn-editar">
-                        <i class="fas fa-cog"></i>
-                        <span>Editar</span>
-                    </button>
-                </div>
             </div>
 
             <div class="aluno-card">
                 <div class="aluno-avatar">
-                    <img src="C:\xampp\htdocs\testeGyga\img\maria.jpg" alt="Maria">
+                    <img src="./img/maria.jpg" alt="Maria">
                 </div>
                 <div class="aluno-info">
                     <h3>Maria</h3>
                     <p>Plano: anual</p>
                     <p>Tempo restante: 1 mês</p>
-                </div>
-                <div class="aluno-action">
-                    <button class="btn-editar">
-                        <i class="fas fa-cog"></i>
-                        <span>Editar</span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -90,7 +78,7 @@
         <div class="tab-content" id="personais-content" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>PAINEL DE PERSONAIS</h2>
-                <button class="btn-cadastrar">
+                <button class="btn-cadastrar"  onclick="window.location.href='telaCadastroInstrutor.php'">
                     <i class="fas fa-plus"></i>
                     <span>Cadastrar Personal</span>
                 </button>
@@ -98,7 +86,7 @@
 
             <div class="personal-card">
                 <div class="personal-avatar">
-                    <img src="https://via.placeholder.com/100/0066CC/FFFFFF?text=C" alt="Carlos">
+                    <img src="./img/PROF2.jpg" alt="Carlos">
                 </div>
                 <div class="personal-info">
                     <h3>Carlos</h3>
@@ -106,7 +94,7 @@
                     <p>Alunos ativos: 12</p>
                 </div>
                 <div class="personal-action">
-                    <button class="btn-editar">
+                    <button class="btn-editar" onclick="window.location.href='telaCadastroInstrutor.php'">
                         <i class="fas fa-cog"></i>
                         <span>Editar</span>
                     </button>
@@ -115,7 +103,7 @@
 
             <div class="personal-card">
                 <div class="personal-avatar">
-                    <img src="https://via.placeholder.com/100/CC0066/FFFFFF?text=A" alt="Ana">
+                    <img src="./img/PROF4.jpg" alt="Ana">
                 </div>
                 <div class="personal-info">
                     <h3>Ana</h3>
@@ -123,7 +111,7 @@
                     <p>Alunos ativos: 8</p>
                 </div>
                 <div class="personal-action">
-                    <button class="btn-editar">
+                    <button class="btn-editar" onclick="window.location.href='telaCadastroInstrutor.php'">
                         <i class="fas fa-cog"></i>
                         <span>Editar</span>
                     </button>
@@ -135,7 +123,7 @@
         <div class="tab-content" id="academia-content" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>PAINEL DE ACADEMIAS</h2>
-                <button class="btn-cadastrar">
+                <button class="btn-cadastrar"  onclick="window.location.href='telaCadastroAcademia.php'">
                     <i class="fas fa-plus"></i>
                     <span>Cadastrar Academia</span>
                 </button>
@@ -143,7 +131,7 @@
 
             <div class="acad-card">
                 <div class="acad-avatar">
-                    <img src="https://via.placeholder.com/100/0066CC/FFFFFF?text=C" alt="Carlos">
+                    <img src="./img/ACAD1.jpg" alt="Academia 1">
                 </div>
                 <div class="acad-info">
                     <h3>UNIDADE 1</h3>
@@ -153,7 +141,7 @@
                 </div>
 
                 <div class="acad-action">
-                    <button class="btn-editar">
+                    <button class="btn-editar" onclick="window.location.href='telaCadastroAcademia.php'">
                         <i class="fas fa-cog"></i>
                         <span>Editar</span>
                     </button>
@@ -162,7 +150,7 @@
 
             <div class="acad-card">
                 <div class="acad-avatar">
-                    <img src="https://via.placeholder.com/100/CC0066/FFFFFF?text=A" alt="Ana">
+                    <img src="./img/ACAD4.jpg" alt="Academia 2">
                 </div>
                 <div class="acad-info">
                     <h3>UNIDADE 2</h3>
@@ -172,7 +160,7 @@
                 </div>
 
                 <div class="acad-action">
-                    <button class="btn-editar">
+                    <button class="btn-editar" onclick="window.location.href='telaCadastroAcademia.php'">
                         <i class="fas fa-cog"></i>
                         <span>Editar</span>
                     </button>
