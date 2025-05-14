@@ -1,5 +1,0 @@
-# Impede o acesso direto a qualquer arquivo dentro da pasta /view
-<FilesMatch "\.(php|html)$">
-    Order Deny,Allow
-    Deny from all
-</FilesMatch>
