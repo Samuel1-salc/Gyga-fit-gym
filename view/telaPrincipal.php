@@ -32,6 +32,7 @@
  */
 session_start();
 require_once __DIR__ . '/../models/Usuarios.class.php';
+require_once __DIR__ . '/../models//Treino.class.php';
 $usuarios = new Users();
 function plano($plano){
     if ($plano == 1) {
@@ -42,7 +43,7 @@ function plano($plano){
         return "Anual";
     }
  }
-
+ //************************************************************************************** */
  function diffData($dataInicio, $dataTermino) {
     $data_inicio = $dataInicio;
     $data_termino = $dataTermino;
@@ -65,12 +66,32 @@ function plano($plano){
         return " {$intervalo->d} dias";
     }
  }
-
  function nomeInstrutor($id_aluno){
     $usuarios = new Users();
     $nomeInstrutor = $usuarios->getNomePersonalByAluno($id_aluno);
     return $nomeInstrutor['nome_instrutor'] ?? 'Não disponível';
  }
+//************************************************************************************** */
+
+//iniciando a parte de treinos
+$treinosUser = new Treino();
+$id_treino_criado_arr = $treinosUser->getIdTreinoCriado($_SESSION['usuario']['id']);
+$id_ultimo_treino = $id_treino_criado_arr['id_treino_criado'] ?? null;
+$id_ultimo_treino = $id_ultimo_treino ? (int)$id_ultimo_treino : null;
+
+// Só busca treinos/letras se houver id_treino_criado
+if ($id_ultimo_treino) {
+    $treinos = $treinosUser->getTreinoByIdTreino($id_ultimo_treino);
+    $letrasTreino = $treinosUser->getLetrasDotreino($id_ultimo_treino);
+} else {
+    $treinos = [];
+    $letrasTreino = [];
+}
+
+
+
+  
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -81,7 +102,7 @@ function plano($plano){
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="./style/Tela-Principal.css">
+    <link rel="stylesheet" href="./style//Tela-Principal.css?v=<?= time(); ?>">
 </head>
 
 <body>
@@ -122,15 +143,34 @@ function plano($plano){
                 <p>Confira seu cronograma de treinos!</p>
             </div>
 
-            <div class="dias-semana button">
-                <button onclick="mostrarTreino('treinoA')">Treino A</button>
-                <button onclick="mostrarTreino('treinoB')">Treino B</button>
-                <button onclick="mostrarTreino('treinoC')">Treino C</button>
-            </div>
+            <div class="dias-semana button" id="dias-semana"></div>
+
+            <div class="treinos-container">
+                <?php foreach ($letrasTreino as $letraObj): ?>
+                    <div class="treino-card" id="treino<?= $letraObj['letra_treino'] ?>" style="display: none;">
+                        <h3>Treino <?= $letraObj['letra_treino'] ?></h3>
+                        <ul>
+                            <?php foreach ($treinos as $treino): ?>
+                                <?php if ($treino['letra_treino'] == $letraObj['letra_treino']): ?>
+                                    <?php $exercicioInfoArr = $treinosUser->getExerciciosById($treino['nome_exercicio']); ?>
+                                    <?php $exercicioInfo = $exercicioInfoArr[0] ?? null; ?>
+                                    <?php if ($exercicioInfo): ?>
+                                     <li>
+                                        <div><span class="titulo-exercicio"><?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?></span></div>
+                                        <div>Série: <span><?= htmlspecialchars($treino['series']) ?></span></div>
+                                        <div>Repetição: <span><?= htmlspecialchars($treino['repeticoes']) ?></span></div>
+                                        <div class="descricao"><?= htmlspecialchars($exercicioInfo['descricao_exercicio']) ?></div>
+                                    </li>
+                                    
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
 
             <div class="botao-container">
                 <button class="botao-novo-treino" id="botao-novo-treino" onclick="window.location.href='./paginaFormulario.php'">Solicitar Novo Treino</button>
-                <button class="botao-registrar" onclick="abrirRegist()">Concluído</button>
             </div>
                 
             <div class="footer-info">
@@ -160,6 +200,35 @@ function plano($plano){
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
+        // Função para mostrar apenas o treino selecionado
+        function mostrarTreino(treinoId) {
+            const treinos = document.querySelectorAll('.treino-card');
+            treinos.forEach(function(card) {
+                card.style.display = (card.id === treinoId) ? 'block' : 'none';
+            });
+        }
+        // Gera os botões de treino dinamicamente
+        function gerarBotoesTreino(letrasTreino) {
+            const container = document.getElementById('dias-semana');
+            letrasTreino.forEach(function(letraObj) {
+                const button = document.createElement('button');
+                button.innerHTML = 'Treino ' + letraObj.letra_treino;
+                button.className = 'botao-treino';
+                button.onclick = function() {
+                    mostrarTreino('treino' + letraObj.letra_treino);
+                };
+                container.appendChild(button);
+            });
+        }
+        // Passa o array PHP para o JS
+        const letrasTreino = <?php echo json_encode($letrasTreino); ?>;
+        // Gera os botões e exibe o primeiro treino ao carregar a página
+        window.onload = function() {
+            gerarBotoesTreino(letrasTreino);
+            if (letrasTreino.length > 0 && letrasTreino[0].letra_treino) {
+                mostrarTreino('treino' + letrasTreino[0].letra_treino);
+            }
+        };
     </script>
 </body>
 
