@@ -64,6 +64,36 @@ class Treino
         }
     }
 
+     /**
+     * Busca o último id_treino_criado para um aluno.
+     *
+     * @param int $id_aluno ID do aluno.
+     * @return array|false Retorna um array com o id_treino_criado ou false em caso de erro.
+     * @throws InvalidArgumentException Se o ID do aluno for inválido.
+     */
+    public function getTreinoByIdTreino($id_treino_criado)
+    {
+        if (!is_numeric($id_treino_criado)) {
+            throw new InvalidArgumentException("ID do treino deve ser um número.");
+        }
+        if (empty($id_treino_criado)) {
+            throw new InvalidArgumentException("ID do treino não pode ser vazio.");
+        }
+        try {
+            $stmt = $this->link->prepare("
+                SELECT * FROM plano_de_treino WHERE id_treino_criado = :id_treino_criado 
+            ");
+            $stmt->bindParam(':id_treino_criado', $id_treino_criado );
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar treinos: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+
     /**
      * Busca o último id_treino_criado para um aluno.
      *
@@ -80,9 +110,7 @@ class Treino
             throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
         }
         try {
-            $stmt = $this->link->prepare("
-                SELECT id_treino_criado FROM plano_de_treino WHERE id_aluno = :id_aluno ORDER BY id DESC LIMIT 1
-            ");
+            $stmt = $this->link->prepare("SELECT id_treino_criado FROM plano_de_treino WHERE id_aluno = :id_aluno ORDER BY id DESC LIMIT 1");
             $stmt->bindParam(':id_aluno', $id_aluno);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,6 +119,26 @@ class Treino
             return false;
         }
     }
+
+    public function getLetrasDotreino($id_treino_criado)
+    {
+        if (!is_numeric($id_treino_criado)) {
+            throw new InvalidArgumentException("ID do treino deve ser um número.");
+        }
+        if (empty($id_treino_criado)) {
+            throw new InvalidArgumentException("ID do treino não pode ser vazio.");
+        }
+        try {
+            $stmt = $this->link->prepare(" SELECT DISTINCT letra_treino FROM plano_de_treino WHERE id_treino_criado = :id_treino_criado  ");
+            $stmt->bindParam(':id_treino_criado', $id_treino_criado);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar treinos: " . $e->getMessage();
+            return false;
+        }
+    }
+
 
     /**
      * Busca a data de criação do último treino de um aluno.
@@ -165,6 +213,19 @@ class Treino
         try {
             $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios WHERE grupo_muscular = :grupo_muscular");
             $stmt->bindParam(':grupo_muscular', $grupo_muscular);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar exercícios: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getExerciciosById($id_exercicio)
+    {
+        try {
+            $stmt = $this->link->prepare("SELECT * FROM exercicios WHERE id = :id_exercicio");
+            $stmt->bindParam(':id_exercicio', $id_exercicio);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

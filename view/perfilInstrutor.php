@@ -88,6 +88,9 @@ if (isset($_GET['status'])) {
         foreach ($todosFormularios as $a) {
             if (strtolower($a['status']) === $filtro) {
                 $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($a['id_aluno']);
+                if($filtro === 'em andamento' && empty($aluno)){
+                    echo '<div><p style = "color: red"><strong>Nenhum aluno pendente encontrado.</strong></p></div>';
+                }
             }
         }
     }
