@@ -63,8 +63,7 @@
 </head>
 <body>
     <header>
-        <div class="logo">GYGA FIT
-        </div>
+        <div class="logo">GYGA FIT</div>
         <nav>
             <ul>
                 <li><a href="#sobre">Sobre</a></li>
@@ -75,8 +74,8 @@
                 <li><a href="#endereco">Endereço</a></li>
             </ul>
         </nav>
-        <!-- Corrigido: botão de login redireciona via index.php -->
-        <a href="../index.php?page=telaLogin" class="login-button">Login</a>
+        <a href="index.php?page=telaLogin" class="login-button">Login</a>
+        
     </header>
 
     <section id="sobre">
@@ -96,7 +95,6 @@
     <section id="unidades">
         <h2>Nossas Unidades</h2>
         <p>Estamos presentes na Capital do Tocantins, Palmas. Contamos com unidades no Centro, na Norte e na Sul.</p>
-        <!-- Lista de unidades com imagens pode ser inserida aqui -->
     </section>
 
     <section id="professores">
