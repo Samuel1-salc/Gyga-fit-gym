@@ -33,7 +33,8 @@ $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível
  * @param int $id_aluno ID do aluno
  * @return string Retorna "solicitEnviada" se já houver solicitação, "solicitNaoEnviada" caso contrário
  */
-function adcAlunoSolicitacao($id_aluno) {
+function adcAlunoSolicitacao($id_aluno)
+{
     $solicitacaoTreino = new SolicitacaoTreino();
     $relacaoAlunoInstrutor = new aluno_instrutor();
 
@@ -50,7 +51,8 @@ function adcAlunoSolicitacao($id_aluno) {
  * @param int $id_aluno ID do aluno
  * @return int Número de solicitações
  */
-function countSolicitacaoTreino($id_aluno) {
+function countSolicitacaoTreino($id_aluno)
+{
     $solicitacaoTreino = new SolicitacaoTreino();
     return $solicitacaoTreino->contarSolicitacoesTreino($id_aluno);
 }
@@ -60,7 +62,8 @@ function countSolicitacaoTreino($id_aluno) {
  *
  * @return int Número de solicitações pendentes
  */
-function countPendentes() {
+function countPendentes()
+{
     $status = 'em andamento';
     $solicitacaoTreino = new SolicitacaoTreino();
     return $solicitacaoTreino->contarPendentes($status);
@@ -88,6 +91,9 @@ if (isset($_GET['status'])) {
         foreach ($todosFormularios as $a) {
             if (strtolower($a['status']) === $filtro) {
                 $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($a['id_aluno']);
+                if ($filtro === 'em andamento' && empty($aluno)) {
+                    echo '<div><p style = "color: red"><strong>Nenhum aluno pendente encontrado.</strong></p></div>';
+                }
             }
         }
     }
@@ -96,6 +102,7 @@ if (isset($_GET['status'])) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Painel do Instrutor</title>
@@ -105,129 +112,142 @@ if (isset($_GET['status'])) {
 
 <body>
 
-        <header>
-            <div class="header-logo">
-                <button class="header-button" onclick="toggleSidebar()">☰</button>
-                <img src="img/logo.png" alt="Logo GYGA FIT">
-                <h1>GYGA FIT - Painel do Instrutor</h1>
-            </div>
-        </header>
+    <header>
+        <div class="header-logo">
+            <button class="header-button" onclick="toggleSidebar()">☰</button>
+            <img src="img/logo.png" alt="Logo GYGA FIT">
+            <h1>GYGA FIT - Painel do Instrutor</h1>
+        </div>
+    </header>
 
-        <div class="sidebar" id="sidebar">
-            <button class="close-button" onclick="toggleSidebar()">X</button>
-            <h3>Menu</h3>
-            <a href="./alterarPerfil.php">Alterar Perfil</a>
-            <a href="./configuracoes.php">Configurações</a>
-            <a href="./menuAcademia.php">Menu da Academia</a>
+    <div class="sidebar" id="sidebar">
+        <button class="close-button" onclick="toggleSidebar()">X</button>
+        <h3>Menu</h3>
+        <a href="./editar_perfil_instrutor.php">Alterar Perfil</a>
+        <a href="./configuracoes.php">Configurações</a>
+        <a href="./telaInicialAcademia.php">Menu da Academia</a>
+
+    </div>
+
+    <div class="main-content">
+        <div class="perfil-instrutor">
+            <?php if (!empty($instrutor['foto'])): ?>
+                <img src="../view/uploads/<?php echo htmlspecialchars($instrutor['foto']); ?>" alt="Foto do Instrutor"
+                    class="foto-instrutor">
+            <?php else: ?>
+                <img src="./img/user-placeholder.png" alt="Sem foto" class="foto-instrutor">
+            <?php endif; ?>
+
+            <div class="perfil-detalhes">
+                <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
+                <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico'] ?? 'Não informado') ?></p>
+                <p><strong>Quantidade de Alunos Atendidos:</strong>
+                    <?= htmlspecialchars($countAlunos ?? 'Nenhum aluno encontrado') ?></p>
+                <p><strong>Pendentes:</strong> <?= htmlspecialchars(countPendentes() ?? '0') ?></p>
+                <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($disponibilidade) ?></p>
+            </div>
         </div>
 
-        <div class="main-content">
-            <div class="perfil-instrutor">
-                <img src="img/instrutor.jpg" alt="Foto do Instrutor">
-                <div class="perfil-detalhes">
-                    <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
-                    <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico'] ?? 'Não informado') ?></p>
-                    <p><strong>Quantidade de Alunos Atendidos:</strong> <?= htmlspecialchars($countAlunos ?? 'Nenhum aluno encontrado') ?></p>
-                    <p><strong>Pendentes:</strong> <?= htmlspecialchars(countPendentes() ?? '0') ?></p>
-                    <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($disponibilidade) ?></p>
-                </div>
-            </div>
-
-            <div class="solicitacoes">
+        <div class="solicitacoes">
             <form method="GET" action="" class="search-bar">
                 <?php
-                    $search = $_GET['search'] ?? '';
-                    $statusSelecionado = strtolower($_GET['status'] ?? '');
+                $search = $_GET['search'] ?? '';
+                $statusSelecionado = strtolower($_GET['status'] ?? '');
                 ?>
-                <input type="text" name="search" placeholder="Pesquisar aluno..." value="<?= htmlspecialchars($search) ?>">
+                <input type="text" name="search" placeholder="Pesquisar aluno..."
+                    value="<?= htmlspecialchars($search) ?>">
                 <button type="submit">Pesquisar</button>
                 <select name="status" id="status" onchange="this.form.submit()">
-                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente
+                    </option>
                     <option value="atendido" <?= $statusSelecionado === 'atendido' ? 'selected' : '' ?>>Atendido</option>
                     <option value="todos" <?= $statusSelecionado === 'todos' ? 'selected' : '' ?>>Todos</option>
                 </select>
-        
-                
-            </form>
-                <h3>Solicitações de Treino</h3>
-                <?php foreach ($aluno as $alunoAtual): ?>
-                    
-                    <div class="card-aluno">
-                        <div class="card-info">
-                            <div>
-                                <?php $formulario = new SolicitacaoTreino(); $status = $formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno']);?>
-                                <?php if(!empty($status) && isset($status['status']) && $status['status'] === 'em andamento'): ?>
-                                    <div class = "icon-notificacao"> </div>
-                                <?php endif; ?>
-                                <p><strong><?= htmlspecialchars($alunoAtual['nome_aluno']) ?></strong></p>
-                                <p><?= htmlspecialchars($alunoAtual['data_solicitacao']) ?></p>
-                                <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($alunoAtual['id_aluno'])) ?></p>
-                                
-                              
-                                    
 
-                                <!-- Container oculto da solicitação -->
-                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-content" style="display: none; margin-top: 10px;">
-                                    <?php
-                                        $solicitacoes = (new SolicitacaoTreino())->getSolicitacaoTreino($alunoAtual['id_aluno']);
-                                        if ($solicitacoes):
-                                            foreach ($solicitacoes as $sol):
-                                    ?>
-                                            <p><strong>Experiençia:</strong> <?= htmlspecialchars($sol['experiencia']) ?></p>
-                                            <p><strong>Objetivo:</strong> <?= htmlspecialchars($sol['objetivo']) ?></p>
-                                            <p><strong>Dias de treino:</strong> <?= htmlspecialchars($sol['treinos']) ?></p>
-                                            <p><strong>Peso:</strong> <?= htmlspecialchars($sol['peso']) ?></p>
-                                            <p><strong>Altura:</strong> <?= htmlspecialchars($sol['altura']) ?></p> 
-                                    
-                                                <?php 
-                                                    $status = strtolower($sol['status']);
-                                                    switch ($status) {
-                                                        case 'em andamento':
-                                                            $cor = 'red';
-                                                            
-                                                            break;
-                                                        case 'atendido':
-                                                            $cor = 'green';
-                                                            break;
-                                                        default:
-                                                            $cor = 'gray';
-                                                    }
-                                                ?>
-                                                <p style="color: <?= $cor ?>;">Solicitação: <?= htmlspecialchars($sol['status']) ?></p>
-                                                
-                                            
-                                                                                        
-                                            <hr>
-                                    <?php
-                                            endforeach;
-                                        else:
-                                            echo "<p>Nenhuma solicitação encontrada.</p>";
-                                        endif;
-                                    ?>
-                                </div>
+
+            </form>
+            <h3>Solicitações de Treino</h3>
+            <?php foreach ($aluno as $alunoAtual): ?>
+
+                <div class="card-aluno">
+                    <div class="card-info">
+                        <div>
+                            <?php $formulario = new SolicitacaoTreino();
+                            $status = $formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno']); ?>
+                            <?php if (!empty($status) && isset($status['status']) && $status['status'] === 'em andamento'): ?>
+                                <div class="icon-notificacao"> </div>
+                            <?php endif; ?>
+                            <p><strong><?= htmlspecialchars($alunoAtual['nome_aluno']) ?></strong></p>
+                            <p><?= htmlspecialchars($alunoAtual['data_solicitacao']) ?></p>
+                            <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($alunoAtual['id_aluno'])) ?></p>
+
+
+
+
+                            <!-- Container oculto da solicitação -->
+                            <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-content"
+                                style="display: none; margin-top: 10px;">
+                                <?php
+                                $solicitacoes = (new SolicitacaoTreino())->getSolicitacaoTreino($alunoAtual['id_aluno']);
+                                if ($solicitacoes):
+                                    foreach ($solicitacoes as $sol):
+                                        ?>
+                                        <p><strong>Experiençia:</strong> <?= htmlspecialchars($sol['experiencia']) ?></p>
+                                        <p><strong>Objetivo:</strong> <?= htmlspecialchars($sol['objetivo']) ?></p>
+                                        <p><strong>Dias de treino:</strong> <?= htmlspecialchars($sol['treinos']) ?></p>
+                                        <p><strong>Peso:</strong> <?= htmlspecialchars($sol['peso']) ?></p>
+                                        <p><strong>Altura:</strong> <?= htmlspecialchars($sol['altura']) ?></p>
+
+                                        <?php
+                                        $status = strtolower($sol['status']);
+                                        switch ($status) {
+                                            case 'em andamento':
+                                                $cor = 'red';
+
+                                                break;
+                                            case 'atendido':
+                                                $cor = 'green';
+                                                break;
+                                            default:
+                                                $cor = 'gray';
+                                        }
+                                        ?>
+                                        <p style="color: <?= $cor ?>;">Solicitação: <?= htmlspecialchars($sol['status']) ?></p>
+
+
+
+                                        <hr>
+                                        <?php
+                                    endforeach;
+                                else:
+                                    echo "<p>Nenhuma solicitação encontrada.</p>";
+                                endif;
+                                ?>
                             </div>
                         </div>
-                        <div class="card-botoes">
-                        <?php $formulario = new SolicitacaoTreino();?>
-                        <?php if($formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno'])):?>
-                            <button class="btn-visualizar" onclick="toggleSolicitacao('<?= $alunoAtual['id_aluno'] ?>')">Visualizar</button>
+                    </div>
+                    <div class="card-botoes">
+                        <?php $formulario = new SolicitacaoTreino(); ?>
+                        <?php if ($formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno'])): ?>
+                            <button class="btn-visualizar"
+                                onclick="toggleSolicitacao('<?= $alunoAtual['id_aluno'] ?>')">Visualizar</button>
                             <?php $statusParaNovoTreino = $formulario->getFormularioForCriacaoDeTreino($alunoAtual['id_aluno']) ?>
-                            <?php if($statusParaNovoTreino['status'] == 'em andamento'): ?>
+                            <?php if ($statusParaNovoTreino['status'] == 'em andamento'): ?>
                                 <form action="../controllers/processarNovoTreino.php" method="POST">
                                     <input type="hidden" name="id_alunoNovoTreino" value="<?= $alunoAtual['id_aluno'] ?>">
-                                    <input class="btn-status" value = 'Novo Treino'name="submit_NovoTreino" type="submit"></input>
+                                    <input class="btn-status" value='Novo Treino' name="submit_NovoTreino" type="submit"></input>
                                 </form>
                             <?php endif; ?>
                         <?php endif; ?>
-                        </div>
                     </div>
-                    
-                <?php endforeach; ?>
-                <button class="btn-add-aluno" onclick="window.location.href='./alunos.php'">Adicionar Aluno</button>
-            </div>
-        </div>
+                </div>
 
-        <script>
+            <?php endforeach; ?>
+            <button class="btn-add-aluno" onclick="window.location.href='./alunos.php'">Adicionar Aluno</button>
+        </div>
+    </div>
+
+    <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
@@ -242,7 +262,7 @@ if (isset($_GET['status'])) {
             }
         }
     </script>
-            
+
     <footer>
         <img src="img/logo.png" alt="Logo GYGA FIT">
         <p>&copy; <?= date('Y') ?> GYGA FIT. Todos os direitos reservados.</p>

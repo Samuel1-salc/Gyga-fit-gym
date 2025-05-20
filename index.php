@@ -1,3 +1,3 @@
 <?php
-echo ("oi");
+header("location: ./view/telaInicialAcademia.php")
 ?>

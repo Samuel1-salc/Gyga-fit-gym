@@ -333,7 +333,179 @@ ___
 
 ___
 
+## SPRINT 3 - 
+
+**Valor:** Desenvolvimento das funcionalidades de Tela de Menu, Back-End da tela de gerente, Redirecinamento de telas, refatorar login caso gerente e inserção de imagens no sistema.
+
+___ 
+
+| Código RF | Requisito Funcional                              | Tipo de Funcionalidade                                      | Responsável                   | Data prevista | Data de Término | Duração (dias) | Status       |
+|-----------|--------------------------------------------------|-------------------------------------------------------------|-------------------------------|----------------|------------------|----------------|--------------|
+| RF-11      | Menu da Academia com login dos alunos            | Tela de login e redirecionamento para o painel do aluno     | Samuel                        | 21/05           |                  |                | Em andamento |
+| RF-12      | Menu de Aluno e Instrutor, editar perfil e foto  | Interface de usuário para edição de perfil                  | Hott                          | 21/05           |                  |                | Em andamento |
+| RF-13      | Backend da página de gerente                     | Backend administrativo                                       | Sophia                        | 18/05           |                  |                | Em andamento |
+| RF-14      | Redirecionamento de telas funcional              | Lógica de redirecionamento após login                       | Mauricio                      | 18/05           |                  |                | Em andamento |
+| RF-15      | Refatorar tela de login se for gerente           | Tela de login com diferenciação de perfis                   | Hallef                        | 18/05           |                  |                | Em andamento |
+| RF-16      | Inserção de imagens nos exercícios via URL       | Cadastro de exercício com imagem por URL no banco de dados | Heitor                        | 21/05           |                  |                | Em andamento |
+
+___
 
 
+### Menu da Academia com login dos alunos (RF - 11)
+
+**Como** um aluno, **eu quero** acessar o sistema com meu login, para visualizar meu perfil, treinos e demais funcionalidades disponíveis no aplicativo.
+
+#### Regras de Negócio
+
+- Apenas usuários cadastrados como aluno poderão acessar essa área.
+- O login deve verificar credenciais armazenadas no banco de dados.
+- O sistema deve redirecionar o aluno para sua interface personalizada após o login.
+
+#### Tarefas
+
+**Back-end/front-end :**
+
+- Criar endpoint de autenticação de alunos.
+- Criar tela de login específica para alunos.
+- Implementar redirecionamento para o painel do aluno.
+
+#### Critérios de Aceitação
+
+- O aluno deve conseguir realizar login com credenciais válidas.
+- Após login, o sistema deve apresentar as funcionalidades exclusivas do perfil de aluno.
+- Em caso de erro, mensagens apropriadas devem ser exibidas.
+
+---
+
+### Menu de Aluno e Instrutor, editar perfil e adição de foto (RF - 12)
+
+**Como** aluno ou instrutor, **eu quero** editar meu perfil e adicionar uma foto, para manter minhas informações pessoais atualizadas.
+
+#### Regras de Negócio
+
+- A edição de perfil só pode ser feita pelo próprio usuário autenticado.
+- O sistema deve permitir o envio de uma imagem para o perfil.
+- Algumas informações sensíveis (como tipo de usuário) não devem ser editáveis.
+
+#### Tarefas
+
+**Back-end/front-end :**
+
+- Criar endpoint para atualização de perfil.
+- Criar interface para edição de dados e upload de imagem.
+- Validar formatos de imagem e dados atualizados.
+
+#### Critérios de Aceitação
+
+- O usuário deve conseguir editar suas informações com sucesso.
+- A foto deve ser exibida corretamente após upload.
+- Informações não editáveis devem estar bloqueadas.
+
+---
+
+### Backend da página de gerente (RF - 13)
+
+**Como** gerente da academia, **eu quero** acessar uma página administrativa funcional com backend completo, para gerenciar usuários e supervisionar as atividades do sistema.
+
+#### Regras de Negócio
+
+- Apenas usuários com perfil de gerente autenticado podem acessar essa área.
+- A página deve permitir visualizar, editar ou excluir usuários do sistema.
+- O backend deve fornecer dados relevantes em tempo real como número de clientes, instrutores e estatísticas.
+
+#### Tarefas
+
+**Back-end/front-end :**
+
+- Criar API exclusiva para gerenciamento de usuários e permissões.
+- Desenvolver a lógica de autenticação e autorização para o gerente.
+- Criar interface para exibição e manipulação dos dados administrativos.
+
+#### Critérios de Aceitação
+
+- O gerente deve conseguir acessar sua página com sucesso após login.
+- Os dados administrativos devem ser atualizados e corretos.
+- A interface deve permitir ações de gerenciamento como editar ou excluir usuários.
+
+---
+
+### Redirecionamento de telas funcional (RF - 14)
+
+**Como** usuário autenticado, **eu quero** ser redirecionado automaticamente para a interface correspondente ao meu perfil, para que eu acesse apenas os recursos destinados ao meu tipo de usuário.
+
+#### Regras de Negócio
+
+- O sistema deve verificar o tipo de usuário após autenticação.
+- Cada tipo de usuário será redirecionado para uma interface distinta:
+  - Cliente → painel do aluno
+  - Instrutor → painel de instrutor
+  - Gerente → painel administrativo
+- O redirecionamento deve ocorrer de forma transparente e segura.
+
+#### Tarefas
+
+**Back-end/front-end :**
+
+- Implementar lógica de redirecionamento com base no tipo de usuário autenticado.
+- Garantir que o usuário não acesse áreas que não lhe pertencem.
+- Exibir mensagem ou tela de erro caso o tipo de usuário não seja reconhecido.
+
+#### Critérios de Aceitação
+
+- O sistema deve identificar corretamente o tipo de usuário.
+- O redirecionamento deve ocorrer de forma automática e correta após o login.
+- O usuário não deve conseguir acessar outras áreas via URL manual.
+
+---
+
+### Refatorar tela de login se for gerente (RF - 15)
+
+**Como** gerente, **eu quero** que a tela de login seja adaptada ao meu perfil, para garantir uma experiência personalizada e voltada à administração do sistema.
+
+#### Regras de Negócio
+
+- A tela de login deve identificar se o usuário é um gerente.
+- Gerentes devem ter visual e funcionalidades diferentes ao logar.
+- Recursos administrativos não devem ser visíveis para outros tipos de usuário.
+
+#### Tarefas
+
+**Back-end/front-end :**
+
+- Refatorar tela de login para detecção do tipo de usuário.
+- Criar elementos visuais distintos para o login do gerente.
+- Garantir que o redirecionamento pós-login seja exclusivo.
+
+#### Critérios de Aceitação
+
+- O sistema deve exibir a interface administrativa após login de gerente.
+- A diferenciação visual deve ser clara.
+- O login de outros usuários não deve acessar funcionalidades de gerente.
+
+---
+
+### Inserção de imagens nos exercícios usando URL no banco de dados (RF - 16)
+
+**Como** instrutor, **eu quero** adicionar imagens ilustrativas aos exercícios usando URLs, para que os alunos possam visualizar corretamente a execução dos movimentos.
+
+#### Regras de Negócio
+
+- Cada exercício pode conter uma imagem representada por uma URL.
+- O sistema deve validar a URL antes de salvar.
+- A imagem deve ser exibida automaticamente na visualização do exercício pelo aluno.
+
+#### Tarefas
+
+**Back-end/front-end :**
+
+- Criar campo de URL de imagem na tabela de exercícios no banco de dados.
+- Implementar validação de URL no cadastro/edição de exercícios.
+- Exibir imagem nos painéis do instrutor e do aluno.
+
+#### Critérios de Aceitação
+
+- A imagem deve aparecer corretamente nos exercícios listados.
+- URLs inválidas não devem ser salvas.
+- A visualização deve ser otimizada para diferentes dispositivos.
 
 
