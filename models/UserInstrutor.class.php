@@ -1,25 +1,13 @@
 <?php
 
 /**
- * Classe responsável pelas operações relacionadas ao cadastro de instrutores.
- * Permite cadastrar um novo instrutor e obter a data/hora atual formatada.
+ * Classe responsável pelas operações relacionadas ao cadastro e edição de instrutores.
  */
 class UserInstrutor
 {
-    /**
-     * @var Database $con Instância da conexão com o banco de dados.
-     */
     private $con;
-
-    /**
-     * @var PDO $link Link da conexão PDO.
-     */
     private $link;
 
-    /**
-     * Construtor da classe UserInstrutor.
-     * Inicializa a conexão com o banco de dados.
-     */
     public function __construct()
     {
         require_once __DIR__ . '/../config/database.class.php';
@@ -28,22 +16,10 @@ class UserInstrutor
     }
 
     /**
-     * Cadastra um novo instrutor no banco de dados.
-     *
-     * @param string $Username Nome do instrutor.
-     * @param string $Email Email do instrutor.
-     * @param string $Cpf CPF do instrutor.
-     * @param string $unidade Unidade da academia.
-     * @param string $servico Especialidade/serviço do instrutor.
-     * @param string $data_entrada Data de entrada do instrutor (Y-m-d H:i:s).
-     * @param string|null $data_saida Data de saída do instrutor (Y-m-d H:i:s) ou null.
-     * @param string $phone Telefone do instrutor.
-     * @param string $typeUser Tipo de usuário (ex: 'instrutor').
-     * @return void
+     * Cadastra um novo instrutor.
      */
     public function cadastrarInstrutor($Username, $Email, $Cpf, $unidade, $servico, $data_entrada, $data_saida, $phone, $typeUser)
     {
-        // Se data_saida estiver vazia, converte para null
         $data_saida = empty($data_saida) ? null : $data_saida;
 
         $stmt = $this->link->prepare("INSERT INTO instrutor 
@@ -61,17 +37,46 @@ class UserInstrutor
         $stmt->bindValue(':phone', $phone);
         $stmt->bindValue(':typeUser', $typeUser);
 
-        if ($stmt->execute()) {
-            echo "Cadastro realizado com sucesso!";
-        } else {
-            echo "Erro ao cadastrar: " . implode(' | ', $stmt->errorInfo());
+        return $stmt->execute();
+    }
+
+    /**
+     * Edita os dados de um instrutor existente.
+     */
+    public function editarInstrutor($id, $username, $email, $cpf, $unidade, $servico, $phone)
+    {
+        try {
+            $stmt = $this->link->prepare("
+                UPDATE instrutor SET 
+                    username = :username,
+                    email = :email,
+                    cpf = :cpf,
+                    unidade = :unidade,
+                    servico = :servico,
+                    phone = :phone
+                WHERE id = :id
+            ");
+
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':username', $username);
+            $stmt->bindValue(':email', $email);
+            $stmt->bindValue(':cpf', $cpf);
+            $stmt->bindValue(':unidade', $unidade);
+            $stmt->bindValue(':servico', $servico);
+            $stmt->bindValue(':phone', $phone);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erro ao editar instrutor: " . $e->getMessage());
+            return false;
         }
     }
 
     /**
-     * Retorna a data e hora atual formatada.
-     *
-     * @return string Data e hora atual no formato Y-m-d H:i:s.
+<<<<<<< Updated upstream
+     * Retorna a data e hora atual no formato Y-m-d H:i:s.
+=======
+>>>>>>> Stashed changes
      */
     public function dataInicio()
     {
