@@ -198,7 +198,7 @@
 <!-- INTRODUÇÃO COM VÍDEO -->
 <div id="video-intro">
   <video autoplay muted>
-    <source src="../view/video/intro.mp4" type="video/mp4" />
+    <source src="view/video/intro.mp4" type="video/mp4" />
     Seu navegador não suporta vídeo HTML5.
   </video>
 </div>
@@ -206,7 +206,7 @@
 <!-- CONTEÚDO PRINCIPAL -->
 <div class="container" id="conteudo-login">
   <div class="logo">
-    <img src="../view/img/logo.png" alt="GYGA FIT" />
+    <img src="view/img/logo.png" alt="GYGA FIT" />
   </div>
   <div class="login-box">
     <h1>GYGA FIT</h1>
@@ -233,12 +233,18 @@
 <script>
   const videoIntro = document.getElementById('video-intro');
   const conteudoLogin = document.getElementById('conteudo-login');
-
   const video = videoIntro.querySelector("video");
+
   video.addEventListener("ended", () => {
     videoIntro.classList.add("fade-out");
     conteudoLogin.classList.add("show-content");
   });
+
+  // Fallback: exibe o formulário mesmo que o vídeo não carregue
+  setTimeout(() => {
+    videoIntro.classList.add("fade-out");
+    conteudoLogin.classList.add("show-content");
+  }, 5000); // 5 segundos
 </script>
 
 </body>
