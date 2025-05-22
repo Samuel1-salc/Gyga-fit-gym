@@ -6,7 +6,7 @@
  * dos alunos, solicitações de treino, filtrar por status, pesquisar alunos
  * e iniciar a criação de treinos.
  *
- * @author [Seu Nome]
+ * @author [samuel/hott]
  * @version 1.0
  * @package painelInstrutor
  */
@@ -22,7 +22,8 @@ $instrutor = $_SESSION['usuario'];
 $alunoInstrutor = new aluno_instrutor();
 
 $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
-$countAlunos = $alunoInstrutor->quantidadeAlunosAtendidos($instrutor['id']);
+$countAlunos = count($aluno);
+
 
 $data_saida = $instrutor['data_saida'] ?? null;
 $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível" : "disponível";
@@ -36,7 +37,7 @@ $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível
 function adcAlunoSolicitacao($id_aluno)
 {
     $solicitacaoTreino = new SolicitacaoTreino();
-    $relacaoAlunoInstrutor = new aluno_instrutor();
+    //$relacaoAlunoInstrutor = new aluno_instrutor();
 
     if ($solicitacaoTreino->getSolicitacaoTreino($id_aluno)) {
         return "solicitEnviada";
