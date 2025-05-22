@@ -11,7 +11,7 @@
  * @package painelInstrutor
  */
 
-session_start();
+//session_start();
 
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
@@ -102,7 +102,7 @@ if (isset($_GET['status'])) {
 <head>
     <meta charset="UTF-8">
     <title>Painel do Instrutor</title>
-    <link rel="stylesheet" href="./style//perfilInstrutor.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="view/style/perfilInstrutor.css?v=<?= time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 
@@ -111,7 +111,7 @@ if (isset($_GET['status'])) {
         <header>
             <div class="header-logo">
                 <button class="header-button" onclick="toggleSidebar()">☰</button>
-                <img src="img/logo.png" alt="Logo GYGA FIT">
+                <img src="view/img/logo.png" alt="Logo GYGA FIT">
                 <h1>GYGA FIT - Painel do Instrutor</h1>
             </div>
         </header>
@@ -126,7 +126,7 @@ if (isset($_GET['status'])) {
 
         <div class="main-content">
             <div class="perfil-instrutor">
-                <img src="img/instrutor.jpg" alt="Foto do Instrutor">
+                <img src="view/img/instrutor.jpg" alt="Foto do Instrutor">
                 <div class="perfil-detalhes">
                     <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
                     <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico'] ?? 'Não informado') ?></p>
@@ -226,7 +226,7 @@ if (isset($_GET['status'])) {
                     </div>
                     
                 <?php endforeach; ?>
-                <button class="btn-add-aluno" onclick="window.location.href='./alunos.php'">Adicionar Aluno</button>
+                <button class="btn-add-aluno" onclick="window.location.href='./view/alunos.php'">Adicionar Aluno</button>
             </div>
         </div>
 
@@ -247,7 +247,7 @@ if (isset($_GET['status'])) {
     </script>
             
     <footer>
-        <img src="img/logo.png" alt="Logo GYGA FIT">
+        <img src="view/img/logo.png" alt="Logo GYGA FIT">
         <p>&copy; <?= date('Y') ?> GYGA FIT. Todos os direitos reservados.</p>
     </footer>
 </body>
