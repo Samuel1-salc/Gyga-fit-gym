@@ -64,7 +64,6 @@ class SolicitacaoTreino
             } else {
                 return false;
             }
-
         } catch (PDOException $e) {
             echo "Erro ao solicitar treino: " . $e->getMessage();
             return false;
@@ -99,10 +98,10 @@ class SolicitacaoTreino
      */
     public function getSolicitacaoTreino($id_aluno)
     {
-        if(!is_numeric($id_aluno)) {
+        if (!is_numeric($id_aluno)) {
             throw new InvalidArgumentException("ID do aluno deve ser um número.");
         }
-        if(empty($id_aluno)) {
+        if (empty($id_aluno)) {
             throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
         }
         try {
@@ -127,10 +126,10 @@ class SolicitacaoTreino
      */
     public function getDataTimeSolicitacaoTreino($id_aluno)
     {
-        if(!is_numeric($id_aluno)) {
+        if (!is_numeric($id_aluno)) {
             throw new InvalidArgumentException("ID do aluno deve ser um número.");
         }
-        if(empty($id_aluno)) {
+        if (empty($id_aluno)) {
             throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
         }
         try {
@@ -155,10 +154,10 @@ class SolicitacaoTreino
      */
     public function getFormularioForCriacaoDeTreino($id_aluno)
     {
-        if(!is_numeric($id_aluno)) {
+        if (!is_numeric($id_aluno)) {
             throw new InvalidArgumentException("ID do aluno deve ser um número.");
         }
-        if(empty($id_aluno)) {
+        if (empty($id_aluno)) {
             throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
         }
         try {
@@ -239,5 +238,77 @@ class SolicitacaoTreino
             return false;
         }
     }
+
+    /**
+     * Busca todos os formulários para alunos de um instrutor específico.
+     *
+     * @param int $id_instrutor ID do instrutor.
+     * @param string|null $status Status opcional para filtrar os formulários.
+     * @return array|false Retorna um array com todos os formulários dos alunos do instrutor ou false em caso de erro.
+     * @throws InvalidArgumentException Se o ID do instrutor for inválido.
+     */
+    public function getFormulariosByIdInstrutor($id_instrutor, $status = null)
+    {
+        if (!is_numeric($id_instrutor)) {
+            throw new InvalidArgumentException("ID do instrutor deve ser um número.");
+        }
+        if (empty($id_instrutor)) {
+            throw new InvalidArgumentException("ID do instrutor não pode ser vazio.");
+        }
+
+        try {
+            $sql = "
+                SELECT f.*, ai.nome_aluno, ai.contato_aluno, ai.data_solicitacao
+                FROM formulario f
+                INNER JOIN aluno_instrutor ai ON f.id_aluno = ai.id_Aluno
+                WHERE ai.id_instrutor = :id_instrutor
+            ";
+
+            // Adiciona filtro por status se fornecido
+            if ($status !== null) {
+                $sql .= " AND f.status = :status";
+            }
+
+            // Ordena por data de criação do mais recente para o mais antigo
+            $sql .= " ORDER BY f.data_created DESC";
+
+            $stmt = $this->link->prepare($sql);
+            $stmt->bindParam(':id_instrutor', $id_instrutor);
+
+            if ($status !== null) {
+                $stmt->bindParam(':status', $status);
+            }
+
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar formulários dos alunos do instrutor: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * Conta o número de solicitações pendentes para um instrutor específico.
+     *
+     * @param int $id_instrutor ID do instrutor.
+     * @return int Retorna o total de solicitações pendentes do instrutor.
+     */
+    public function contarPendentesInstrutor($id_instrutor)
+    {
+        try {
+            $stmt = $this->link->prepare("
+                SELECT COUNT(*) as total 
+                FROM formulario f
+                INNER JOIN aluno_instrutor ai ON f.id_aluno = ai.id_Aluno
+                WHERE ai.id_instrutor = :id_instrutor AND f.status = 'em andamento'
+            ");
+            $stmt->bindParam(':id_instrutor', $id_instrutor);
+            $stmt->execute();
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $resultado['total'] ?? 0;
+        } catch (PDOException $e) {
+            echo "Erro ao contar solicitações pendentes do instrutor: " . $e->getMessage();
+            return 0;
+        }
+    }
 }
-?>

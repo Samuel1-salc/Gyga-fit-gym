@@ -51,9 +51,8 @@ function countSolicitacaoTreino($id_aluno)
  */
 function countPendentes()
 {
-    $status = 'em andamento';
-    global $solicitacaoTreino;
-    return $solicitacaoTreino->contarPendentes($status);
+    global $solicitacaoTreino, $instrutor;
+    return $solicitacaoTreino->contarPendentesInstrutor($instrutor['id']);
 }
 
 // Pesquisa por nome de aluno
@@ -69,17 +68,16 @@ if (isset($_GET['status'])) {
     if ($filtro === 'todos') {
         $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
     } else {
-        $formulario = new SolicitacaoTreino();
-        $todosFormularios = $formulario->getTodosFormularios(); // este método deve existir
+        // Obter alunos do instrutor com o status específico
+        $formularios = $solicitacaoTreino->getFormulariosByIdInstrutor($instrutor['id'], $filtro);
         $aluno = [];
 
-        foreach ($todosFormularios as $a) {
-            if (strtolower($a['status']) === $filtro) {
-                $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($a['id_aluno']);
-                if ($filtro === 'em andamento' && empty($aluno)) {
-                    echo '<div><p style = "color: red"><strong>Nenhum aluno pendente encontrado.</strong></p></div>';
-                }
+        if (!empty($formularios)) {
+            foreach ($formularios as $form) {
+                $aluno[] = $alunoInstrutor->getAlunosByIdAlunosForPainelInstrutor($form['id_aluno']);
             }
+        } else if ($filtro === 'em andamento') {
+            echo '<div><p style = "color: red"><strong>Nenhum aluno pendente encontrado.</strong></p></div>';
         }
     }
 }
