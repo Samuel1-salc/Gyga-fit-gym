@@ -1,4 +1,5 @@
 <?php
+
 /**
  */
 
@@ -30,11 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../view/painelAdmin.php");
         exit();
     }
-<<<<<<< Updated upstream
-
-    // Atualiza o aluno
-=======
->>>>>>> Stashed changes
     $sucesso = $alunoModel->editarAluno(
         $id_aluno,
         $username,

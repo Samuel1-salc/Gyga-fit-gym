@@ -1,4 +1,5 @@
 <?php
+
 /**
  * painelInstrutor.php
  *
@@ -21,29 +22,13 @@ require_once __DIR__ . '/../models/Treino.class.php';
 $instrutor = $_SESSION['usuario'];
 $alunoInstrutor = new aluno_instrutor();
 
+
 $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
-$countAlunos = $alunoInstrutor->quantidadeAlunosAtendidos($instrutor['id']);
+$countAlunos = count($aluno);
 
 $data_saida = $instrutor['data_saida'] ?? null;
 $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível" : "disponível";
 
-/**
- * Verifica se existe uma solicitação de treino para um aluno
- *
- * @param int $id_aluno ID do aluno
- * @return string Retorna "solicitEnviada" se já houver solicitação, "solicitNaoEnviada" caso contrário
- */
-function adcAlunoSolicitacao($id_aluno)
-{
-    $solicitacaoTreino = new SolicitacaoTreino();
-    $relacaoAlunoInstrutor = new aluno_instrutor();
-
-    if ($solicitacaoTreino->getSolicitacaoTreino($id_aluno)) {
-        return "solicitEnviada";
-    } else {
-        return "solicitNaoEnviada";
-    }
-}
 
 /**
  * Conta quantas solicitações de treino um aluno possui
@@ -51,9 +36,11 @@ function adcAlunoSolicitacao($id_aluno)
  * @param int $id_aluno ID do aluno
  * @return int Número de solicitações
  */
+$solicitacaoTreino = new SolicitacaoTreino();
+
 function countSolicitacaoTreino($id_aluno)
 {
-    $solicitacaoTreino = new SolicitacaoTreino();
+    global $solicitacaoTreino;
     return $solicitacaoTreino->contarSolicitacoesTreino($id_aluno);
 }
 
@@ -65,7 +52,7 @@ function countSolicitacaoTreino($id_aluno)
 function countPendentes()
 {
     $status = 'em andamento';
-    $solicitacaoTreino = new SolicitacaoTreino();
+    global $solicitacaoTreino;
     return $solicitacaoTreino->contarPendentes($status);
 }
 
@@ -73,8 +60,6 @@ function countPendentes()
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $search = $_GET['search'];
     $aluno = $alunoInstrutor->getNameAlunoForPainelInstrutor($search);
-} else {
-    $aluno = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
 }
 
 // Filtro por status
@@ -179,6 +164,7 @@ if (isset($_GET['status'])) {
                             <?php endif; ?>
                             <p><strong><?= htmlspecialchars($alunoAtual['nome_aluno']) ?></strong></p>
                             <p><?= htmlspecialchars($alunoAtual['data_solicitacao']) ?></p>
+
                             <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($alunoAtual['id_aluno'])) ?></p>
 
 
@@ -191,7 +177,7 @@ if (isset($_GET['status'])) {
                                 $solicitacoes = (new SolicitacaoTreino())->getSolicitacaoTreino($alunoAtual['id_aluno']);
                                 if ($solicitacoes):
                                     foreach ($solicitacoes as $sol):
-                                        ?>
+                                ?>
                                         <p><strong>Experiençia:</strong> <?= htmlspecialchars($sol['experiencia']) ?></p>
                                         <p><strong>Objetivo:</strong> <?= htmlspecialchars($sol['objetivo']) ?></p>
                                         <p><strong>Dias de treino:</strong> <?= htmlspecialchars($sol['treinos']) ?></p>
@@ -217,7 +203,7 @@ if (isset($_GET['status'])) {
 
 
                                         <hr>
-                                        <?php
+                                <?php
                                     endforeach;
                                 else:
                                     echo "<p>Nenhuma solicitação encontrada.</p>";

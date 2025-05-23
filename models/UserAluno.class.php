@@ -34,13 +34,6 @@ class UserAluno
     }
 
     /**
-<<<<<<< Updated upstream
-     * Atualiza os dados de um aluno existente.
-     *
-=======
-
-
->>>>>>> Stashed changes
      * @param int          $id
      * @param string       $username
      * @param string       $email
@@ -88,9 +81,15 @@ class UserAluno
     {
         $date = new DateTime($data_inicio);
         switch ((int)$plano) {
-            case 1:  $date->modify('+1 month');  break;
-            case 2:  $date->modify('+6 months'); break;
-            case 3:  $date->modify('+12 months');break;
+            case 1:
+                $date->modify('+1 month');
+                break;
+            case 2:
+                $date->modify('+6 months');
+                break;
+            case 3:
+                $date->modify('+12 months');
+                break;
         }
         return $date->format('Y-m-d H:i:s');
     }

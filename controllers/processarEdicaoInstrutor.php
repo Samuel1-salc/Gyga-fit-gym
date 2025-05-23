@@ -9,11 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id_instrutor = $_POST['id_instrutor'] ?? '';
     $username = htmlspecialchars($_POST['campo1'] ?? '', ENT_QUOTES, 'UTF-8');
-<<<<<<< Updated upstream
+
     $idade = htmlspecialchars($_POST['campo2'] ?? '', ENT_QUOTES, 'UTF-8'); // (não usado no update)
-=======
+
     $idade = htmlspecialchars($_POST['campo2'] ?? '', ENT_QUOTES, 'UTF-8'); // 
->>>>>>> Stashed changes
+
     $email = htmlspecialchars($_POST['campo3'] ?? '', ENT_QUOTES, 'UTF-8');
     $phone = htmlspecialchars($_POST['campo4'] ?? '', ENT_QUOTES, 'UTF-8');
     $cpf = htmlspecialchars($_POST['campo5'] ?? '', ENT_QUOTES, 'UTF-8');

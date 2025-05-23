@@ -17,11 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../view/painelAdmin.php");
         exit();
     }
-<<<<<<< Updated upstream
 
-    // Cadastro da academia
-=======
->>>>>>> Stashed changes
+
     try {
         if ($academia->cadastrarAcademia($nome, $capacidade, $alunosAtivos, $totalPersonais)) {
             $_SESSION['success'] = "Academia cadastrada com sucesso!";
