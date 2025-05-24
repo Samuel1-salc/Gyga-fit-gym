@@ -44,7 +44,7 @@ class aluno_instrutor
         $stmt->bindParam(':id_aluno', $id_aluno);
         if (!$stmt->execute()) {
             throw new Exception("Erro ao atualizar status: " . implode('', $stmt->errorInfo()));
-        }else{
+        } else {
             header("Location: ../view/telaPrincipal.php");
         }
     }
@@ -91,19 +91,36 @@ class aluno_instrutor
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
     /**
-     * Busca todos os alunos vinculados a um instrutor.
+     * Busca todos os alunos vinculados a um instrutor com seus formulários.
      *
      * @param int $id_instrutor ID do instrutor.
-     * @return array Retorna um array de alunos.
+     * @return array Retorna um array de alunos com seus formulários.
+     * @throws InvalidArgumentException Se o ID do instrutor for inválido.
      */
     public function getAlunosByIdInstrutor($id_instrutor)
     {
-        $stmt = $this->link->prepare("SELECT * FROM aluno_instrutor WHERE id_instrutor = :id_instrutor");
-        $stmt->bindParam(':id_instrutor', $id_instrutor);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!is_numeric($id_instrutor)) {
+            throw new InvalidArgumentException("ID do instrutor deve ser um número.");
+        }
+        if (empty($id_instrutor)) {
+            throw new InvalidArgumentException("ID do instrutor não pode ser vazio.");
+        }
+        try {
+            $stmt = $this->link->prepare("
+                SELECT ai.nome_aluno, ai.id_aluno, ai.data_solicitacao, ai.contato_aluno, ai.processo, f.*
+                FROM aluno_instrutor ai
+                LEFT JOIN formulario f ON ai.id_Aluno = f.id_aluno
+                WHERE ai.id_instrutor = :id_instrutor
+                ORDER BY ai.id_Aluno, f.data_created DESC
+            ");
+            $stmt->bindParam(':id_instrutor', $id_instrutor);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar alunos e formulários do instrutor: " . $e->getMessage();
+            return false;
+        }
     }
 
     /**

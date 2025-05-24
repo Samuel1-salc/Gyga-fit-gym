@@ -5,7 +5,8 @@
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    background-color: #f9f9f9; /* Fundo claro */
+    background-color: #f9f9f9;
+    /* Fundo claro */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -21,9 +22,11 @@ body {
 }
 
 header {
-    background-color: #333; /* Cor neutra para o cabeçalho */
+    background-color: #333;
+    /* Cor neutra para o cabeçalho */
     color: white;
-    padding: 10px 15px; /* Reduz a largura do cabeçalho */
+    padding: 10px 15px;
+    /* Reduz a largura do cabeçalho */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -55,7 +58,8 @@ header {
 
 .main-content {
     display: flex;
-    flex-direction: column; /* Alinha os elementos verticalmente */
+    flex-direction: column;
+    /* Alinha os elementos verticalmente */
     gap: 20px;
     padding: 20px;
     box-sizing: border-box;
@@ -63,20 +67,27 @@ header {
 }
 
 .perfil-instrutor {
-    display: flex; /* Alinha o conteúdo do perfil horizontalmente */
-    flex-direction: row; /* Define o layout horizontal */
-    align-items: center; /* Centraliza verticalmente */
-    gap: 20px; /* Espaçamento entre os elementos */
+    display: flex;
+    /* Alinha o conteúdo do perfil horizontalmente */
+    flex-direction: row;
+    /* Define o layout horizontal */
+    align-items: center;
+    /* Centraliza verticalmente */
+    gap: 20px;
+    /* Espaçamento entre os elementos */
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Garante que o perfil ocupe toda a largura */
-    box-sizing: border-box; /* Inclui padding e bordas no cálculo de largura */
+    width: 100%;
+    /* Garante que o perfil ocupe toda a largura */
+    box-sizing: border-box;
+    /* Inclui padding e bordas no cálculo de largura */
 }
 
 .perfil-instrutor img {
-    width: 120px; /* Ajusta o tamanho da imagem */
+    width: 120px;
+    /* Ajusta o tamanho da imagem */
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
@@ -84,25 +95,34 @@ header {
 }
 
 .perfil-instrutor .perfil-detalhes {
-    flex: 1; /* Faz com que os detalhes ocupem o espaço restante */
+    flex: 1;
+    /* Faz com que os detalhes ocupem o espaço restante */
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espaçamento entre os parágrafos */
+    gap: 10px;
+    /* Espaçamento entre os parágrafos */
 }
 
 .perfil-instrutor p {
-    margin: 0; /* Remove margens extras */
+    margin: 0;
+    /* Remove margens extras */
     font-size: 14px;
     color: #555;
 }
+
 .search-bar {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centraliza horizontalmente */
-    margin: 20px auto; /* Adiciona margem superior e inferior */
-    max-width: 1200px; /* Define o comprimento máximo */
-    gap: 20px; /* Espaçamento entre o campo de busca e o botão */
+    justify-content: center;
+    /* Centraliza horizontalmente */
+    margin: 20px auto;
+    /* Adiciona margem superior e inferior */
+    max-width: 1200px;
+    /* Define o comprimento máximo */
+    gap: 20px;
+    /* Espaçamento entre o campo de busca e o botão */
 }
+
 .search-bar input[type="text"] {
     flex: 1;
     padding: 12px 20px;
@@ -111,12 +131,15 @@ header {
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;
-    position: relative; /* Permite o uso de posicionamento absoluto para o ícone */
+    position: relative;
+    /* Permite o uso de posicionamento absoluto para o ícone */
     display: flex;
     gap: 30px;
-    margin: 20px auto; /* Centraliza horizontalmente */
-    max-width: 1200px; /* Define o comprimento máximo */
-    
+    margin: 20px auto;
+    /* Centraliza horizontalmente */
+    max-width: 1200px;
+    /* Define o comprimento máximo */
+
 
 }
 
@@ -125,41 +148,50 @@ header {
 }
 
 .search-bar button {
-    width: auto; /* Define a largura automática baseada no conteúdo */
-    padding: 12px 20px; /* Ajusta o tamanho do botão para combinar com o campo de busca */
+    width: auto;
+    /* Define a largura automática baseada no conteúdo */
+    padding: 12px 20px;
+    /* Ajusta o tamanho do botão para combinar com o campo de busca */
     background-color: rgb(255, 0, 0);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 15px; /* Ajusta o tamanho da fonte */
+    font-size: 15px;
+    /* Ajusta o tamanho da fonte */
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    height: auto; /* Garante que o botão tenha a mesma altura do campo de busca */
-    flex-shrink: 0; /* Impede que o botão encolha no layout flex */
+    height: auto;
+    /* Garante que o botão tenha a mesma altura do campo de busca */
+    flex-shrink: 0;
+    /* Impede que o botão encolha no layout flex */
 }
 
 
 .search-bar button:hover {
     background-color: darkred;
-    
+
 }
-#status{
+
+#status_filter {
     background-color: rgb(255, 0, 0);
     transition: background-color 0.3s ease;
     font-size: 13px;
     padding: 5px 5px;
     border-radius: 4px;
-    color: rgb(245, 245, 245); /* Cor do texto para o item selecionado */
+    color: rgb(245, 245, 245);
+    /* Cor do texto para o item selecionado */
     font-weight: bold;
     border: none;
 }
 
-#status option:checked {
-    background-color: rgb(243, 51, 51); /* Cor de fundo para o item selecionado */
-    color: rgb(245, 245, 245); /* Cor do texto para o item selecionado */
-    
-    
+#status_filter option:checked {
+    background-color: rgb(243, 51, 51);
+    /* Cor de fundo para o item selecionado */
+    color: rgb(245, 245, 245);
+    /* Cor do texto para o item selecionado */
+
+
 }
 
 .solicitacoes {
@@ -174,7 +206,8 @@ header {
 
 .card-aluno {
     display: flex;
-    flex-direction: row; /* Alinha os elementos horizontalmente */
+    flex-direction: row;
+    /* Alinha os elementos horizontalmente */
     align-items: flex-start;
     gap: 20px;
     padding: 15px;
@@ -183,18 +216,26 @@ header {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
 }
+
 .icon-notificacao {
-    width: 10px; /* Largura da bolinha */
-    height: 10px; /* Altura da bolinha */
-    background-color: red; /* Cor vermelha */
-    border-radius: 50%; /* Torna o elemento circular */
-    display: inline-block; /* Garante que seja exibido como um elemento inline */
-    margin-left: 5px; /* Espaçamento opcional */
+    width: 10px;
+    /* Largura da bolinha */
+    height: 10px;
+    /* Altura da bolinha */
+    background-color: red;
+    /* Cor vermelha */
+    border-radius: 50%;
+    /* Torna o elemento circular */
+    display: inline-block;
+    /* Garante que seja exibido como um elemento inline */
+    margin-left: 5px;
+    /* Espaçamento opcional */
     position: 80px;
-  }
+}
 
 .card-info {
-    flex: 2; /* Ocupa mais espaço */
+    flex: 2;
+    /* Ocupa mais espaço */
 }
 
 .card-info p {
@@ -204,14 +245,17 @@ header {
 }
 
 .card-botoes {
-    flex: 1; /* Ocupa menos espaço */
+    flex: 1;
+    /* Ocupa menos espaço */
     display: flex;
     flex-direction: column;
     gap: 10px;
-    align-items: flex-end; /* Alinha os botões à direita */
+    align-items: flex-end;
+    /* Alinha os botões à direita */
 }
 
-.btn-status, .btn-visualizar {
+.btn-status,
+.btn-visualizar {
     padding: 6px 12px;
     font-size: 13px;
     border-radius: 4px;
@@ -241,60 +285,78 @@ header {
 }
 
 .btn-add-aluno {
-    padding: 6px 12px; /* Botão menor */
-    font-size: 13px; /* Ajusta o tamanho da fonte */
+    padding: 6px 12px;
+    /* Botão menor */
+    font-size: 13px;
+    /* Ajusta o tamanho da fonte */
     border-radius: 4px;
-    background-color: #007bff; /* Azul para destaque */
+    background-color: #007bff;
+    /* Azul para destaque */
     color: white;
     cursor: pointer;
     border: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    display: block; /* Garante que o botão ocupe uma linha */
-    margin: 15px auto 0; /* Centraliza o botão e adiciona margem superior */
+    display: block;
+    /* Garante que o botão ocupe uma linha */
+    margin: 15px auto 0;
+    /* Centraliza o botão e adiciona margem superior */
     text-align: center;
 }
 
 .btn-add-aluno:hover {
-    background-color: #0056b3; /* Azul mais escuro no hover */
-    transform: scale(1.05); /* Leve aumento no hover */
+    background-color: #0056b3;
+    /* Azul mais escuro no hover */
+    transform: scale(1.05);
+    /* Leve aumento no hover */
 }
 
 .sidebar {
     position: fixed;
     top: 0;
-    left: -250px; /* Sidebar fechado por padrão no lado esquerdo */
+    left: -250px;
+    /* Sidebar fechado por padrão no lado esquerdo */
     width: 250px;
     height: 100%;
     background-color: #333;
     color: white;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra ajustada para o lado esquerdo */
-    transition: left 0.3s ease; /* Transição suave para abrir/fechar */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    /* Sombra ajustada para o lado esquerdo */
+    transition: left 0.3s ease;
+    /* Transição suave para abrir/fechar */
     z-index: 1000;
 }
 
 .sidebar.open {
-    left: 0; /* Sidebar aberto */
+    left: 0;
+    /* Sidebar aberto */
 }
 
 .sidebar h3 {
     margin-top: 0;
     font-size: 18px;
     margin-bottom: 15px;
-    color: white; /* Título em branco */
+    color: white;
+    /* Título em branco */
 }
 
 .sidebar a {
-    display: block; /* Cada link ocupa uma linha */
-    color: white; /* Texto branco */
-    text-decoration: none; /* Remove o sublinhado */
-    margin-bottom: 10px; /* Espaçamento entre os links */
-    font-size: 14px; /* Tamanho da fonte ajustado */
+    display: block;
+    /* Cada link ocupa uma linha */
+    color: white;
+    /* Texto branco */
+    text-decoration: none;
+    /* Remove o sublinhado */
+    margin-bottom: 10px;
+    /* Espaçamento entre os links */
+    font-size: 14px;
+    /* Tamanho da fonte ajustado */
     transition: color 0.2s ease;
 }
 
 .sidebar a:hover {
-    color: #007bff; /* Azul no hover */
+    color: #007bff;
+    /* Azul no hover */
 }
 
 .sidebar .close-button {
@@ -317,59 +379,78 @@ header {
         flex-direction: column;
     }
 
-    .perfil-instrutor, .solicitacoes {
+    .perfil-instrutor,
+    .solicitacoes {
         max-width: 100%;
     }
 
     .card-aluno {
-        flex-direction: column; /* Empilha os elementos em telas menores */
+        flex-direction: column;
+        /* Empilha os elementos em telas menores */
     }
 
     .card-botoes {
-        align-items: flex-start; /* Alinha os botões à esquerda */
+        align-items: flex-start;
+        /* Alinha os botões à esquerda */
     }
 
-    .btn-status, .btn-visualizar {
-        width: 100%; /* Botões ocupam toda a largura */
+    .btn-status,
+    .btn-visualizar {
+        width: 100%;
+        /* Botões ocupam toda a largura */
         text-align: center;
     }
 
     .perfil-instrutor {
-        flex-direction: column; /* Alinha o perfil verticalmente em telas menores */
-        align-items: center; /* Centraliza os elementos */
-        text-align: center; /* Centraliza o texto */
+        flex-direction: column;
+        /* Alinha o perfil verticalmente em telas menores */
+        align-items: center;
+        /* Centraliza os elementos */
+        text-align: center;
+        /* Centraliza o texto */
     }
 
     .perfil-instrutor img {
-        width: 100px; /* Reduz o tamanho da imagem */
+        width: 100px;
+        /* Reduz o tamanho da imagem */
         height: 100px;
     }
 
     .perfil-instrutor .perfil-detalhes {
-        width: 100%; /* Garante que os detalhes ocupem toda a largura */
+        width: 100%;
+        /* Garante que os detalhes ocupem toda a largura */
     }
 }
 
 footer {
-    
+
     color: white;
     text-align: center;
-    padding: 10px 20px; /* Reduz o padding */
-    margin-top: auto; /* Garante que o footer fique no final da página */
-    max-width: 800px; /* Limita a largura máxima */
-    margin-left: auto; /* Centraliza horizontalmente */
-    margin-right: auto; /* Centraliza horizontalmente */
-    border-radius: 8px; /* Bordas arredondadas */
+    padding: 10px 20px;
+    /* Reduz o padding */
+    margin-top: auto;
+    /* Garante que o footer fique no final da página */
+    max-width: 800px;
+    /* Limita a largura máxima */
+    margin-left: auto;
+    /* Centraliza horizontalmente */
+    margin-right: auto;
+    /* Centraliza horizontalmente */
+    border-radius: 8px;
+    /* Bordas arredondadas */
 }
 
 footer img {
-    height: 30px; /* Reduz o tamanho do logo */
-    margin-bottom: 5px; /* Reduz o espaçamento abaixo do logo */
+    height: 30px;
+    /* Reduz o tamanho do logo */
+    margin-bottom: 5px;
+    /* Reduz o espaçamento abaixo do logo */
 }
 
 footer p {
-    font-size: 12px; /* Fonte menor */
+    font-size: 12px;
+    /* Fonte menor */
     margin: 5px 0;
-    color: #d93636; /* Texto com cor mais suave */
+    color: #d93636;
+    /* Texto com cor mais suave */
 }
-
