@@ -1,0 +1,180 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+    background-image: url('/view/img/0f0d989af5ce80b293f0de513b7a2bcb.jpg');
+    
+}
+  
+
+
+header {
+    background-color: #333;
+    color: rgb(255, 0, 0);
+    padding: 10px 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    text-transform: uppercase; 
+}
+.btn-lateral {
+    position: absolute;
+    
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgb(255, 0, 0);
+    font-size: 20px;
+    cursor: pointer;
+
+    width: 40px; /* Ajuste conforme necessário */
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-lateral:hover {
+    color: #ff9800;
+}
+
+.btn-usuario {
+    left: 20px;
+}
+
+.btn-config {
+    right: 20px;
+}
+
+.container {
+    padding: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 80px auto 0; /* Adiciona um espaço abaixo do header fixo */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    flex-direction: column;
+    opacity: 0.9; /* Torna o fundo um pouco transparente */
+}
+
+h1 {
+    color: #ff0000;
+    text-transform: uppercase;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+.form-group.pergunta {
+    background-color: #c7c6c6; /* Caixa mais escura */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-group input[type="radio"] {
+    display: none; /* Esconde as bolinhas padrão */
+}
+
+.radio-group label {
+    position: relative;
+    padding-left: 30px; /* Espaço para a bolinha */
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.radio-group label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #ffffff; /* Cor da bolinha */
+    transition: background-color 0.3s;
+}
+.radio-group input[type="radio"]:checked + label::before {
+    background-color: red; /* Cor da bolinha selecionada */
+}
+
+.radio-group input[type="radio"]:checked + label {
+    color: red; /* Texto fica vermelho quando selecionado */
+}
+
+.radio-group label:hover {
+    color: red; /* Cor do texto ao passar o mouse */
+}
+label {
+    font-size: 16px; /* Tamanho maior para as perguntas */
+    font-weight: bold; /* Deixa o texto das perguntas em negrito */
+}
+
+.radio-group label {
+    font-size: 14px; /* Tamanho menor para as respostas */
+    font-weight: normal; /* Peso normal para as respostas */
+    color: #252525; /* Cor mais fraca, menos intensa */
+}
+
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #d32f2f;
+}
