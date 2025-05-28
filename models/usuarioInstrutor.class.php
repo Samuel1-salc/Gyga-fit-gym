@@ -1,211 +1,185 @@
 <?php
-
-require_once __DIR__ . "/usuarios.class.php";
-require_once __DIR__ . "/../config/database.class.php";
+require_once __DIR__ . '/../config/database.class.php';
+require_once __DIR__ . '/usuarios.class.php';
 
 /**
  * Classe responsável pelas operações relacionadas ao relacionamento entre alunos e instrutores.
- * Permite cadastrar, buscar, atualizar status e consultar alunos vinculados a instrutores.
  */
 class aluno_instrutor
 {
-    /**
-     * @var Database $con Instância da conexão com o banco de dados.
-     */
-    private $con;
-
-    /**
-     * @var PDO $link Link da conexão PDO.
-     */
+    /** @var PDO */
     private $link;
 
-    /**
-     * Construtor da classe aluno_instrutor.
-     * Inicializa a conexão com o banco de dados.
-     */
     public function __construct()
     {
-        require_once __DIR__ . '/../config/database.class.php';
-        $this->con = new Database();
-        $this->link = $this->con->getConexao();
+        $db = new Database();
+        $this->link = $db->getConexao();
     }
 
     /**
-     * Atualiza o status do processo de um aluno.
+     * Retorna todos os instrutores cadastrados no sistema.
      *
-     * @param string $processo Novo status do processo.
-     * @param int $id_aluno ID do aluno.
-     * @return void
+     * @return array [ ['id'=>…, 'username'=>…, 'email'=>…], … ]
      */
-    public function adcStatus($processo, $id_aluno)
+    public function getAllInstrutores()
     {
-        $stmt = $this->link->prepare("UPDATE aluno_instrutor SET processo = :processo WHERE id_Aluno = :id_aluno");
-        $stmt->bindParam(':processo', $processo);
-        $stmt->bindParam(':id_aluno', $id_aluno);
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao atualizar status: " . implode('', $stmt->errorInfo()));
-        } else {
-            header("Location: ../view/telaPrincipal.php");
-        }
+        $stmt = $this->link->prepare("SELECT id, username, email FROM instrutor");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Adiciona um novo relacionamento entre aluno e instrutor.
+     * Busca instrutores pelo nome (ou parte do nome).
      *
-     * @param int $id_aluno ID do aluno.
-     * @param string $processo Status do processo.
-     * @param string $data_solicitacao Data da solicitação (Y-m-d H:i:s).
-     * @return void
+     * @param string $nome
+     * @return array
+     */
+    public function getInstrutoresByNome($nome)
+    {
+        $stmt = $this->link->prepare(
+            "SELECT id, username, email
+             FROM instrutor
+             WHERE username LIKE :nome"
+        );
+        $like = "%{$nome}%";
+        $stmt->bindParam(':nome', $like, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Retorna todos os alunos vinculados a um instrutor.
+     *
+     * @param int $id_instrutor
+     * @return array
+     */
+    public function getAlunosByIdInstrutor($id_instrutor)
+    {
+        $stmt = $this->link->prepare(
+            "SELECT * FROM aluno_instrutor WHERE id_instrutor = :id_instrutor"
+        );
+        $stmt->bindParam(':id_instrutor', $id_instrutor, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Conta quantos alunos um instrutor atende.
+     *
+     * @param int $id_instrutor
+     * @return int
+     */
+    public function quantidadeAlunosAtendidos($id_instrutor)
+    {
+        $stmt = $this->link->prepare(
+            "SELECT COUNT(*) as total FROM aluno_instrutor WHERE id_instrutor = :id_instrutor"
+        );
+        $stmt->bindParam(':id_instrutor', $id_instrutor, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
+     * Retorna data de solicitação atual formatada.
+     *
+     * @return string
+     */
+    public function dataDeSolicitacao()
+    {
+        return (new DateTime())->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Adiciona relação aluno–instrutor.
      */
     public function adicionarAluno_Instrutor($id_aluno, $processo, $data_solicitacao)
     {
         session_start();
-        $user = new Users();
+        $user  = new Users();
         $aluno = $user->getAlunoById($id_aluno);
-        $stmt = $this->link->prepare("INSERT INTO aluno_instrutor (id_Aluno, nome_aluno,contato_aluno,data_solicitacao, processo, id_instrutor, nome_instrutor ) VALUES (:id_aluno, :nome_aluno,:contato_aluno,:data_solicitacao, :processo,:id_instrutor, :nome_instrutor)");
-        $stmt->bindParam(':id_aluno', $id_aluno);
-        $stmt->bindParam(':nome_aluno', $aluno['username']);
-        $stmt->bindParam(':contato_aluno', $aluno['email']);
-        $stmt->bindParam(':data_solicitacao', $data_solicitacao);
-        $stmt->bindParam(':processo', $processo);
-        $stmt->bindParam(':id_instrutor', $_SESSION['usuario']['id']);
-        $stmt->bindParam(':nome_instrutor', $_SESSION['usuario']['username']);
-        if ($stmt->execute()) {
-            echo "Cadastro em usuario_intrutor realizado com sucesso!";
-        } else {
-            echo "Erro ao cadastrar: " . implode('', $stmt->errorInfo());
-        }
+
+        $stmt = $this->link->prepare(
+            "INSERT INTO aluno_instrutor
+             (id_Aluno, nome_aluno, contato_aluno, data_solicitacao, processo, id_instrutor, nome_instrutor)
+             VALUES
+             (:id_aluno, :nome_aluno, :contato_aluno, :data_solicitacao, :processo, :id_instrutor, :nome_instrutor)"
+        );
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
+        $stmt->bindParam(':nome_aluno', $aluno['username'], PDO::PARAM_STR);
+        $stmt->bindParam(':contato_aluno', $aluno['email'], PDO::PARAM_STR);
+        $stmt->bindParam(':data_solicitacao', $data_solicitacao, PDO::PARAM_STR);
+        $stmt->bindParam(':processo', $processo, PDO::PARAM_STR);
+        $stmt->bindParam(':id_instrutor', $_SESSION['usuario']['id'], PDO::PARAM_INT);
+        $stmt->bindParam(':nome_instrutor', $_SESSION['usuario']['username'], PDO::PARAM_STR);
+        return $stmt->execute();
     }
 
     /**
-     * Busca alunos pelo nome para o painel do instrutor.
-     *
-     * @param string $nome_aluno Nome do aluno (ou parte do nome).
-     * @return array Retorna um array de alunos encontrados.
+     * Atualiza status de processo de aluno.
+     */
+    public function adcStatus($processo, $id_aluno)
+    {
+        $stmt = $this->link->prepare(
+            "UPDATE aluno_instrutor SET processo = :processo WHERE id_Aluno = :id_aluno"
+        );
+        $stmt->bindParam(':processo', $processo, PDO::PARAM_STR);
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    /**
+     * Busca alunos pelo nome para painel do instrutor.
      */
     public function getNameAlunoForPainelInstrutor($nome_aluno)
     {
-        $stmt = $this->link->prepare("SELECT * FROM aluno_instrutor WHERE nome_aluno LIKE :nome_aluno");
-        $NOME_ALUNO = "%$nome_aluno%";
-        $stmt->bindParam(':nome_aluno', $NOME_ALUNO, PDO::PARAM_STR);
+        $stmt = $this->link->prepare(
+            "SELECT * FROM aluno_instrutor WHERE nome_aluno LIKE :nome_aluno"
+        );
+        $like = "%{$nome_aluno}%";
+        $stmt->bindParam(':nome_aluno', $like, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    /**
-     * Busca todos os alunos vinculados a um instrutor com seus formulários.
-     *
-     * @param int $id_instrutor ID do instrutor.
-     * @return array Retorna um array de alunos com seus formulários.
-     * @throws InvalidArgumentException Se o ID do instrutor for inválido.
-     */
-    public function getAlunosByIdInstrutor($id_instrutor)
-    {
-        if (!is_numeric($id_instrutor)) {
-            throw new InvalidArgumentException("ID do instrutor deve ser um número.");
-        }
-        if (empty($id_instrutor)) {
-            throw new InvalidArgumentException("ID do instrutor não pode ser vazio.");
-        }
-        try {
-            $stmt = $this->link->prepare("
-                SELECT ai.nome_aluno, ai.id_aluno, ai.data_solicitacao, ai.contato_aluno, ai.processo, f.*
-                FROM aluno_instrutor ai
-                LEFT JOIN formulario f ON ai.id_Aluno = f.id_aluno
-                WHERE ai.id_instrutor = :id_instrutor
-                ORDER BY ai.id_Aluno, f.data_created DESC
-            ");
-            $stmt->bindParam(':id_instrutor', $id_instrutor);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erro ao buscar alunos e formulários do instrutor: " . $e->getMessage();
-            return false;
-        }
-    }
 
     /**
-     * Busca um aluno específico pelo ID para o painel do instrutor.
-     *
-     * @param int $id_aluno ID do aluno.
-     * @return array|false Retorna um array com os dados do aluno ou false em caso de erro.
-     * @throws InvalidArgumentException Se o ID do aluno for inválido.
+     * Busca aluno específico por ID para painel.
      */
     public function getAlunosByIdAlunosForPainelInstrutor($id_aluno)
     {
-        if (!is_numeric($id_aluno)) {
-            throw new InvalidArgumentException("ID do aluno deve ser um número.");
-        }
-        if (empty($id_aluno)) {
-            throw new InvalidArgumentException("ID do aluno não pode ser vazio.");
-        }
-        try {
-            $stmt = $this->link->prepare("SELECT * FROM aluno_instrutor WHERE id_Aluno = :id_aluno");
-            $stmt->bindParam(':id_aluno', $id_aluno);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Erro ao buscar aluno: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    /**
-     * Verifica o relacionamento entre aluno e instrutor.
-     *
-     * @param int $id_aluno ID do aluno.
-     * @return array|false Retorna um array com os dados do relacionamento ou false em caso de erro.
-     */
-    public function checkRelationshipUsers($id_aluno)
-    {
-        $stmt = $this->link->prepare("SELECT id_instrutor,nome_instrutor FROM aluno_instrutor WHERE id_Aluno = :id_aluno  LIMIT 1");
-        $stmt->bindParam(':id_aluno', $id_aluno);
+        $stmt = $this->link->prepare(
+            "SELECT * FROM aluno_instrutor WHERE id_Aluno = :id_aluno"
+        );
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Conta a quantidade de alunos atendidos por um instrutor.
-     *
-     * @param int $id_instrutor ID do instrutor.
-     * @return int Quantidade de alunos atendidos.
+     * Verifica relacionamento aluno–instrutor.
      */
-    public function quantidadeAlunosAtendidos($id_instrutor)
+    public function checkRelationshipUsers($id_aluno)
     {
-        $stmt = $this->link->prepare("SELECT COUNT(*) as total FROM aluno_instrutor WHERE id_instrutor = :id_instrutor");
-        $stmt->bindParam(':id_instrutor', $id_instrutor);
+        $stmt = $this->link->prepare(
+            "SELECT id_instrutor, nome_instrutor 
+             FROM aluno_instrutor 
+             WHERE id_Aluno = :id_aluno 
+             LIMIT 1"
+        );
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
         $stmt->execute();
-        $countAlunos = $stmt->fetchColumn();
-        return $countAlunos;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Retorna a data e hora atual formatada para solicitação.
-     *
-     * @return string Data e hora atual no formato Y-m-d H:i:s.
-     */
-    public function dataDeSolicitacao()
-    {
-        $data = new DateTime();
-        $data_formatada = $data->format('Y-m-d H:i:s');
-        return $data_formatada;
-    }
-
-    /**
-     * Atualiza o status do processo de um aluno.
-     *
-     * @param int $id_aluno ID do aluno.
-     * @param string $processo Novo status do processo.
-     * @return void
+     * Atualiza processo de treino.
      */
     public function updateProcesso($id_aluno, $processo)
     {
-        $stmt = $this->link->prepare("UPDATE aluno_instrutor SET processo = :processo WHERE id_Aluno = :id_aluno");
-        $stmt->bindParam(':processo', $processo);
-        $stmt->bindParam(':id_aluno', $id_aluno);
-        if ($stmt->execute()) {
-            echo "Status atualizado com sucesso!";
-        } else {
-            echo "Erro ao atualizar status: " . implode('', $stmt->errorInfo());
-        }
+        $stmt = $this->link->prepare(
+            "UPDATE aluno_instrutor SET processo = :processo WHERE id_Aluno = :id_aluno"
+        );
+        $stmt->bindParam(':processo', $processo, PDO::PARAM_STR);
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
