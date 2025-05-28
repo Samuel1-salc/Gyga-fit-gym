@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Script responsável por processar a solicitação de treino de um aluno.
  * Realiza validações dos dados recebidos via POST, cadastra a solicitação de treino no banco de dados,
@@ -19,11 +20,14 @@
  * @package controllers
  */
 
-session_start();
+
 require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 require_once __DIR__ . '/../models/Usuarios.class.php';
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start(); // se for necessário
 $users = new Users();
 $SolicitarTreino = new SolicitacaoTreino();
 $checkRelacao = new aluno_instrutor();
@@ -46,4 +50,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['error'] = "voce ainda não tem instrutor!";
     }
 }
-?>

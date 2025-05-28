@@ -27,14 +27,16 @@ if ($search !== '') {
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyga Fit - Painel Administrativo</title>
     <link rel="stylesheet" href="style/stylePainel.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -45,7 +47,9 @@ if ($search !== '') {
     </header>
 
     <main class="container">
-        <div class="painel-header"><h1>Painel Administrativo</h1></div>
+        <div class="painel-header">
+            <h1>Painel Administrativo</h1>
+        </div>
 
         <div class="tabs">
             <button class="tab-btn" data-tab="alunos">Alunos</button>
@@ -55,9 +59,9 @@ if ($search !== '') {
 
         <form method="get" class="search-bar">
             <input type="text" name="search" placeholder="Buscar..."
-                   value="<?= htmlspecialchars($search) ?>">
+                value="<?= htmlspecialchars($search) ?>">
             <input type="hidden" name="tab" id="tabInput"
-                   value="<?= htmlspecialchars($activeTab) ?>">
+                value="<?= htmlspecialchars($activeTab) ?>">
             <button type="submit" class="search-btn">
                 <i class="fas fa-search"></i>
             </button>
@@ -68,43 +72,43 @@ if ($search !== '') {
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>PAINEL DE ALUNOS</h2>
                 <button class="btn-cadastrar"
-                        onclick="location.href='telaCadastroAluno.php'">
+                    onclick="location.href='telaCadastroAluno.php'">
                     <i class="fas fa-plus"></i><span>Cadastrar Aluno</span>
                 </button>
             </div>
 
             <?php if (empty($alunos)): ?>
                 <p>Nenhum aluno cadastrado.</p>
-            <?php else: foreach ($alunos as $al): ?>
-                <div class="aluno-card">
-                    <div class="aluno-avatar">
-                        <img src="https://via.placeholder.com/100?text=<?= strtoupper($al['username'][0]) ?>"
-                             alt="<?= htmlspecialchars($al['username']) ?>">
-                    </div>
-                    <div class="aluno-info">
-                        <h3><?= htmlspecialchars($al['username']) ?></h3>
-                        <p><strong>Email:</strong> <?= htmlspecialchars($al['email']) ?></p>
-                        <p><strong>CPF:</strong> <?= htmlspecialchars($al['cpf']) ?></p>
-                        <p><strong>Unidade:</strong> <?= htmlspecialchars($al['unidade']) ?></p>
-                        <p><strong>Telefone:</strong> <?= htmlspecialchars($al['phone']) ?></p>
-                        <p><strong>Plano:</strong> <?= htmlspecialchars($al['plano']) ?></p>
-                        <?php
+                <?php else: foreach ($alunos as $al): ?>
+                    <div class="aluno-card">
+                        <div class="aluno-avatar">
+                            <img src="./view/img/<?php echo htmlspecialchars($al['foto']); ?>" alt="Avatar">
+                        </div>
+                        <div class="aluno-info">
+                            <h3><?= htmlspecialchars($al['username']) ?></h3>
+                            <p><strong>Email:</strong> <?= htmlspecialchars($al['email']) ?></p>
+                            <p><strong>CPF:</strong> <?= htmlspecialchars($al['cpf']) ?></p>
+                            <p><strong>Unidade:</strong> <?= htmlspecialchars($al['unidade']) ?></p>
+                            <p><strong>Telefone:</strong> <?= htmlspecialchars($al['phone']) ?></p>
+                            <p><strong>Plano:</strong> <?= htmlspecialchars($al['plano']) ?></p>
+                            <?php
                             $tFim     = new DateTime($al['data_termino']);
                             $hoje     = new DateTime();
                             $interval = $hoje->diff($tFim);
-                        ?>
-                        <p><strong>Tempo restante:</strong>
-                            <?= $interval->m ?> mês(es) e <?= $interval->d ?> dia(s)
-                        </p>
-                    </div>
-                    <div class="aluno-action">
-                        <button class="btn-editar"
+                            ?>
+                            <p><strong>Tempo restante:</strong>
+                                <?= $interval->m ?> mês(es) e <?= $interval->d ?> dia(s)
+                            </p>
+                        </div>
+                        <div class="aluno-action">
+                            <button class="btn-editar"
                                 onclick="location.href='editarAluno.php?id=<?= $al['id'] ?>'">
-                            <i class="fas fa-cog"></i><span>Editar</span>
-                        </button>
+                                <i class="fas fa-cog"></i><span>Editar</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; endif; ?>
+            <?php endforeach;
+            endif; ?>
         </div>
 
         <!-- Aba Personais -->
@@ -112,32 +116,32 @@ if ($search !== '') {
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>PAINEL DE PERSONAIS</h2>
                 <button class="btn-cadastrar"
-                        onclick="location.href='telaCadastroInstrutor.php'">
+                    onclick="location.href='telaCadastroInstrutor.php'">
                     <i class="fas fa-plus"></i><span>Cadastrar Personal</span>
                 </button>
             </div>
 
             <?php if (empty($personais)): ?>
                 <p>Nenhum personal cadastrado.</p>
-            <?php else: foreach ($personais as $p): ?>
-                <div class="personal-card">
-                    <div class="personal-avatar">
-                        <img src="https://via.placeholder.com/100?text=<?= strtoupper($p['username'][0]) ?>"
-                             alt="<?= htmlspecialchars($p['username']) ?>">
-                    </div>
-                    <div class="personal-info">
-                        <h3><?= htmlspecialchars($p['username']) ?></h3>
-                        <p>Email: <?= htmlspecialchars($p['email']) ?></p>
-                        <p>Alunos ativos: <?= $instrModel->quantidadeAlunosAtendidos($p['id']) ?></p>
-                    </div>
-                    <div class="personal-action">
-                        <button class="btn-editar"
+                <?php else: foreach ($personais as $p): ?>
+                    <div class="personal-card">
+                        <div class="personal-avatar">
+                            <img src="./view/img/<?php echo htmlspecialchars($p['foto']); ?>" alt="Avatar">>
+                        </div>
+                        <div class="personal-info">
+                            <h3><?= htmlspecialchars($p['username']) ?></h3>
+                            <p>Email: <?= htmlspecialchars($p['email']) ?></p>
+                            <p>Alunos ativos: <?= $instrModel->quantidadeAlunosAtendidos($p['id']) ?></p>
+                        </div>
+                        <div class="personal-action">
+                            <button class="btn-editar"
                                 onclick="location.href='editarPersonal.php?id=<?= $p['id'] ?>'">
-                            <i class="fas fa-cog"></i><span>Editar</span>
-                        </button>
+                                <i class="fas fa-cog"></i><span>Editar</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; endif; ?>
+            <?php endforeach;
+            endif; ?>
         </div>
 
         <!-- Aba Academia -->
@@ -145,7 +149,7 @@ if ($search !== '') {
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>PAINEL DE ACADEMIAS</h2>
                 <button class="btn-cadastrar"
-                        onclick="location.href='telaCadastroAcademia.php'">
+                    onclick="location.href='telaCadastroAcademia.php'">
                     <i class="fas fa-plus"></i><span>Cadastrar Academia</span>
                 </button>
             </div>
@@ -154,31 +158,32 @@ if ($search !== '') {
     </main>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const tabInput    = document.getElementById('tabInput');
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabInput = document.getElementById('tabInput');
 
-        // inicializa abas conforme GET
-        tabButtons.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tab === tabInput.value);
-        });
-        tabContents.forEach(c => {
-            c.style.display = c.id === tabInput.value + '-content' ? 'block' : 'none';
-        });
+            // inicializa abas conforme GET
+            tabButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabInput.value);
+            });
+            tabContents.forEach(c => {
+                c.style.display = c.id === tabInput.value + '-content' ? 'block' : 'none';
+            });
 
-        // clique nas abas
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const tabName = this.dataset.tab;
-                tabInput.value = tabName;
-                tabButtons.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                tabContents.forEach(c => c.style.display = 'none');
-                document.getElementById(tabName + '-content').style.display = 'block';
+            // clique nas abas
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.dataset.tab;
+                    tabInput.value = tabName;
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    tabContents.forEach(c => c.style.display = 'none');
+                    document.getElementById(tabName + '-content').style.display = 'block';
+                });
             });
         });
-    });
     </script>
 </body>
+
 </html>

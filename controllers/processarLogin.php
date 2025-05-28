@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Script responsável por processar o login de usuários (alunos e instrutores).
  * Realiza validações do CPF recebido via POST, busca o usuário no banco de dados
@@ -11,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once _DIR_ . '/../models/Usuarios.class.php';
+require_once __DIR__ . '/../models/Usuarios.class.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cpf = $_POST['cpf'] ?? '';
@@ -48,9 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Usuário encontrado → salva na sessão
     $_SESSION['usuario'] = $user;
-
-    // Redireciona para o index principal (que faz o roteamento)
-    header("Location: http://localhost/Gyga-fit-gym/index.php");
-    exit();
+    if ($user['typeUser'] === 'aluno') {
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaPrincipal");
+        exit();
+    } else if ($user['typeUser'] === 'instrutor') {
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=perfilInstrutor");
+        exit();
+    } else {
+        header("Location: http://localhost/Gyga-fit-gym/index.php");
+        exit();
+    }
 }
-?>

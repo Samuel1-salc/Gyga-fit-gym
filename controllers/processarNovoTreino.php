@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Script responsável por processar o cadastro de um novo plano de treino para um aluno.
  * Realiza validações dos dados recebidos via POST, cadastra os exercícios do treino no banco de dados,
@@ -42,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Recupera ou inicializa o ID do treino criado
-        if (!isset($_SESSION['id_treino_criado']) || empty($novoTreino->getIdTreinoCriado($id_aluno))) {	
+        if (!isset($_SESSION['id_treino_criado']) || empty($novoTreino->getIdTreinoCriado($id_aluno))) {
             $_SESSION['id_treino_criado'] = 0;
         }
         if (!empty($novoTreino->getIdTreinoCriado($id_aluno))) {
@@ -76,8 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $exercicio['repeticoes_exercicio'],
                         $observacao,
                         $data_criacao
-                    ))  ;
-                        
+                    ));
                 }
             }
         } else {
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $atualizado = new SolicitacaoTreino();
                 $atualizado->atualizarStatusSolicitacao($id_aluno, "Atendido");
             }
-            header("Location: ./../../view/alunoSucessoInstrutor.php");
+            header("Location: http://localhost/Gyga-fit-gym/index.php?page=perfilInstrutor&id_aluno=$id_aluno");
             exit();
         } else {
             echo "Erro ao cadastrar o plano de treino!";
