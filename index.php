@@ -28,7 +28,9 @@ if ($page === 'logout') {
 }
 
 // Se o usuário já estiver logado e cair na página pública, redireciona
-
+if (isset($_SESSION['usuario']) && $page === 'telaInicial') {
+    redirecionarUsuario();
+}
 
 // Lista de páginas que exigem autenticação
 $rotasProtegidas = ['telaPrincipal', 'perfilInstrutor'];

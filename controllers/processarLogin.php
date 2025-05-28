@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../models/Usuarios.class.php';
+require_once _DIR_ . '/../models/Usuarios.class.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cpf = $_POST['cpf'] ?? '';
@@ -51,6 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Redireciona para o index principal (que faz o roteamento)
     header("Location: http://localhost/Gyga-fit-gym/index.php");
-    exit();
+    exit();
 }
 ?>
