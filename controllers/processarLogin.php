@@ -4,59 +4,76 @@ require_once __DIR__ . '/../models/Usuarios.class.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cpf = $_POST['cpf'] ?? '';
-
+    $senha = $_POST['senha'] ?? '';
     $_SESSION['error'] = '';
 
-    // Validação
+    // Validação básica
     if (empty($cpf)) {
         $_SESSION['error'] = "Preencha todos os campos!";
-        header("Location: ../view/login.php");
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaLogin");
         exit();
     }
 
     if (strlen($cpf) != 11) {
         $_SESSION['error'] = "CPF inválido!";
-        header("Location: ../view/login.php");
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaLogin");
         exit();
     }
 
     $usuarios = new Users();
 
-    // Verifica gerente
-    if (!empty($usuarios->getDataGerenteByCpf($cpf))) {
-        $user = $usuarios->getDataGerenteByCpf($cpf);
-        $user['typeUser'] = 'gerente';
+    // Verifica se é gerente
+    $usuarioGerente = $usuarios->getDataGerenteByCpf($cpf);
+
+    if (!empty($usuarioGerente)) {
+        // Se não enviou senha ainda, pede senha
+        if (empty($senha)) {
+            $_SESSION['mostrarSenha'] = true;
+            $_SESSION['cpfDigitado'] = $cpf;
+            header("Location: ./../view/telaLogin.php");
+            exit();
+        } else {
+            // Já enviou senha, valida
+            if (password_verify($senha, $usuarioGerente['senha'])) {
+                $_SESSION['usuario'] = [
+                    'id' => $usuarioGerente['id'],
+                    'nome' => $usuarioGerente['nome'],
+                    'typeUser' => 'gerente'
+                ];
+                // Limpa flags
+                unset($_SESSION['mostrarSenha'], $_SESSION['cpfDigitado'], $_SESSION['error']);
+                header("Location: http://localhost/Gyga-fit-gym/index.php?page=painelAdministrativo");
+                exit();
+            } else {
+                $_SESSION['mostrarSenha'] = true;
+                $_SESSION['cpfDigitado'] = $cpf;
+                $_SESSION['error'] = "Senha incorreta.";
+                header("Location: ../view/login.php");
+                exit();
+            }
+        }
     }
-    // Verifica aluno
-    else if (!empty($usuarios->getDataAlunoByCpf($cpf))) {
-        $user = $usuarios->getDataAlunoByCpf($cpf);
-        $user['typeUser'] = 'aluno';
-    }
-    // Verifica instrutor
-    else if (!empty($usuarios->getDataPersonalByCpf($cpf))) {
-        $user = $usuarios->getDataPersonalByCpf($cpf);
-        $user['typeUser'] = 'instrutor';
-    }
-    else {
-        $_SESSION['error'] = "Usuário não encontrado!";
-        header("Location: ../view/login.php");
+
+    // Verifica se é aluno (sem senha)
+    $usuarioAluno = $usuarios->getDataAlunoByCpf($cpf);
+    if (!empty($usuarioAluno)) {
+        $_SESSION['usuario'] = $usuarioAluno;
+        $_SESSION['usuario']['typeUser'] = 'aluno';
+        header("Location: http://localhost/Gyga-fit-gym/index.php");
         exit();
     }
 
-    // Armazena usuário e redireciona
-    $_SESSION['usuario'] = $user;
-
-    switch ($user['typeUser']) {
-        case 'aluno':
-            header("Location: ../view/telaPrincipal.php");
-            break;
-        case 'instrutor':
-            header("Location: ../view/perfilInstrutor.php");
-            break;
-        case 'gerente':
-            header("Location: ../view/painelAdministrativo"); 
-            break;
+    // Verifica se é instrutor (sem senha)
+    $usuarioInstrutor = $usuarios->getDataPersonalByCpf($cpf);
+    if (!empty($usuarioInstrutor)) {
+        $_SESSION['usuario'] = $usuarioInstrutor;
+        $_SESSION['usuario']['typeUser'] = 'instrutor';
+        header("Location: http://localhost/Gyga-fit-gym/index.php");
+        exit();
     }
 
+    // Se chegou aqui, não encontrou usuário
+    $_SESSION['error'] = "Usuário não encontrado!";
+    header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaLogin");
     exit();
 }

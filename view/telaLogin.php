@@ -1,48 +1,22 @@
 <?php
-/**
- * Página de login do sistema GYGA FIT.
- * Exibe uma introdução em vídeo e, após o término, apresenta o formulário de login para o usuário.
- * Permite o acesso de alunos e instrutores ao sistema utilizando o CPF.
- *
- * Funcionalidades:
- * - Exibe vídeo de introdução ao acessar a página.
- * - Após o vídeo, mostra o formulário de login com campo para CPF.
- * - Exibe mensagens de erro relacionadas ao CPF, caso existam na sessão.
- * - Utiliza CSS interno para estilização responsiva e moderna.
- * - Inclui animação de fade-out para transição do vídeo para o formulário.
- * - Mostra rodapé com informações institucionais.
- *
- * Dependências:
- * - processarLogin.php: Script responsável por validar o login do usuário.
- * - Pasta /view/video/: Contém o vídeo de introdução.
- * - Pasta /view/img/: Contém a logo da academia.
- *
- * Fluxo:
- * 1. Exibe o vídeo de introdução ao carregar a página.
- * 2. Após o término do vídeo, oculta o vídeo e exibe o formulário de login.
- * 3. Usuário preenche o CPF e envia o formulário.
- * 4. Se houver erro de CPF, exibe mensagem de erro.
- * 5. Após login bem-sucedido, usuário é redirecionado para a tela principal correspondente.
- *
- * Observações:
- * - O campo CPF é obrigatório.
- * - Mensagens de erro são exibidas dinamicamente conforme o conteúdo da sessão.
- * - O layout é responsivo e utiliza animações para melhor experiência do usuário.
- *
- * @package view
- * @author
- * @version 1.0
- */
+session_start();
+
+$mostrarSenha = $_SESSION['mostrarSenha'] ?? false;
+$cpfDigitado = $_SESSION['cpfDigitado'] ?? '';
+$erro = $_SESSION['error'] ?? '';
+
+unset($_SESSION['mostrarSenha'], $_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GYGA FIT cadastro</title>
-
   <style>
+    /* Seu CSS aqui (sem alterações) */
     /* Estilo do vídeo de introdução */
     #video-intro {
       position: fixed;
@@ -152,7 +126,7 @@
       border-radius: 20px;
       background-color: #f1f1f1;
       font-size: 16px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
     }
 
@@ -193,53 +167,60 @@
     }
   </style>
 </head>
+
 <body>
-
-<!-- INTRODUÇÃO COM VÍDEO -->
-<div id="video-intro">
-  <video autoplay muted>
-    <source src="../view/video/intro.mp4" type="video/mp4" />
-    Seu navegador não suporta vídeo HTML5.
-  </video>
-</div>
-
-<!-- CONTEÚDO PRINCIPAL -->
-<div class="container" id="conteudo-login">
-  <div class="logo">
-    <img src="../view/img/logo.png" alt="GYGA FIT" />
+  <div id="video-intro">
+    <video autoplay muted>
+      <source src="../view/video/intro.mp4" type="video/mp4" />
+      Seu navegador não suporta vídeo HTML5.
+    </video>
   </div>
-  <div class="login-box">
-    <h1>GYGA FIT</h1>
-    <p>Entre com suas credenciais para Entrar</p>
-    <form action="./../controllers/processarLogin.php" method="post">
-      <div class="input-group">
-        <label for="cpf">CPF</label>
-        <input type="text" name="cpf" required />
 
-        <?php
-        session_start();
-        if (isset($_SESSION['error']) && strpos($_SESSION['error'], "CPF") !== false): ?>
-          <div class="error-message"><?php echo $_SESSION['error']; ?></div>
+  <div class="container" id="conteudo-login">
+    <div class="logo">
+      <img src="../view/img/logo.png" alt="GYGA FIT" />
+    </div>
+    <div class="login-box">
+      <h1>GYGA FIT</h1>
+      <p>Entre com suas credenciais para Entrar</p>
+      <form action="./../controllers/processarLogin.php" method="post">
+        <div class="input-group">
+          <label for="cpf">CPF</label>
+          <input type="text" name="cpf" required value="<?= htmlspecialchars($cpfDigitado) ?>" maxlength="11" />
+          <?php if (strpos($erro, "CPF") !== false): ?>
+            <div class="error-message"><?= htmlspecialchars($erro) ?></div>
+          <?php endif; ?>
+        </div>
+
+        <?php if ($mostrarSenha): ?>
+          <div class="input-group">
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" required />
+            <?php if (strpos($erro, "senha") !== false): ?>
+              <div class="error-message"><?= htmlspecialchars($erro) ?></div>
+            <?php endif; ?>
+          </div>
         <?php endif; ?>
-      </div>
-      <button type="submit">Entrar</button>
-    </form>
+
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+    <div class="footer">
+      © 2025
+    </div>
   </div>
-  <div class="footer">
-    © 2025
-  </div>
-</div>
 
-<script>
-  const videoIntro = document.getElementById('video-intro');
-  const conteudoLogin = document.getElementById('conteudo-login');
+  <script>
+    const videoIntro = document.getElementById('video-intro');
+    const conteudoLogin = document.getElementById('conteudo-login');
+    const video = videoIntro.querySelector("video");
 
-  const video = videoIntro.querySelector("video");
-  video.addEventListener("ended", () => {
-    videoIntro.classList.add("fade-out");
-    conteudoLogin.classList.add("show-content");
-  });
-</script>
-
+    video.addEventListener("ended", () => {
+      videoIntro.classList.add("fade-out");
+      conteudoLogin.classList.add("show-content");
+      document.querySelector('input[name="cpf"]').focus();
+    });
+  </script>
 </body>
+
 </html>

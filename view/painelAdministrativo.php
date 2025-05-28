@@ -1,22 +1,19 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'gerente') {
-    header("Location: loginGerente.php");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyga Fit - Painel Administrativo</title>
-    <link rel="stylesheet" href="style/stylePainel.css">
+    <link rel="stylesheet" href="./view/style/stylePainel.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -53,7 +50,7 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'gerente') {
         <!-- Conteúdo da aba Alunos -->
         <div class="tab-content" id="alunos-content">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>PAINEL DE ALUNOS</h2>
+                <h2>PAINEL DE ALUNOS</h2>
                 <button class="btn-cadastrar">
                     <i class="fas fa-plus"></i>
                     <span>Cadastrar Aluno</span>
@@ -98,7 +95,7 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'gerente') {
         <!-- Conteúdo da aba Personais -->
         <div class="tab-content" id="personais-content" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>PAINEL DE PERSONAIS</h2>
+                <h2>PAINEL DE PERSONAIS</h2>
                 <button class="btn-cadastrar">
                     <i class="fas fa-plus"></i>
                     <span>Cadastrar Personal</span>
@@ -143,7 +140,7 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'gerente') {
         <!-- Conteúdo da aba Academia -->
         <div class="tab-content" id="academia-content" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>PAINEL DE ACADEMIAS</h2>
+                <h2>PAINEL DE ACADEMIAS</h2>
                 <button class="btn-cadastrar">
                     <i class="fas fa-plus"></i>
                     <span>Cadastrar Academia</span>
@@ -222,16 +219,16 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'gerente') {
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const tabName = this.getAttribute('data-tab');
-                    
+
                     // Remove a classe 'active' de todos os botões
                     tabButtons.forEach(btn => btn.classList.remove('active'));
-                    
+
                     // Adiciona a classe 'active' ao botão clicado
                     this.classList.add('active');
-                    
+
                     // Esconde todos os conteúdos de abas
                     tabContents.forEach(content => content.style.display = 'none');
-                    
+
                     // Mostra o conteúdo da aba selecionada
                     document.getElementById(`${tabName}-content`).style.display = 'block';
                 });
@@ -239,4 +236,5 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['tipo'] !== 'gerente') {
         });
     </script>
 </body>
+
 </html>

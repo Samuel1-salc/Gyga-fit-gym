@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/../config/database.class.php';
+require_once './../config/database.class.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cpf = $_POST['cpf'] ?? '';
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db = new Database();
         $conn = $db->getConexao();
 
-        $sql = "SELECT * FROM usuarios WHERE cpf = :cpf AND tipo = 'gerente'";
+        $sql = "SELECT * FROM gerente WHERE cpf = :cpf ";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':cpf', $cpf);
         $stmt->execute();
@@ -23,12 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($usuario && password_verify($senha, $usuario['senha'])) {
-            $_SESSION['usuario_id'] = $usuario['id'];
-            $_SESSION['usuario_nome'] = $usuario['nome'];
-            $_SESSION['tipo'] = $usuario['tipo'];
+            $_SESSION['usuario'] = [
+                'id' => $usuario['id'],
+                'nome' => $usuario['nome'],
+                'typeUser' => 'gerente'
+            ];
 
-            header("Location: painelAdminstrativo.php");
-            exit;
+            header("Location: http://localhost/Gyga-fit-gym/index.php?page=painelAdministrativo");
+            exit(); // <- fundamental para que o redirecionamento funcione corretamente
         } else {
             echo "CPF ou senha incorretos.";
         }
