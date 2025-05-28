@@ -60,7 +60,7 @@ class Users
      */
     public function getDataAlunosForPerfilAlunos()
     {
-        $stmt = $this->link->prepare("SELECT id,username, email, plano FROM aluno");
+        $stmt = $this->link->prepare("SELECT id,username, email, cpf, unidade, plano, data_termino, phone FROM aluno");
         $stmt->execute();
         $tabela =  $stmt->fetchAll(PDO::FETCH_ASSOC); 
         return $tabela;
