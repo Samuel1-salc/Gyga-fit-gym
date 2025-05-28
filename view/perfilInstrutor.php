@@ -2,40 +2,29 @@
 
 /**
  * painelInstrutor.php
- *
- * Página de painel para instrutores, onde é possível visualizar informações
- * dos alunos, solicitações de treino, filtrar por status, pesquisar alunos
- * e iniciar a criação de treinos.
- *
- * @author [Seu Nome]
- * @version 1.0
- * @package painelInstrutor
+ * Página de painel para instrutores com design moderno
  */
 
-session_start();
+
 
 require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
 require_once __DIR__ . '/../models/Treino.class.php';
 
-// Verifica se o usuário está logado e é um instrutor
+// [Todo o código PHP existente permanece igual...]
 $instrutor = $_SESSION['usuario'];
 $alunoInstrutor = new aluno_instrutor();
 $solicitacaoTreino = new SolicitacaoTreino();
-$alunoOriginal = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']); // Dados originais
-$aluno = $alunoOriginal; // Cópia para filtros
-
+$alunoOriginal = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
+$aluno = $alunoOriginal;
 
 if (!empty($alunoOriginal)) {
-
     $alunosUnicos = [];
     $contadorSemId = 0;
-    // Contar apenas alunos únicos, não formulários - usando dados originais
     foreach ($alunoOriginal as $item) {
         if (!empty($item['id_aluno'])) {
             $alunosUnicos[$item['id_aluno']] = true;
         } else {
-            // Para alunos sem ID, usa nome como chave única
             $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
             $alunosUnicos[$chaveUnica] = true;
             $contadorSemId++;
@@ -45,16 +34,8 @@ if (!empty($alunoOriginal)) {
     $data_saida = $instrutor['data_saida'] ?? null;
     $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível" : "disponível";
 
-
-
-
-
-    /**
-     * Conta quantas solicitações de treino um aluno possui
-     *
-     * @param int $id_aluno ID do aluno
-     * @return int Número de solicitações
-     */    function countSolicitacaoTreino($id_aluno)
+    // [Todas as funções PHP existentes permanecem iguais...]
+    function countSolicitacaoTreino($id_aluno)
     {
         global $aluno;
         $countSolicitacoes = 0;
@@ -63,9 +44,9 @@ if (!empty($alunoOriginal)) {
                 $countSolicitacoes++;
             }
         }
-
         return $countSolicitacoes;
     }
+
     function getStatus($id_aluno)
     {
         global $aluno;
@@ -76,28 +57,17 @@ if (!empty($alunoOriginal)) {
         }
         return null;
     }
-    /**
-     * Extrai apenas informações únicas dos alunos (da tabela aluno_instrutor)
-     * removendo duplicatas causadas pelos múltiplos formulários
-     *
-     * @param array $dadosAlunos Array de dados dos alunos (opcional, usa global se não fornecido)
-     * @return array Array com informações únicas dos alunos
-     */
+
     function extrairAlunosUnicos($dadosAlunos = null)
     {
         global $alunoOriginal;
-
-        // Se não foram fornecidos dados específicos, usa os dados originais
         $dados = $dadosAlunos ?? $alunoOriginal;
-
         $alunosUnicos = [];
         $idsProcessados = [];
-        $contadorSemId = 0; // Para alunos sem ID
+        $contadorSemId = 0;
 
         foreach ($dados as $item) {
             $idAluno = $item['id_aluno'];
-
-            // Se o ID está vazio ou nulo, cria um identificador único
             if (empty($idAluno)) {
                 $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
                 $contadorSemId++;
@@ -105,44 +75,39 @@ if (!empty($alunoOriginal)) {
                 $chaveUnica = $idAluno;
             }
 
-            // Se ainda não processamos este aluno, adiciona às informações únicas
             if (!in_array($chaveUnica, $idsProcessados)) {
                 $alunosUnicos[] = [
                     'id_aluno' => $item['id_aluno'],
                     'nome_aluno' => $item['nome_aluno'],
                     'data_solicitacao' => $item['data_solicitacao'],
                     'contato_aluno' => $item['contato_aluno'],
-                    'processo' => $item['processo']
+                    'processo' => $item['processo'],
+                    'status' => $item['status'],
                 ];
                 $idsProcessados[] = $chaveUnica;
             }
         }
-
         return $alunosUnicos;
     }
-    /**
-     * Conta o total de solicitações de treino com status "em andamento"
-     *
-     * @return int Número de solicitações pendentes
-     */
+
     function countPendentes()
     {
-        global $alunoOriginal;
+        $alunos = extrairAlunosUnicos();
         $status = 'em andamento';
         $countPendentes = 0;
-        foreach ($alunoOriginal as $item) {
+        foreach ($alunos as $item) {
             if ($item['status'] == $status) {
                 $countPendentes++;
             }
         }
         return $countPendentes;
     }
+
     function getFormulariosByAluno($id_aluno)
     {
         global $aluno;
         $formularios = [];
         foreach ($aluno as $item) {
-            // Se o ID está vazio, não há formulários (apenas dados da tabela aluno_instrutor)
             if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
                 $formularios[] = [
                     'id_aluno' => $item['id_aluno'],
@@ -155,16 +120,12 @@ if (!empty($alunoOriginal)) {
                     'peso' => $item['peso'],
                     'altura' => $item['altura'],
                     'status' => $item['status'],
-
                 ];
             }
         }
-        if (empty($formularios)) {
-            return null;
-        } else {
-            return $formularios;
-        }
+        return empty($formularios) ? null : $formularios;
     }
+
     function veryFyStatus($solicitacoes)
     {
         $veryFystatus = 'em andamento';
@@ -175,109 +136,85 @@ if (!empty($alunoOriginal)) {
         }
         return false;
     }
-    function forSearch($aluno, $search)
+
+    function aplicarFiltroStatus(&$aluno, $statusFiltro)
     {
-        $result = [];
+        $statusFiltro = strtolower($statusFiltro);
+        if ($statusFiltro === 'todos') return;
 
-        // Verifica se os parâmetros são válidos
-        if (empty($aluno) || !is_array($aluno) || empty($search)) {
-            return $aluno; // Retorna os dados originais se não há busca válida
-        }
+        $aluno = array_filter($aluno, function ($item) use ($statusFiltro) {
+            return !empty($item['status']) && strtolower($item['status']) === $statusFiltro;
+        });
+    }
 
-        // Remove espaços extras e converte para minúsculas para busca mais eficiente
+    function aplicarPesquisa(&$aluno, $search)
+    {
         $search = trim($search);
+        if (empty($search)) return;
 
-        foreach ($aluno as $item) {
-            // Verifica se o item tem a chave 'nome_aluno' e se não está vazia
-            if (isset($item['nome_aluno']) && !empty($item['nome_aluno'])) {
-                // Busca case-insensitive no nome do aluno
-                if (stripos($item['nome_aluno'], $search) !== false) {
-                    $result[] = $item;
-                }
-            }
-        }
-        return $result;
-    } // Filtro por status (usando dados já carregados)
+        $aluno = array_filter($aluno, function ($item) use ($search) {
+            return isset($item['nome_aluno']) && stripos($item['nome_aluno'], $search) !== false;
+        });
+    }
+
+    // --- Aplicar filtros e busca ---
     $mensagemFiltro = '';
     $temFiltroAtivo = false;
 
-    if (isset($_GET['status']) && !empty($_GET['status'])) {
-        $filtro = strtolower($_GET['status']);
+    $statusFiltro = $_GET['status'] ?? '';
+    $termoBusca = $_GET['search'] ?? '';
+
+    if (!empty($statusFiltro)) {
         $temFiltroAtivo = true;
+        aplicarFiltroStatus($aluno, $statusFiltro);
 
-        if ($filtro !== 'todos') {
-            // Filtrar apenas registros com o status específico
-            $alunoFiltrado = [];
-            $encontrouStatus = false;
-
-            foreach ($aluno as $item) {
-                // Só inclui registros que têm formulário e o status corresponde
-                if (!empty($item['status']) && strtolower($item['status']) === $filtro) {
-                    $alunoFiltrado[] = $item;
-                    $encontrouStatus = true;
-                }
-            }
-
-            $aluno = $alunoFiltrado;
-
-            // Prepara mensagem se não encontrou alunos com o status específico
-            if (!$encontrouStatus && $filtro === 'em andamento') {
-                $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;"><strong>Nenhum aluno pendente encontrado.</strong></div>';
-            } elseif (!$encontrouStatus && $filtro === 'atendido') {
-                $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;"><strong>Nenhum aluno atendido encontrado.</strong></div>';
-            }
+        if (empty($aluno)) {
+            $statusLabel = ($statusFiltro === 'em andamento') ? 'pendente' : 'atendido';
+            $mensagemFiltro = '<div class="alert alert-warning"><i data-lucide="alert-circle" class="icon"></i><strong>Nenhum aluno ' . $statusLabel . ' encontrado.</strong></div>';
         }
-        // Se $filtro === 'todos', mantém $aluno como está (todos os dados)
-    }    // Aplicar pesquisa sempre que houver termo de busca
+    }
+
+    if (!empty($termoBusca)) {
+        $alunoAntes = $aluno;
+        aplicarPesquisa($aluno, $termoBusca);
+        $totalDepois = count(extrairAlunosUnicos($aluno));
+
+        if (!empty($aluno)) {
+            $statusLabel = '';
+            if ($temFiltroAtivo) {
+                $statusLabel = ($statusFiltro === 'em andamento') ? 'pendente' : 'atendido';
+            }
+            $mensagemFiltro = '<div class="alert alert-info"><i data-lucide="search" class="icon"></i><strong>' . $totalDepois . ' aluno(s) ' . $statusLabel . ' encontrado(s) para "' . htmlspecialchars($termoBusca) . '".</strong></div>';
+        } elseif (!empty($alunoAntes)) {
+            $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="x-circle" class="icon"></i><strong>Nenhum aluno encontrado para "' . htmlspecialchars($termoBusca) . '".</strong></div>';
+        }
+    }
+
     if (isset($_GET['search']) && !empty($_GET['search'])) {
         $search = trim($_GET['search']);
         if (!empty($search)) {
-            $alunoAntesPesquisa = $aluno; // Salva o estado anterior
-
-            // Conta alunos únicos antes da pesquisa
+            $alunoAntesPesquisa = $aluno;
             $alunosUnicosAntes = extrairAlunosUnicos($alunoAntesPesquisa);
             $totalAntes = count($alunosUnicosAntes);
-
-            $aluno = forSearch($aluno, $search);
-
-            // Conta alunos únicos depois da pesquisa
+            $aluno = aplicarPesquisa($aluno, $search);
             $alunosUnicosDepois = extrairAlunosUnicos($aluno);
             $totalDepois = count($alunosUnicosDepois);
 
-            // Mensagens de resultado da pesquisa
             if (!empty($aluno)) {
-                // Pesquisa encontrou resultados
                 if ($temFiltroAtivo) {
                     $filtroNome = (isset($_GET['status']) && $_GET['status'] === 'em andamento') ? 'pendentes' : 'atendidos';
-                    if ($totalDepois == 1) {
-                        $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #d1edff; color: #0c5460; border: 1px solid #b8daff; border-radius: 4px;"><strong>1 aluno ' . $filtroNome . ' encontrado para a pesquisa "' . htmlspecialchars($search) . '".</strong></div>';
-                    } else {
-                        $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #d1edff; color: #0c5460; border: 1px solid #b8daff; border-radius: 4px;"><strong>' . $totalDepois . ' alunos ' . $filtroNome . ' encontrados para a pesquisa "' . htmlspecialchars($search) . '".</strong></div>';
-                    }
+                    $mensagemFiltro = '<div class="alert alert-info"><i data-lucide="search" class="icon"></i><strong>' . $totalDepois . ' aluno(s) ' . $filtroNome . ' encontrado(s) para "' . htmlspecialchars($search) . '".</strong></div>';
                 } else {
-                    if ($totalDepois == 1) {
-                        $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;"><strong>1 aluno encontrado para a pesquisa "' . htmlspecialchars($search) . '".</strong></div>';
-                    } else {
-                        $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;"><strong>' . $totalDepois . ' alunos encontrados para a pesquisa "' . htmlspecialchars($search) . '".</strong></div>';
-                    }
+                    $mensagemFiltro = '<div class="alert alert-success"><i data-lucide="check-circle" class="icon"></i><strong>' . $totalDepois . ' aluno(s) encontrado(s) para "' . htmlspecialchars($search) . '".</strong></div>';
                 }
             } elseif (!empty($alunoAntesPesquisa)) {
-                // Pesquisa não encontrou resultados
-                if ($temFiltroAtivo) {
-                    // Mensagem específica quando pesquisa com filtro ativo
-                    $filtroNome = (isset($_GET['status']) && $_GET['status'] === 'em andamento') ? 'pendentes' : 'atendidos';
-                    $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; border-radius: 4px;"><strong>Nenhum aluno ' . $filtroNome . ' encontrado para a pesquisa "' . htmlspecialchars($search) . '".</strong><br><small>Pesquisa realizada em ' . $totalAntes . ' aluno(s) com o filtro ativo.</small></div>';
-                } else {
-                    // Mensagem para pesquisa sem filtro
-                    $mensagemFiltro = '<div style="padding: 15px; margin: 10px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;"><strong>Nenhum aluno encontrado para a pesquisa "' . htmlspecialchars($search) . '".</strong><br><small>Pesquisa realizada em ' . $totalAntes . ' aluno(s) total.</small></div>';
-                }
+                $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="x-circle" class="icon"></i><strong>Nenhum aluno encontrado para "' . htmlspecialchars($search) . '".</strong></div>';
             }
         }
     }
 } else {
-    // Se não houver alunos, define variáveis vazias para evitar erros
     $countAlunos = 0;
-    $mensagemFiltro = '<div><p style="color: red"><strong>Nenhum aluno encontrado.</strong></p></div>';
+    $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="users-x" class="icon"></i><strong>Nenhum aluno encontrado.</strong></div>';
     $alunoOriginal = [];
     $aluno = [];
 }
@@ -288,202 +225,416 @@ if (!empty($alunoOriginal)) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Painel do Instrutor</title>
-    <link rel="stylesheet" href="./style//perfilInstrutor.css?v=<?= time(); ?>">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Instrutor - GYGA FIT</title>
+    <link rel="stylesheet" href="./view/style/perfilInstrutor.css?v=<?= time(); ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Adicionando ícones Lucide via CDN -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+
+        .metric-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 16px 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 1px solid #10b981;
+            color: #047857;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+    </style>
 </head>
 
 <body>
-
+    <!-- Header Profissional -->
     <header>
         <div class="header-logo">
-            <button class="header-button" onclick="toggleSidebar()">☰</button>
-            <img src="img/logo.png" alt="Logo GYGA FIT">
-            <h1>GYGA FIT - Painel do Instrutor</h1>
+            <button class="header-button" onclick="toggleSidebar()">
+                <i data-lucide="menu" class="header-icon"></i>
+            </button>
+
+            <img src="./view/img/logo.png"></img>
+
+            <div>
+                <h1>GYGA FIT</h1>
+                <p class="header-subtitle">Painel do Instrutor</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-header">
+                <i data-lucide="bell" class="btn-icon"></i>
+                Notificações
+            </button>
         </div>
     </header>
 
+    <!-- Sidebar Melhorada -->
     <div class="sidebar" id="sidebar">
-        <button class="close-button" onclick="toggleSidebar()">X</button>
-        <h3>Menu</h3>
-        <a href="./editar_perfil_instrutor.php">Alterar Perfil</a>
-        <a href="./configuracoes.php">Configurações</a>
-        <a href="./telaInicialAcademia.php">Menu da Academia</a>
-
+        <button class="close-button" onclick="toggleSidebar()">
+            <i data-lucide="x" class="icon"></i>
+        </button>
+        <h3>
+            <i data-lucide="settings" class="icon"></i>
+            Menu
+        </h3>
+        <a href="./view/editar_perfil_instrutor.php">
+            <i data-lucide="user-cog" class="icon"></i>
+            Alterar Perfil
+        </a>
+        <a href="./configuracoes.php">
+            <i data-lucide="settings" class="icon"></i>
+            Configurações
+        </a>
+        <a href="./index.php?page=telaInicial" class="sidebar-link">
+            <i data-lucide="log-out" class="icon"></i>
+            <span>Menu da Academia</span>
+        </a>
+        <a href="./view/logout.php" class="sidebar-link">
+            <i data-lucide="log-out" class="icon"></i>
+            <span>log-out</span>
+        </a>
     </div>
 
     <div class="main-content">
+        <!-- Perfil do Instrutor Melhorado -->
         <div class="perfil-instrutor">
-            <?php if (!empty($instrutor['foto'])): ?>
-                <img src="../view/uploads/<?php echo htmlspecialchars($instrutor['foto']); ?>" alt="Foto do Instrutor"
-                    class="foto-instrutor">
-            <?php else: ?>
-                <img src="./img/user-placeholder.png" alt="Sem foto" class="foto-instrutor">
-            <?php endif; ?>
+            <div class="instrutor-header">
+                <div class="instrutor-avatar">
+                    <?php if (!empty($instrutor['foto'])): ?>
+                        <img src="./view/uploads/<?php echo htmlspecialchars($instrutor['foto']); ?>"
+                            alt="Foto do Instrutor" class="foto-instrutor">
+                    <?php else: ?>
+                        <div class="avatar-circle">
+                            <?= strtoupper(substr($instrutor['username'], 0, 1)) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="instrutor-info-header">
+                    <h2 class="instrutor-nome"><?= htmlspecialchars($instrutor['username']) ?></h2>
+                    <div class="instrutor-badges">
+                        <span class="badge badge-primary">
+                            <i data-lucide="star" class="icon"></i>
+                            <?= htmlspecialchars($instrutor['servico'] ?? 'Personal Trainer') ?>
+                        </span>
+                        <span class="badge <?= $disponibilidade === 'disponível' ? 'badge-success' : 'badge-warning' ?>">
+                            <i data-lucide="<?= $disponibilidade === 'disponível' ? 'check-circle' : 'clock' ?>" class="icon"></i>
+                            <?= ucfirst($disponibilidade) ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-            <div class="perfil-detalhes">
-                <p><strong>Nome:</strong> <?= htmlspecialchars($instrutor['username']) ?></p>
-                <p><strong>Especialidade:</strong> <?= htmlspecialchars($instrutor['servico'] ?? 'Não informado') ?></p>
-                <p><strong>Quantidade de Alunos Atendidos:</strong>
-                    <?= htmlspecialchars($countAlunos ?? 'Nenhum aluno encontrado') ?></p>
-                <p><strong>Pendentes:</strong> <?= htmlspecialchars(countPendentes() ?? '0') ?></p>
-                <p><strong>Disponibilidade:</strong> <?= htmlspecialchars($disponibilidade) ?></p>
+            <div class="instrutor-metricas">
+                <div class="metrica-card alunos">
+                    <div class="metrica-icon">
+                        <i data-lucide="users" class="metric-icon"></i>
+                    </div>
+                    <div class="metrica-content">
+                        <div class="metrica-numero"><?= $countAlunos ?></div>
+                        <div class="metrica-label">Alunos Ativos</div>
+                    </div>
+                </div>
+
+                <div class="metrica-card pendentes">
+                    <div class="metrica-icon">
+                        <i data-lucide="clock" class="metric-icon"></i>
+                    </div>
+                    <div class="metrica-content">
+                        <div class="metrica-numero"><?= countPendentes() ?></div>
+                        <div class="metrica-label">Pendentes</div>
+                    </div>
+                </div>
+
+                <div class="metrica-card concluidos">
+                    <div class="metrica-icon">
+                        <i data-lucide="check-circle" class="metric-icon"></i>
+                    </div>
+                    <div class="metrica-content">
+                        <div class="metrica-numero"><?= $countAlunos - countPendentes() ?></div>
+                        <div class="metrica-label">Atendidos</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="solicitacoes">
-            <form method="GET" action="" class="search-bar">
+        <!-- Seção de Pesquisa Melhorada -->
+        <div class="search-section">
+            <form method="GET" action="./index.php " class="search-bar">
                 <?php
                 $search = $_GET['search'] ?? '';
-                $statusSelecionado = strtolower($_GET['status'] ?? '');
-
-                // Mostra informação do filtro aplicado se não for "todos"
-                $infoFiltro = '';
-                if (!empty($statusSelecionado) && $statusSelecionado !== 'todos') {
-                    $nomeStatus = $statusSelecionado === 'em andamento' ? 'Pendente' : 'Atendido';
-                    $infoFiltro = " - Filtro: $nomeStatus ativo";
-                }
+                $statusSelecionado = $_GET['status'] ?? '';
                 ?>
-                <input type="text" name="search" placeholder="Pesquisar aluno..."
-                    value="<?= htmlspecialchars($search) ?>">
 
-                <!-- Campo hidden para manter o filtro ativo quando pesquisar -->
-                <?php if (!empty($statusSelecionado)): ?>
-                    <input type="hidden" name="status" value="<?= htmlspecialchars($statusSelecionado) ?>">
-                <?php endif; ?>
+                <div class="search-input-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" name="search" placeholder="Pesquisar aluno por nome..."
+                        value="<?= htmlspecialchars($search) ?>" class="search-input">
+                </div>
 
-                <button type="submit">Pesquisar</button>
+                <!-- Sempre incluir o status atual como campo oculto se existir -->
+                <button type="submit" class="btn-search">
+                    <i data-lucide="search" class="btn-icon"></i>
 
-                <select name="status_filter" id="status_filter" onchange="applyFilter(this.value)">
-                    <option value="">Selecione um filtro...</option>
-                    <option value="em andamento">Pendente</option>
-                    <option value="atendido">Atendido</option>
+                    Pesquisar
+                </button>
+                <!-- Mudar o nome para "status" para corresponder ao parâmetro usado no PHP -->
+                <select name="status" id="status_filter" class="filter-select" onchange="applyFilter(this.value)">
+                    <option value="">
+                        <i data-lucide="filter" class="icon"></i>
+                        Filtros
+                    </option>
+                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="atendido" <?= $statusSelecionado === 'atendido' ? 'selected' : '' ?>>Atendido</option>
+                    <option value="todos" <?= $statusSelecionado === 'todos' ? 'selected' : '' ?>>Todos</option>
                 </select>
 
-                <?php if (!empty($statusSelecionado) && $statusSelecionado !== 'todos'): ?>
-                    <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn-limpar-filtro" style="margin-left: 10px; padding: 8px 12px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">
+
+                <?php if (!empty($statusSelecionado)): ?>
+                    <a href="<?= "index.php?page=perfilInstrutor " ?><?= !empty($search) ? '?search=' . urlencode($search) : '' ?>" class="btn-clear-filter">
+                        <i data-lucide="x" class="btn-icon"></i>
                         Limpar Filtros
                     </a>
                 <?php endif; ?>
-
-                <?php if (!empty($infoFiltro)): ?>
-                    <span style="margin-left: 10px; color: #007bff; font-weight: bold;">
-                        <?= $infoFiltro ?>
-                    </span>
-                <?php endif; ?>
             </form>
+        </div>
+        <!-- Solicitações Melhoradas -->
+        <div class="solicitacoes">
+            <div class="solicitacoes-header">
+                <h3>
+                    <i data-lucide="calendar" class="icon"></i>
+                    Solicitações de Treino
+                </h3>
+            </div>
 
-            <div class="secao-solicitacoes">
-                <h3>Solicitações de Treino</h3>
+            <?php if (!empty($mensagemFiltro)): ?>
+                <?= $mensagemFiltro ?>
+            <?php endif; ?>
 
-                <?php
-                // Exibe mensagem de filtro/pesquisa se houver
-                if (!empty($mensagemFiltro)) {
-                    echo $mensagemFiltro;
-                }
-                ?>
-
+            <div class="alunos-grid">
                 <?php $alunosInfo = extrairAlunosUnicos($aluno); ?>
 
                 <?php if (!empty($alunosInfo)): ?>
                     <?php foreach ($alunosInfo as $alunoAtual): ?>
-
                         <div class="card-aluno">
                             <?php $solicitacoes = getFormulariosByAluno($alunoAtual['id_aluno']); ?>
-                            <div class="card-info">
-                                <div>
-                                    <?php $status = getStatus($alunoAtual['id_aluno']); ?>
-                                    <?php if (!empty($status) && $status === 'em andamento'): ?>
-                                        <div class="icon-notificacao"> </div>
-                                    <?php endif; ?>
-                                    <p><strong><?= htmlspecialchars($alunoAtual['nome_aluno']) ?></strong></p>
-                                    <p><?= htmlspecialchars($alunoAtual['data_solicitacao']) ?></p>
+                            <?php $status = getStatus($alunoAtual['id_aluno']); ?>
 
-                                    <p>Solicitações: <?= htmlspecialchars(countSolicitacaoTreino($alunoAtual['id_aluno'])) ?></p> <!-- Container oculto da solicitação -->
-                                    <?php if (!empty($solicitacoes)): ?>
-                                        <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-content"
-                                            style="display: none; margin-top: 10px;">
-                                            <?php
-                                            foreach ($solicitacoes as $sol):
-                                            ?>
-                                                <p><strong>Experiençia:</strong> <?= htmlspecialchars($sol['experiencia']) ?></p>
-                                                <p><strong>Objetivo:</strong> <?= htmlspecialchars($sol['objetivo']) ?></p>
-                                                <p><strong>Dias de treino:</strong> <?= htmlspecialchars($sol['treinos']) ?></p>
-                                                <p><strong>Peso:</strong> <?= htmlspecialchars($sol['peso']) ?></p>
-                                                <p><strong>Altura:</strong> <?= htmlspecialchars($sol['altura']) ?></p>
-
-                                                <?php
-                                                $status = strtolower($sol['status']);
-                                                switch ($status) {
-                                                    case 'em andamento':
-                                                        $cor = 'red';
-
-                                                        break;
-                                                    case 'atendido':
-                                                        $cor = 'green';
-                                                        break;
-                                                    default:
-                                                        $cor = 'gray';
-                                                }
-                                                ?>
-                                                <p style="color: <?= $cor ?>;">Solicitação: <?= htmlspecialchars($sol['status']) ?></p>
-
-                                                <hr>
-                                            <?php
-                                            endforeach;
-                                            ?>
-                                        </div>
-                                    <?php endif; ?>
+                            <div class="aluno-card-header">
+                                <div class="aluno-avatar-small">
+                                    <?= strtoupper(substr($alunoAtual['nome_aluno'], 0, 1)) ?>
+                                </div>
+                                <div class="aluno-info">
+                                    <h4 class="aluno-nome-card">
+                                        <?= htmlspecialchars($alunoAtual['nome_aluno']) ?>
+                                        <?php if (!empty($status) && $status === 'em andamento'): ?>
+                                            <span class="notification-dot"></span>
+                                        <?php endif; ?>
+                                    </h4>
+                                    <div class="aluno-meta">
+                                        <span class="meta-item">
+                                            <i data-lucide="calendar" class="icon"></i>
+                                            <?= htmlspecialchars($alunoAtual['data_solicitacao']) ?>
+                                        </span>
+                                        <span class="meta-item">
+                                            <i data-lucide="activity" class="icon"></i>
+                                            <?= countSolicitacaoTreino($alunoAtual['id_aluno']) ?> solicitações
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-botoes">
 
+                            <!-- Container oculto da solicitação -->
+                            <?php if (!empty($solicitacoes)): ?>
+                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-details" style="display: none;">
+                                    <?php foreach ($solicitacoes as $sol): ?>
+                                        <div class="solicitacao-item">
+                                            <div class="detail-grid">
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Experiência:</span>
+                                                    <span class="detail-value"><?= htmlspecialchars($sol['experiencia']) ?></span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Objetivo:</span>
+                                                    <span class="detail-value"><?= htmlspecialchars($sol['objetivo']) ?></span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Dias de treino:</span>
+                                                    <span class="detail-value"><?= htmlspecialchars($sol['treinos']) ?></span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Peso:</span>
+                                                    <span class="detail-value"><?= htmlspecialchars($sol['peso']) ?>kg</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Altura:</span>
+                                                    <span class="detail-value"><?= htmlspecialchars($sol['altura']) ?>cm</span>
+                                                </div>
+                                            </div>
+
+                                            <?php
+                                            $statusClass = '';
+                                            switch (strtolower($sol['status'])) {
+                                                case 'em andamento':
+                                                    $statusClass = 'status-pendente';
+                                                    break;
+                                                case 'atendido':
+                                                    $statusClass = 'status-atendido';
+                                                    break;
+                                                default:
+                                                    $statusClass = 'status-default';
+                                            }
+                                            ?>
+                                            <div class="status-badge <?= $statusClass ?>">
+                                                <i data-lucide="<?= strtolower($sol['status']) === 'em andamento' ? 'clock' : 'check-circle' ?>" class="icon"></i>
+                                                <?= htmlspecialchars($sol['status']) ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="card-actions">
                                 <?php if (!empty($solicitacoes)): ?>
-                                    <button class="btn-visualizar"
-                                        onclick="toggleSolicitacao('<?= $alunoAtual['id_aluno'] ?>')">Visualizar</button>
+                                    <button class="btn-visualizar" onclick="toggleSolicitacao('<?= $alunoAtual['id_aluno'] ?>')">
+                                        <i data-lucide="eye" class="btn-icon"></i>
+                                        Visualizar
+                                    </button>
+
                                     <?php if (veryFyStatus($solicitacoes)): ?>
-                                        <form action="../controllers/processarNovoTreino.php" method="POST">
+                                        <form action="./controllers/processarNovoTreino.php" method="POST" style="display: inline;">
                                             <input type="hidden" name="id_alunoNovoTreino" value="<?= $alunoAtual['id_aluno'] ?>">
-                                            <input class="btn-status" value='Novo Treino' name="submit_NovoTreino" type="submit"></input>
+                                            <button type="submit" name="submit_NovoTreino" class="btn-novo-treino">
+                                                <i data-lucide="plus-circle" class="btn-icon"></i>
+                                                Novo Treino
+                                            </button>
                                         </form>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
-
                     <?php endforeach; ?>
-                    <button class="btn-add-aluno" onclick="window.location.href='./alunos.php'">Adicionar Aluno</button>
-                <?php endif; // Fecha o if (!empty($alunosInfo)) 
-                ?>
+                <?php endif; ?>
             </div>
+
+            <?php if (!empty($alunosInfo)): ?>
+                <div class="add-aluno-section">
+                    <button class="btn-add-aluno" onclick="window.location.href='./alunos.php'">
+                        <i data-lucide="user-plus" class="btn-icon"></i>
+                        Adicionar Novo Aluno
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <img src="./view/img/logo.png" alt="Logo GYGA FIT" class="footer-logo">
+            <p>&copy; <?php echo date('Y'); ?> GYGA FIT. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Import or declare the lucide variable before using it
+        const lucide = window.lucide || {};
+
+        function applyFilter(filterValue) {
+            if (filterValue) {
+                // Obter parâmetros de URL atuais
+                const urlParams = new URLSearchParams(window.location.search);
+
+                // Definir o novo valor de status
+                urlParams.set('status', filterValue);
+
+                // Redirecionar com todos os parâmetros
+                window.location.href = window.location.pathname + '?' + urlParams.toString();
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function toggleSolicitacao(id) {
+            const element = document.getElementById('solicitacao-' + id);
+            const button = event.target.closest('.btn-visualizar');
+
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+                button.innerHTML = '<i data-lucide="eye-off" class="btn-icon"></i>Ocultar';
+            } else {
+                element.style.display = 'none';
+                button.innerHTML = '<i data-lucide="eye" class="btn-icon"></i>Visualizar';
+            }
+
+            // Reinicializa os ícones
+            lucide.createIcons();
+        }
+
+        // Inicializa os ícones quando a página carrega
+        document.addEventListener("DOMContentLoaded", function() {
+            lucide.createIcons();
+
+            // Sincronizar o valor do select com o parâmetro da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const statusParam = urlParams.get('status');
+
+            if (statusParam) {
+                const statusSelect = document.getElementById('status_filter');
+                if (statusSelect) {
+                    statusSelect.value = statusParam;
+                }
+            }
+        });
+    </script>
 </body>
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('open');
-    }
-
-    function toggleSolicitacao(id) {
-        const element = document.getElementById('solicitacao-' + id);
-        if (element.style.display === 'none' || element.style.display === '') {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-    }
-
-    function applyFilter(filterValue) {
-        if (filterValue) {
-            // Quando aplicar filtro, remover pesquisa e aplicar apenas o filtro
-            window.location.href = window.location.pathname + '?status=' + encodeURIComponent(filterValue);
-        }
-    }
-</script>
-
-<footer>
-    <img src="img/logo.png" alt="Logo GYGA FIT">
-    <p>&copy; <?php echo date('Y'); ?> GYGA FIT. Todos os direitos reservados.</p>
-</footer>
 
 </html>

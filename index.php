@@ -5,7 +5,8 @@ session_start();
 $page = $_GET['page'] ?? 'telaInicial';
 
 // Redirecionamento inteligente com base no tipo de usuário
-function redirecionarUsuario() {
+function redirecionarUsuario()
+{
     $tipo = $_SESSION['usuario']['typeUser'] ?? '';
 
     if ($tipo === 'aluno') {
@@ -29,7 +30,7 @@ if ($page === 'logout') {
 
 // Se o usuário já estiver logado e cair na página pública, redireciona
 if (isset($_SESSION['usuario']) && $page === 'telaInicial') {
-    redirecionarUsuario();
+    //redirecionarUsuario();
 }
 
 // Lista de páginas que exigem autenticação
@@ -67,6 +68,26 @@ switch ($page) {
             header("Location: index.php?page=erro");
         }
         break;
+    case 'logout':
+        session_destroy();
+        header("Location: index.php?page=telaInicial");
+        exit();
+        break;
+
+    case 'solicitacaoTreino':
+        if ($_SESSION['usuario']['typeUser'] === 'aluno') {
+            include 'view/paginaFormulario.php';
+        } else {
+            header("Location: index.php?page=erro");
+        }
+        break;
+    case 'sucessoSolicitacaoDeTreino':
+        if ($_SESSION['usuario']['typeUser'] === 'aluno') {
+            include 'view/telaPrincipal.php';
+        } else {
+            header("Location: index.php?page=erro");
+        }
+        break;
 
     case 'erro':
         echo "<h2>Acesso negado ou tipo de usuário inválido.</h2>";
@@ -76,4 +97,3 @@ switch ($page) {
         echo "<h2>Página não encontrada.</h2>";
         break;
 }
-?>

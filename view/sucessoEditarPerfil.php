@@ -1,6 +1,14 @@
 <!-- alunoSucessoInstrutor.php -->
+
+<?php
+if ($_METHOD['REQUEST_METHOD'] !== 'POST') {
+    header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaPrincipal");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Alterações Realizadas</title>
@@ -91,6 +99,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -107,7 +116,9 @@
         <div class="sucesso-container">
             <h2>Perfil Editado com Sucesso!</h2>
             <p>Suas informações foram alteradas com sucesso. Aperte "OK" para retornar ao Seu Perfil.</p>
-            <a href="telaPrincipal.php" class="btn-voltar">OK</a>
+            <form action="" method="post">
+                <button type="submit" class="btn-voltar">OK</button>
+            </form>
         </div>
     </main>
 
@@ -116,4 +127,5 @@
     </footer>
 
 </body>
+
 </html>

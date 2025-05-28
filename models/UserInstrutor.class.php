@@ -72,16 +72,10 @@ class UserInstrutor
         }
     }
 
-    /**
-<<<<<<< Updated upstream
-     * Retorna a data e hora atual no formato Y-m-d H:i:s.
-=======
->>>>>>> Stashed changes
-     */
+
     public function dataInicio()
     {
         $data = new DateTime();
         return $data->format('Y-m-d H:i:s');
     }
-    
 }
