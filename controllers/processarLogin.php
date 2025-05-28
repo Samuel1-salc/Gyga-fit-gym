@@ -7,10 +7,13 @@
  * @package controllers
  */
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../models/Usuarios.class.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cpf = $_POST['cpf'] ?? '';
 
     $_SESSION['error'] = '';
@@ -18,32 +21,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validação dos campos obrigatórios
     if (empty($cpf)) {
         $_SESSION['error'] = "Preencha todos os campos!";
-        header("Location: ../index.php?page=telaLogin");
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaLogin");
         exit();
     }
 
     // Validação do tamanho do CPF
-    if (strlen($cpf) != 11) {
+    if (strlen($cpf) != 11 || !ctype_digit($cpf)) {
         $_SESSION['error'] = "CPF inválido!";
-        header("Location: ../index.php?page=telaLogin");
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaLogin");
         exit();
     }
 
     $usuarios = new Users();
 
     // Busca usuário por CPF (aluno ou instrutor)
-    if (!empty($usuarios->getDataAlunoByCpf($cpf))) {
-        $user = $usuarios->getDataAlunoByCpf($cpf);
-    } else if (!empty($usuarios->getDataPersonalByCpf($cpf))) {
+    $user = $usuarios->getDataAlunoByCpf($cpf);
+    if (empty($user)) {
         $user = $usuarios->getDataPersonalByCpf($cpf);
-    } else {
+    }
+
+    if (empty($user)) {
         $_SESSION['error'] = "Usuário não encontrado!";
-        header("Location: ../index.php?page=telaLogin");
+        header("Location: http://localhost/Gyga-fit-gym/index.php?page=telaLogin");
         exit();
     }
 
-    // Usuário encontrado → salva na sessão e deixa o index.php cuidar do redirecionamento
+    // Usuário encontrado → salva na sessão
     $_SESSION['usuario'] = $user;
-    header("Location: ../index.php"); // Acesso à home → index decide para onde mandar
+
+    // Redireciona para o index principal (que faz o roteamento)
+    header("Location: http://localhost/Gyga-fit-gym/index.php");
     exit();
 }
+?>
