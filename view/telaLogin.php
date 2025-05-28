@@ -211,7 +211,7 @@
   <div class="login-box">
     <h1>GYGA FIT</h1>
     <p>Entre com suas credenciais para Entrar</p>
-    <form action="./controllers/processarLogin.php" method="post">
+    <form action="/../Gyga-fit-gym/controllers/processarLogin.php" method="post">
       <div class="input-group">
         <label for="cpf">CPF</label>
         <input type="text" name="cpf" required />

@@ -30,7 +30,7 @@
  * @author
  * @version 1.0
  */
-session_start();
+
 require_once __DIR__ . '/../models/Usuarios.class.php';
 require_once __DIR__ . '/../models//Treino.class.php';
 $usuarios = new Users();
