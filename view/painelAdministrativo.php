@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -32,7 +32,7 @@ if ($search !== '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyga Fit - Painel Administrativo</title>
-    <link rel="stylesheet" href="style/stylePainel.css">
+    <link rel="stylesheet" href="./view/style/stylePainel.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -41,7 +41,7 @@ if ($search !== '') {
     <header>
         <div class="header-container">
             <div class="user-icon"><i class="fas fa-user"></i></div>
-            <div class="logo"><img src="./img/logo.png" alt="Gyga Fit Logo" class="logo-img"></div>
+            <div class="logo"><img src="./view/img/logo.png" alt="Gyga Fit Logo" class="logo-img"></div>
             <div class="menu-icon"><i class="fas fa-bars"></i></div>
         </div>
     </header>

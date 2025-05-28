@@ -88,6 +88,13 @@ switch ($page) {
             header("Location: index.php?page=erro");
         }
         break;
+    case 'painelAdministrativo':
+        if ($_SESSION['usuario']['typeUser'] === 'gerente') {
+            include 'view/painelAdministrativo.php';
+        } else {
+            header("Location: index.php?page=erro");
+        }
+        break;
 
     case 'erro':
         echo "<h2>Acesso negado ou tipo de usuário inválido.</h2>";
