@@ -69,6 +69,7 @@ switch ($page) {
         }
         break;
     case 'logout':
+        session_unset();
         session_destroy();
         header("Location: index.php?page=telaInicial");
         exit();
@@ -84,6 +85,13 @@ switch ($page) {
     case 'sucessoSolicitacaoDeTreino':
         if ($_SESSION['usuario']['typeUser'] === 'aluno') {
             include 'view/telaPrincipal.php';
+        } else {
+            header("Location: index.php?page=erro");
+        }
+        break;
+    case 'painelAdministrativo':
+        if ($_SESSION['usuario']['typeUser'] === 'gerente') {
+            include 'view/painelAdministrativo.php';
         } else {
             header("Location: index.php?page=erro");
         }
