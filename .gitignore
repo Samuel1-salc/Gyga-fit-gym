@@ -3,8 +3,8 @@
 
 # Ignora dependências do Composer
 /vendor/
-.composer.json
-.composer.lock
+composer.json
+composer.lock
 
 # Ignora arquivos temporários/sistema
 *.log
