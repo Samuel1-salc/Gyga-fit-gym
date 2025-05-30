@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Redireciona para a página de criação de novo treino
     if (isset($_POST['submit_NovoTreino'])) {
         $id_aluno = $_POST['id_alunoNovoTreino'] ?? '';
-        header("Location: ../view/paginaDeTreino.php?id_aluno=$id_aluno");
+        header("Location: ../view/treino/criar-plano.php?id_aluno=$id_aluno");
         exit();
     }
 }

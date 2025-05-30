@@ -27,11 +27,6 @@ class UserAcademia
     }
 
     /**
-<<<<<<< Updated upstream
-     * Cadastra uma nova academia no banco de dados.
-=======
->>>>>>> Stashed changes
-     *
      * @param string $nome Nome da unidade.
      * @param int $capacidade Capacidade máxima de alunos.
      * @param int $alunosAtivos Número de alunos ativos atualmente.

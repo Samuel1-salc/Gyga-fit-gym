@@ -2,7 +2,7 @@
 session_start();
 require_once('../config/database.class.php');
 
-$db = new Database();
+$db = Database::getInstance();
 $pdo = $db->getConexao();
 
 // Verifica se o usuário está logado e é um aluno

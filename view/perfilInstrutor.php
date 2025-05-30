@@ -406,7 +406,7 @@ if (!empty($alunoOriginal)) {
 
         <!-- Seção de Pesquisa Melhorada -->
         <div class="search-section">
-            <form method="GET" action="./index.php " class="search-bar">
+            <form method="GET" action="  " class="search-bar">
                 <?php
                 $search = $_GET['search'] ?? '';
                 $statusSelecionado = $_GET['status'] ?? '';
