@@ -23,7 +23,7 @@ class Treino
     public function __construct()
     {
         require_once __DIR__ . '/../config/database.class.php';
-        $this->con = new Database();
+        $this->con = Database::getInstance();
         $this->link = $this->con->getConexao();
     }
 
@@ -64,7 +64,7 @@ class Treino
         }
     }
 
-     /**
+    /**
      * Busca o último id_treino_criado para um aluno.
      *
      * @param int $id_aluno ID do aluno.
@@ -83,7 +83,7 @@ class Treino
             $stmt = $this->link->prepare("
                 SELECT * FROM plano_de_treino WHERE id_treino_criado = :id_treino_criado 
             ");
-            $stmt->bindParam(':id_treino_criado', $id_treino_criado );
+            $stmt->bindParam(':id_treino_criado', $id_treino_criado);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -234,4 +234,3 @@ class Treino
         }
     }
 }
-

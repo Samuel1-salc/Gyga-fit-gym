@@ -1,0 +1,20 @@
+# Ignora arquivos de configuração do ambiente
+.env
+
+# Ignora dependências do Composer
+.vendor/
+.composer.json
+.composer.lock
+
+# Ignora arquivos temporários/sistema
+*.log
+*.cache
+*.tmp
+*.swp
+
+# Ignora IDEs/editor configs
+.vscode/
+
+
+
+

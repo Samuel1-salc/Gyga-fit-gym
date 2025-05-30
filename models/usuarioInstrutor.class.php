@@ -7,13 +7,13 @@ require_once __DIR__ . '/usuarios.class.php';
  */
 class aluno_instrutor
 {
-    /** @var PDO */
+    private $con;
     private $link;
 
     public function __construct()
     {
-        $db = new Database();
-        $this->link = $db->getConexao();
+        $this->con = Database::getInstance();
+        $this->link = $this->con->getConexao();
     }
 
     /**

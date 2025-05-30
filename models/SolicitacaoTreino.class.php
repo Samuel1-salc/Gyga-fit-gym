@@ -19,11 +19,10 @@ class SolicitacaoTreino
     /**
      * Construtor da classe SolicitacaoTreino.
      * Inicializa a conexão com o banco de dados.
-     */
-    public function __construct()
+     */    public function __construct()
     {
         require_once __DIR__ . '/../config/database.class.php';
-        $this->con = new Database();
+        $this->con = Database::getInstance();
         $this->link = $this->con->getConexao();
     }
 

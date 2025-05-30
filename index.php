@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 // Página acessada via GET; padrão = telaInicial

@@ -8,7 +8,7 @@ class UserAluno
     public function __construct()
     {
         require_once __DIR__ . '/../config/database.class.php';
-        $this->con  = new Database();
+        $this->con  = Database::getInstance();
         $this->link = $this->con->getConexao();
     }
 
