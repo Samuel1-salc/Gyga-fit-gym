@@ -282,4 +282,55 @@ class Users
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    /**
+     * Busca todos os instrutores cadastrados.
+     *
+     * @return array Retorna um array com os dados dos instrutores.
+     */
+
+    public function getUsuariosByIdGerente($id_gerente)
+    {
+        if (!is_numeric($id_gerente)) {
+            throw new InvalidArgumentException("ID do gerente deve ser um número.");
+        }
+
+        try {
+            // 1. Obter a unidade do gerente
+            $stmt = $this->link->prepare("
+            SELECT unidade 
+            FROM gerente 
+            WHERE id = :id_gerente
+        ");
+            $stmt->bindParam(':id_gerente', $id_gerente, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result) {
+                throw new Exception("Gerente não encontrado.");
+            }
+
+            $unidade = $result['unidade'];
+
+            // 2. Buscar todos os instrutores e alunos dessa unidade
+            $stmt = $this->link->prepare("
+            SELECT 'instrutor' AS typeUser, id, username, unidade, email, cpf, phone, foto
+            FROM instrutor 
+            WHERE unidade = :unidade
+            UNION ALL
+            SELECT 'aluno' AS tipo, id, username, email, cpf, unidade, plano, phone, typeUser, foto
+            FROM aluno 
+            WHERE unidade = :unidade
+        ");
+            $stmt->bindParam(':unidade', $unidade, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erro ao buscar usuários da unidade do gerente: " . $e->getMessage();
+            return false;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 }

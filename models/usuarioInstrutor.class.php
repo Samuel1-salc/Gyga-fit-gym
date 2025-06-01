@@ -197,4 +197,202 @@ class aluno_instrutor
         $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    /**
+     * Retorna todos os funcionários (alunos e instrutores) da unidade do gerente.
+     * 
+     * @param int $id_gerente ID do gerente
+     * @return array Array com todos os funcionários da unidade
+     * @throws InvalidArgumentException Se o ID do gerente for inválido
+     */
+    public function getFuncionariosByUnidadeGerente($id_gerente)
+    {
+        if (!is_numeric($id_gerente)) {
+            throw new InvalidArgumentException("ID do gerente deve ser um número.");
+        }
+        if (empty($id_gerente)) {
+            throw new InvalidArgumentException("ID do gerente não pode ser vazio.");
+        }
+
+        try {
+            $stmt = $this->link->prepare("
+                SELECT 
+                    funcionarios.id,
+                    funcionarios.username,
+                    funcionarios.email,
+                    funcionarios.cpf,
+                    funcionarios.unidade,
+                    funcionarios.tipo_usuario,
+                    funcionarios.data_cadastro,
+                    funcionarios.phone,
+                    funcionarios.plano,
+                    funcionarios.data_inicio,
+                    funcionarios.data_termino
+                FROM (
+                    -- Seleciona todos os alunos da unidade
+                    SELECT 
+                        a.id,
+                        a.username,
+                        a.email,
+                        a.cpf,
+                        a.unidade,
+                        'aluno' as tipo_usuario,
+                        a.data_cadastro,
+                        a.phone,
+                        a.plano,
+                        a.data_inicio,
+                        a.data_termino
+                    FROM aluno a
+                    INNER JOIN gerente g ON a.unidade = g.unidade
+                    WHERE g.id = :id_gerente
+                    
+                    UNION ALL
+                    
+                    -- Seleciona todos os instrutores da unidade
+                    SELECT 
+                        i.id,
+                        i.username,
+                        i.email,
+                        i.cpf,
+                        i.unidade,
+                        'instrutor' as tipo_usuario,
+                        i.data_cadastro,
+                        i.phone,
+                        NULL as plano,
+                        NULL as data_inicio,
+                        NULL as data_termino
+                    FROM instrutor i
+                    INNER JOIN gerente g ON i.unidade = g.unidade
+                    WHERE g.id = :id_gerente
+                ) as funcionarios
+                ORDER BY funcionarios.tipo_usuario, funcionarios.username
+            ");
+            
+            $stmt->bindParam(':id_gerente', $id_gerente, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (PDOException $e) {
+            echo "Erro ao buscar funcionários da unidade: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * Retorna apenas os alunos da unidade do gerente.
+     * 
+     * @param int $id_gerente ID do gerente
+     * @return array Array com todos os alunos da unidade
+     */
+    public function getAlunosByUnidadeGerente($id_gerente)
+    {
+        if (!is_numeric($id_gerente)) {
+            throw new InvalidArgumentException("ID do gerente deve ser um número.");
+        }
+
+        try {
+            $stmt = $this->link->prepare("
+                SELECT 
+                    a.id,
+                    a.username,
+                    a.email,
+                    a.cpf,
+                    a.unidade,
+                    a.plano,
+                    a.data_inicio,
+                    a.data_termino,
+                    a.phone,
+                    a.data_cadastro,
+                    'aluno' as tipo_usuario
+                FROM aluno a
+                INNER JOIN gerente g ON a.unidade = g.unidade
+                WHERE g.id = :id_gerente
+                ORDER BY a.username
+            ");
+            
+            $stmt->bindParam(':id_gerente', $id_gerente, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (PDOException $e) {
+            echo "Erro ao buscar alunos da unidade: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * Retorna apenas os instrutores da unidade do gerente.
+     * 
+     * @param int $id_gerente ID do gerente
+     * @return array Array com todos os instrutores da unidade
+     */
+    public function getInstrutoresByUnidadeGerente($id_gerente)
+    {
+        if (!is_numeric($id_gerente)) {
+            throw new InvalidArgumentException("ID do gerente deve ser um número.");
+        }
+
+        try {
+            $stmt = $this->link->prepare("
+                SELECT 
+                    i.id,
+                    i.username,
+                    i.email,
+                    i.cpf,
+                    i.unidade,
+                    i.phone,
+                    i.data_cadastro,
+                    'instrutor' as tipo_usuario
+                FROM instrutor i
+                INNER JOIN gerente g ON i.unidade = g.unidade
+                WHERE g.id = :id_gerente
+                ORDER BY i.username
+            ");
+            
+            $stmt->bindParam(':id_gerente', $id_gerente, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (PDOException $e) {
+            echo "Erro ao buscar instrutores da unidade: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * Retorna estatísticas da unidade do gerente.
+     * 
+     * @param int $id_gerente ID do gerente
+     * @return array Array com estatísticas da unidade
+     */
+    public function getEstatisticasUnidadeGerente($id_gerente)
+    {
+        if (!is_numeric($id_gerente)) {
+            throw new InvalidArgumentException("ID do gerente deve ser um número.");
+        }
+
+        try {
+            $stmt = $this->link->prepare("
+                SELECT 
+                    g.unidade,
+                    COUNT(DISTINCT a.id) as total_alunos,
+                    COUNT(DISTINCT i.id) as total_instrutores,
+                    COUNT(DISTINCT CASE WHEN a.data_termino >= NOW() THEN a.id END) as alunos_ativos,
+                    COUNT(DISTINCT CASE WHEN a.data_termino < NOW() THEN a.id END) as alunos_expirados
+                FROM gerente g
+                LEFT JOIN aluno a ON g.unidade = a.unidade
+                LEFT JOIN instrutor i ON g.unidade = i.unidade
+                WHERE g.id = :id_gerente
+                GROUP BY g.id, g.unidade
+            ");
+            
+            $stmt->bindParam(':id_gerente', $id_gerente, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+            
+        } catch (PDOException $e) {
+            echo "Erro ao buscar estatísticas da unidade: " . $e->getMessage();
+            return false;
+        }
+    }
 }

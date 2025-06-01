@@ -38,12 +38,13 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alunos - Painel do Instrutor | GYGA FIT</title>    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Alunos - Painel do Instrutor | GYGA FIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style/listaAlunos.css?v=<?= time(); ?>">
-    
+
     <!-- Adicionando ícones Lucide via CDN -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
+
     <style>
         .icon {
             width: 20px;
@@ -51,7 +52,7 @@ try {
             display: inline-block;
             vertical-align: middle;
         }
-        
+
         .error-message {
             background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             border: 1px solid #ef4444;
@@ -66,7 +67,7 @@ try {
             justify-content: center;
             gap: 12px;
         }
-        
+
         .message-banner {
             background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             border: 1px solid #3b82f6;
