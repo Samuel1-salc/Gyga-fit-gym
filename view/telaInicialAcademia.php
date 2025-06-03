@@ -84,7 +84,8 @@
     <section id="sobre">
         <h2>Sobre a Gyga Fit</h2>
         <div class="descricao-sobre">
-            <p>A Gyga Fit é uma academia moderna com foco em bem-estar, performance e saúde. Unidades equipadas e profissionais qualificados.</p>
+            <p>A Gyga Fit é uma academia moderna com foco em bem-estar, performance e saúde. Unidades equipadas e
+                profissionais qualificados.</p>
         </div>
 
         <div class="imagens-sobre">
@@ -152,6 +153,17 @@
     <footer>
         <p>&copy; 2025 Gyga Fit - Todos os direitos reservados.</p>
     </footer>
+
+    <a href="https://api.whatsapp.com/send/?phone=%2B5561999426618&text=Ol%C3%A1%2C+Tenho+interesse+em+entrar+na+Gyga+Fit.+Me+passe+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
+        class="whatsapp-button" target="_blank" title="Fale conosco pelo WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24"
+            style="vertical-align: middle; margin-right: 8px;">
+            <path
+                d="M20.52 3.48A11.867 11.867 0 0 0 12 0C5.373 0 0 5.373 0 12c0 2.113.553 4.178 1.6 6.017L0 24l6.154-1.578A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12 0-3.19-1.24-6.188-3.48-8.52zM12 21.6a9.556 9.556 0 0 1-5.017-1.422l-.36-.214-3.654.936.973-3.56-.234-.37A9.514 9.514 0 0 1 2.4 12C2.4 6.93 6.93 2.4 12 2.4S21.6 6.93 21.6 12 17.07 21.6 12 21.6zm5.25-6.72c-.288-.144-1.71-.843-1.976-.94-.266-.097-.46-.144-.655.144-.195.288-.75.94-.92 1.134-.17.195-.34.22-.627.073a7.637 7.637 0 0 1-2.242-1.381 8.48 8.48 0 0 1-1.575-1.932c-.17-.288-.018-.444.127-.585.13-.13.288-.34.432-.51.14-.17.18-.29.27-.48.088-.195.044-.366-.022-.51-.066-.144-.655-1.577-.9-2.16-.237-.57-.48-.493-.66-.503l-.56-.01c-.192 0-.505.073-.77.366-.264.293-1.01.99-1.01 2.418 0 1.428 1.034 2.806 1.178 2.998.144.195 2.035 3.11 4.938 4.368.69.297 1.23.475 1.65.608.693.22 1.32.19 1.818.116.555-.083 1.71-.697 1.954-1.37.24-.673.24-1.25.168-1.37-.07-.12-.26-.195-.548-.34z" />
+        </svg>
+        Fale Conosco
+    </a>
+    
 </body>
 
 </html>
