@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($gerente) {
         $_SESSION['usuario_id'] = $gerente['id'];
-        $_SESSION['usuario_nome'] = $gerente['nome']; // Certifique-se que existe esse campo na tabela
+        $_SESSION['usuario_nome'] = $gerente['nome'];
         $_SESSION['tipo'] = 'gerente';
 
         header("Location: ../views/painelAdministrativo.php");
