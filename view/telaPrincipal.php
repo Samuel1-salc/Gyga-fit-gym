@@ -32,8 +32,8 @@
  * @version 1.0
  */
 
-require_once _DIR_ . '/../models/Usuarios.class.php';
-require_once _DIR_ . '/../models//Treino.class.php';
+require_once __DIR__ . '/../models/Usuarios.class.php';
+require_once __DIR__ . '/../models//Treino.class.php';
 $usuarios = new Users();
 function plano($plano)
 {
@@ -372,7 +372,7 @@ if ($id_ultimo_treino) {
         <i class="fas fa-plus"></i>
         <span>Solicitar Novo Treino</span>
     </button>
-    <button class="new-workout-button" onclick="window.location.href='./index.php?page=criarTreinoAluno'">
+    <button class="new-workout-button" onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
         <i class="fas fa-pen-nib"></i>
         <span>Criar Meu Próprio Treino</span>
     </button>

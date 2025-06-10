@@ -4,9 +4,9 @@
  * Preenche objetivo, experiência, e quantidade de treinos por semana manualmente.
  */
 
-session_start();
 
-require_once _DIR_ . '/../models/Treino.class.php';
+
+require_once __DIR__ . '/../models/Treino.class.php';
 
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['typeUser'] !== 'aluno') {
     header("Location: ../index.php?page=erro");
