@@ -11,7 +11,135 @@ require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
 require_once __DIR__ . '/../models/Treino.class.php';
 
-// [Todo o código PHP existente permanece igual...]
+// --- FUNÇÕES AUXILIARES ---
+// Coloque todas as funções aqui, ANTES do uso delas
+
+function extrairAlunosUnicos($dadosAlunos = null)
+{
+    global $alunoOriginal;
+    $dados = $dadosAlunos ?? $alunoOriginal;
+    $alunosUnicos = [];
+    $idsProcessados = [];
+    $contadorSemId = 0;
+
+    foreach ($dados as $item) {
+        $idAluno = $item['id_aluno'];
+        if (empty($idAluno)) {
+            $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
+            $contadorSemId++;
+        } else {
+            $chaveUnica = $idAluno;
+        }
+
+        if (!in_array($chaveUnica, $idsProcessados)) {
+            $alunosUnicos[] = [
+                'id_aluno' => $item['id_aluno'],
+                'nome_aluno' => $item['nome_aluno'],
+                'data_solicitacao' => $item['data_solicitacao'],
+                'contato_aluno' => $item['contato_aluno'],
+                'processo' => $item['processo'],
+                'status' => $item['status'],
+            ];
+            $idsProcessados[] = $chaveUnica;
+        }
+    }
+    return $alunosUnicos;
+}
+
+function countPendentes()
+{
+    $alunos = extrairAlunosUnicos();
+    $status = 'em andamento';
+    $countPendentes = 0;
+    foreach ($alunos as $item) {
+        if ($item['status'] == $status) {
+            $countPendentes++;
+        }
+    }
+    return $countPendentes;
+}
+
+function countSolicitacaoTreino($id_aluno)
+{
+    global $aluno;
+    $countSolicitacoes = 0;
+    foreach ($aluno as $item) {
+        if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
+            $countSolicitacoes++;
+        }
+    }
+    return $countSolicitacoes;
+}
+
+function getStatus($id_aluno)
+{
+    global $aluno;
+    foreach ($aluno as $item) {
+        if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno) {
+            return $item['status'];
+        }
+    }
+    return null;
+}
+
+function getFormulariosByAluno($id_aluno)
+{
+    global $aluno;
+    $formularios = [];
+    foreach ($aluno as $item) {
+        if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
+            $formularios[] = [
+                'id_aluno' => $item['id_aluno'],
+                'nome_aluno' => $item['nome_aluno'],
+                'data_created' => $item['data_created'],
+                'experiencia' => $item['experiencia'],
+                'objetivo' => $item['objetivo'],
+                'treinos' => $item['treinos'],
+                'sexo' => $item['sexo'],
+                'peso' => $item['peso'],
+                'altura' => $item['altura'],
+                'status' => $item['status'],
+            ];
+        }
+    }
+    return empty($formularios) ? null : $formularios;
+}
+
+function veryFyStatus($solicitacoes)
+{
+    $veryFystatus = 'em andamento';
+    foreach ($solicitacoes as $sol) {
+        if ($sol['status'] == $veryFystatus) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function aplicarFiltroStatus(&$aluno, $statusFiltro)
+{
+    $statusFiltro = strtolower($statusFiltro);
+    if ($statusFiltro === 'todos')
+        return;
+
+    $aluno = array_filter($aluno, function ($item) use ($statusFiltro) {
+        return !empty($item['status']) && strtolower($item['status']) === $statusFiltro;
+    });
+}
+
+function aplicarPesquisa(&$aluno, $search)
+{
+    $search = trim($search);
+    if (empty($search))
+        return;
+
+    $aluno = array_filter($aluno, function ($item) use ($search) {
+        return isset($item['nome_aluno']) && stripos($item['nome_aluno'], $search) !== false;
+    });
+}
+
+// --- FIM DAS FUNÇÕES AUXILIARES ---
+
 $instrutor = $_SESSION['usuario'];
 $alunoInstrutor = new aluno_instrutor();
 $solicitacaoTreino = new SolicitacaoTreino();
@@ -31,189 +159,14 @@ if (!empty($alunoOriginal)) {
         }
     }
     $countAlunos = count($alunosUnicos);
+    $countPendentes = countPendentes(); // <-- Adicione esta linha
     $data_saida = $instrutor['data_saida'] ?? null;
     $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível" : "disponível";
 
-    // [Todas as funções PHP existentes permanecem iguais...]
-    function countSolicitacaoTreino($id_aluno)
-    {
-        global $aluno;
-        $countSolicitacoes = 0;
-        foreach ($aluno as $item) {
-            if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
-                $countSolicitacoes++;
-            }
-        }
-        return $countSolicitacoes;
-    }
-
-    function getStatus($id_aluno)
-    {
-        global $aluno;
-        foreach ($aluno as $item) {
-            if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno) {
-                return $item['status'];
-            }
-        }
-        return null;
-    }
-
-    function extrairAlunosUnicos($dadosAlunos = null)
-    {
-        global $alunoOriginal;
-        $dados = $dadosAlunos ?? $alunoOriginal;
-        $alunosUnicos = [];
-        $idsProcessados = [];
-        $contadorSemId = 0;
-
-        foreach ($dados as $item) {
-            $idAluno = $item['id_aluno'];
-            if (empty($idAluno)) {
-                $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
-                $contadorSemId++;
-            } else {
-                $chaveUnica = $idAluno;
-            }
-
-            if (!in_array($chaveUnica, $idsProcessados)) {
-                $alunosUnicos[] = [
-                    'id_aluno' => $item['id_aluno'],
-                    'nome_aluno' => $item['nome_aluno'],
-                    'data_solicitacao' => $item['data_solicitacao'],
-                    'contato_aluno' => $item['contato_aluno'],
-                    'processo' => $item['processo'],
-                    'status' => $item['status'],
-                ];
-                $idsProcessados[] = $chaveUnica;
-            }
-        }
-        return $alunosUnicos;
-    }
-
-    function countPendentes()
-    {
-        $alunos = extrairAlunosUnicos();
-        $status = 'em andamento';
-        $countPendentes = 0;
-        foreach ($alunos as $item) {
-            if ($item['status'] == $status) {
-                $countPendentes++;
-            }
-        }
-        return $countPendentes;
-    }
-
-    function getFormulariosByAluno($id_aluno)
-    {
-        global $aluno;
-        $formularios = [];
-        foreach ($aluno as $item) {
-            if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
-                $formularios[] = [
-                    'id_aluno' => $item['id_aluno'],
-                    'nome_aluno' => $item['nome_aluno'],
-                    'data_created' => $item['data_created'],
-                    'experiencia' => $item['experiencia'],
-                    'objetivo' => $item['objetivo'],
-                    'treinos' => $item['treinos'],
-                    'sexo' => $item['sexo'],
-                    'peso' => $item['peso'],
-                    'altura' => $item['altura'],
-                    'status' => $item['status'],
-                ];
-            }
-        }
-        return empty($formularios) ? null : $formularios;
-    }
-
-    function veryFyStatus($solicitacoes)
-    {
-        $veryFystatus = 'em andamento';
-        foreach ($solicitacoes as $sol) {
-            if ($sol['status'] == $veryFystatus) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function aplicarFiltroStatus(&$aluno, $statusFiltro)
-    {
-        $statusFiltro = strtolower($statusFiltro);
-        if ($statusFiltro === 'todos') return;
-
-        $aluno = array_filter($aluno, function ($item) use ($statusFiltro) {
-            return !empty($item['status']) && strtolower($item['status']) === $statusFiltro;
-        });
-    }
-
-    function aplicarPesquisa(&$aluno, $search)
-    {
-        $search = trim($search);
-        if (empty($search)) return;
-
-        $aluno = array_filter($aluno, function ($item) use ($search) {
-            return isset($item['nome_aluno']) && stripos($item['nome_aluno'], $search) !== false;
-        });
-    }
-
-    // --- Aplicar filtros e busca ---
-    $mensagemFiltro = '';
-    $temFiltroAtivo = false;
-
-    $statusFiltro = $_GET['status'] ?? '';
-    $termoBusca = $_GET['search'] ?? '';
-
-    if (!empty($statusFiltro)) {
-        $temFiltroAtivo = true;
-        aplicarFiltroStatus($aluno, $statusFiltro);
-
-        if (empty($aluno)) {
-            $statusLabel = ($statusFiltro === 'em andamento') ? 'pendente' : 'atendido';
-            $mensagemFiltro = '<div class="alert alert-warning"><i data-lucide="alert-circle" class="icon"></i><strong>Nenhum aluno ' . $statusLabel . ' encontrado.</strong></div>';
-        }
-    }
-
-    if (!empty($termoBusca)) {
-        $alunoAntes = $aluno;
-        aplicarPesquisa($aluno, $termoBusca);
-        $totalDepois = count(extrairAlunosUnicos($aluno));
-
-        if (!empty($aluno)) {
-            $statusLabel = '';
-            if ($temFiltroAtivo) {
-                $statusLabel = ($statusFiltro === 'em andamento') ? 'pendente' : 'atendido';
-            }
-            $mensagemFiltro = '<div class="alert alert-info"><i data-lucide="search" class="icon"></i><strong>' . $totalDepois . ' aluno(s) ' . $statusLabel . ' encontrado(s) para "' . htmlspecialchars($termoBusca) . '".</strong></div>';
-        } elseif (!empty($alunoAntes)) {
-            $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="x-circle" class="icon"></i><strong>Nenhum aluno encontrado para "' . htmlspecialchars($termoBusca) . '".</strong></div>';
-        }
-    }
-
-    if (isset($_GET['search']) && !empty($_GET['search'])) {
-        $search = trim($_GET['search']);
-        if (!empty($search)) {
-            $alunoAntesPesquisa = $aluno;
-            $alunosUnicosAntes = extrairAlunosUnicos($alunoAntesPesquisa);
-            $totalAntes = count($alunosUnicosAntes);
-            $aluno = aplicarPesquisa($aluno, $search);
-            $alunosUnicosDepois = extrairAlunosUnicos($aluno);
-            $totalDepois = count($alunosUnicosDepois);
-
-            if (!empty($aluno)) {
-                if ($temFiltroAtivo) {
-                    $filtroNome = (isset($_GET['status']) && $_GET['status'] === 'em andamento') ? 'pendentes' : 'atendidos';
-                    $mensagemFiltro = '<div class="alert alert-info"><i data-lucide="search" class="icon"></i><strong>' . $totalDepois . ' aluno(s) ' . $filtroNome . ' encontrado(s) para "' . htmlspecialchars($search) . '".</strong></div>';
-                } else {
-                    $mensagemFiltro = '<div class="alert alert-success"><i data-lucide="check-circle" class="icon"></i><strong>' . $totalDepois . ' aluno(s) encontrado(s) para "' . htmlspecialchars($search) . '".</strong></div>';
-                }
-            } elseif (!empty($alunoAntesPesquisa)) {
-                $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="x-circle" class="icon"></i><strong>Nenhum aluno encontrado para "' . htmlspecialchars($search) . '".</strong></div>';
-            }
-        }
-    }
+    // --- FIM DA LÓGICA PHP ---
 } else {
     $countAlunos = 0;
+    $countPendentes = 0; // Corrige o warning de variável indefinida
     $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="users-x" class="icon"></i><strong>Nenhum aluno encontrado.</strong></div>';
     $alunoOriginal = [];
     $aluno = [];
@@ -363,10 +316,7 @@ if (!empty($alunoOriginal)) {
                             <i data-lucide="star" class="icon"></i>
                             <?= htmlspecialchars($instrutor['servico'] ?? 'Personal Trainer') ?>
                         </span>
-                        <span class="badge <?= $disponibilidade === 'disponível' ? 'badge-success' : 'badge-warning' ?>">
-                            <i data-lucide="<?= $disponibilidade === 'disponível' ? 'check-circle' : 'clock' ?>" class="icon"></i>
-                            <?= ucfirst($disponibilidade) ?>
-                        </span>
+
                     </div>
                 </div>
             </div>
@@ -387,7 +337,7 @@ if (!empty($alunoOriginal)) {
                         <i data-lucide="clock" class="metric-icon"></i>
                     </div>
                     <div class="metrica-content">
-                        <div class="metrica-numero"><?= countPendentes() ?></div>
+                        <div class="metrica-numero"><?= htmlspecialchars((string) $countPendentes) ?></div>
                         <div class="metrica-label">Pendentes</div>
                     </div>
                 </div>
@@ -397,7 +347,10 @@ if (!empty($alunoOriginal)) {
                         <i data-lucide="check-circle" class="metric-icon"></i>
                     </div>
                     <div class="metrica-content">
-                        <div class="metrica-numero"><?= $countAlunos - countPendentes() ?></div>
+                        <div class="metrica-numero">
+                            <?= $resultado = $countAlunos - countPendentes();
+                            htmlspecialchars((string) $resultado) ?>
+                        </div>
                         <div class="metrica-label">Atendidos</div>
                     </div>
                 </div>
@@ -430,14 +383,16 @@ if (!empty($alunoOriginal)) {
                         <i data-lucide="filter" class="icon"></i>
                         Filtros
                     </option>
-                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente
+                    </option>
                     <option value="atendido" <?= $statusSelecionado === 'atendido' ? 'selected' : '' ?>>Atendido</option>
                     <option value="todos" <?= $statusSelecionado === 'todos' ? 'selected' : '' ?>>Todos</option>
                 </select>
 
 
                 <?php if (!empty($statusSelecionado)): ?>
-                    <a href="<?= "index.php?page=perfilInstrutor " ?><?= !empty($search) ? '?search=' . urlencode($search) : '' ?>" class="btn-clear-filter">
+                    <a href="<?= "index.php?page=perfilInstrutor " ?><?= !empty($search) ? '?search=' . urlencode($search) : '' ?>"
+                        class="btn-clear-filter">
                         <i data-lucide="x" class="btn-icon"></i>
                         Limpar Filtros
                     </a>
@@ -492,7 +447,8 @@ if (!empty($alunoOriginal)) {
 
                             <!-- Container oculto da solicitação -->
                             <?php if (!empty($solicitacoes)): ?>
-                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-details" style="display: none;">
+                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-details"
+                                    style="display: none;">
                                     <?php foreach ($solicitacoes as $sol): ?>
                                         <div class="solicitacao-item">
                                             <div class="detail-grid">
@@ -532,7 +488,8 @@ if (!empty($alunoOriginal)) {
                                             }
                                             ?>
                                             <div class="status-badge <?= $statusClass ?>">
-                                                <i data-lucide="<?= strtolower($sol['status']) === 'em andamento' ? 'clock' : 'check-circle' ?>" class="icon"></i>
+                                                <i data-lucide="<?= strtolower($sol['status']) === 'em andamento' ? 'clock' : 'check-circle' ?>"
+                                                    class="icon"></i>
                                                 <?= htmlspecialchars($sol['status']) ?>
                                             </div>
                                         </div>
@@ -620,7 +577,7 @@ if (!empty($alunoOriginal)) {
         }
 
         // Inicializa os ícones quando a página carrega
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             lucide.createIcons();
 
             // Sincronizar o valor do select com o parâmetro da URL
