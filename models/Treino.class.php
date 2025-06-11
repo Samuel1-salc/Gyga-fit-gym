@@ -176,7 +176,7 @@ class Treino
     public function getExercicios()
     {
         try {
-            $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios");
+            $stmt = $this->link->prepare("SELECT id, exercicio AS nome_exercicio, grupo_muscular FROM exercicios");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -211,7 +211,7 @@ class Treino
     public function getExerciciosByGrupoMuscular($grupo_muscular)
     {
         try {
-            $stmt = $this->link->prepare("SELECT id,nome_exercicio, grupo_muscular FROM exercicios WHERE grupo_muscular = :grupo_muscular");
+            $stmt = $this->link->prepare("SELECT id, exercicio AS nome_exercicio, grupo_muscular FROM exercicios WHERE grupo_muscular = :grupo_muscular");
             $stmt->bindParam(':grupo_muscular', $grupo_muscular);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
