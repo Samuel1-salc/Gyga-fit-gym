@@ -366,30 +366,16 @@ if ($id_ultimo_treino) {
                         </div>
                     <?php endforeach; ?>
 
-<<<<<<< Updated upstream
-                    <!-- Botões de Novo Treino -->
-<div class="new-workout-section double-buttons">
-=======
-<div class="new-workout-section">
->>>>>>> Stashed changes
+                    <div class="new-workout-section">
     <button class="new-workout-button" onclick="window.location.href='./index.php?page=solicitacaoTreino'">
         <i class="fas fa-plus"></i>
         <span>Solicitar Novo Treino</span>
     </button>
-<<<<<<< Updated upstream
-    <button class="new-workout-button" onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
-        <i class="fas fa-pen-nib"></i>
-        <span>Criar Meu Próprio Treino</span>
-    </button>
-</div>
-
-=======
     <button class="new-workout-button"
         onclick="window.location.href='/Gyga-fit-gym/controllers/gerarTreinoPdf.php?alunoId=<?= $_SESSION['usuario']['id'] ?>'">
     <i class="fas fa-file-pdf"></i><span>Baixar Treino PDF</span>
 </button>
 </div>
->>>>>>> Stashed changes
 
             <!-- Footer Modernizado -->
             <div class="footer-modern">
@@ -474,14 +460,16 @@ if ($id_ultimo_treino) {
             }
         };
 
-        // Adiciona animações de entrada
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = ${index * 0.1}s;
-                card.classList.add('fade-in-up');
-            });
+         // Adiciona animações de entrada
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
+        cards.forEach((card, index) => {
+            // Antes: card.style.animationDelay = ${index * 0.1}s;
+            // Agora:
+            card.style.animationDelay = (index * 0.1) + 's';
+            card.classList.add('fade-in-up');
         });
+    });
     </script>
 </body>
 
