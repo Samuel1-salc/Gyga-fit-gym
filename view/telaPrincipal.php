@@ -366,15 +366,18 @@ if ($id_ultimo_treino) {
                         </div>
                     <?php endforeach; ?>
 
-                    <!-- Botão Solicitar Novo Treino Modernizado -->
-                    <div class="new-workout-section">
-                        <button class="new-workout-button" onclick="window.location.href='./index.php?page=solicitacaoTreino'">
-                            <i class="fas fa-plus"></i>
-                            <span>Solicitar Novo Treino</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+                    <!-- Botões de Novo Treino -->
+<div class="new-workout-section double-buttons">
+    <button class="new-workout-button" onclick="window.location.href='./index.php?page=solicitacaoTreino'">
+        <i class="fas fa-plus"></i>
+        <span>Solicitar Novo Treino</span>
+    </button>
+    <button class="new-workout-button" onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
+        <i class="fas fa-pen-nib"></i>
+        <span>Criar Meu Próprio Treino</span>
+    </button>
+</div>
+
 
             <!-- Footer Modernizado -->
             <div class="footer-modern">
@@ -463,7 +466,7 @@ if ($id_ultimo_treino) {
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
             cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animationDelay = ${index * 0.1}s;
                 card.classList.add('fade-in-up');
             });
         });

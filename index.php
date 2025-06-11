@@ -69,6 +69,7 @@ switch ($page) {
             header("Location: index.php?page=erro");
         }
         break;
+        
     case 'logout':
         session_unset();
         session_destroy();
@@ -83,6 +84,7 @@ switch ($page) {
             header("Location: index.php?page=erro");
         }
         break;
+
     case 'sucessoSolicitacaoDeTreino':
         if ($_SESSION['usuario']['typeUser'] === 'aluno') {
             include 'view/telaPrincipal.php';
@@ -90,9 +92,18 @@ switch ($page) {
             header("Location: index.php?page=erro");
         }
         break;
+
     case 'painelAdministrativo':
         if ($_SESSION['usuario']['typeUser'] === 'gerente') {
             include 'view/painelAdministrativo.php';
+        } else {
+            header("Location: index.php?page=erro");
+        }
+        break;
+
+    case 'telaCriarTreinoAluno':
+        if ($_SESSION['usuario']['typeUser'] === 'aluno') {
+            include 'view/telaCriarTreinoAluno.php';
         } else {
             header("Location: index.php?page=erro");
         }
