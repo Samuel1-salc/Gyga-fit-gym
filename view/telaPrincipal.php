@@ -466,9 +466,7 @@ if ($id_ultimo_treino) {
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
             cards.forEach((card, index) => {
-                card.style.animationDelay = $ {
-                    index * 0.1
-                } + 's';
+                card.style.animationDelay = `${index * 0.1}s`;
                 card.classList.add('fade-in-up');
             });
         });

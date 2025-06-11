@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Página HTML: Editar Perfil - Instrutor | Gyga Fit
  *
@@ -53,13 +54,16 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil - Instrutor | Gyga Fit</title>
+    <title>Cadastro de Instrutor - GYGA FIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./style/styleCadasto.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -67,108 +71,101 @@
                 <i class="fas fa-user"></i>
             </div>
             <div class="logo">
-                <img src="./img/logo.png" alt="Oryx Fit Logo" class="logo-img">
+                <img src="./img/logo.png" alt="Gyga Fit Logo" class="logo-img">
             </div>
             <div class="menu-icon">
                 <i class="fas fa-bars"></i>
             </div>
         </div>
     </header>
-
     <main>
         <div class="profile-container">
-            <h1>Editar Perfil</h1>
+            <h1>Cadastro de Instrutor</h1>
 
             <div class="profile-photo-section">
                 <div class="profile-photo">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-XKMyXzE7X0tDSQqThi9Jb78agdvqK1.png" alt="Foto de perfil">
                 </div>
                 <div class="photo-actions">
-                    <button class="photo-btn">Escolha nova foto</button>
-                    <p class="photo-info">Tamanho recomendado: 800x800 px<br>JPG ou PNG</p>
+                    <button type="button" class="photo-btn">
+                        <i class="fas fa-camera"></i>
+                        Escolher nova foto
+                    </button>
+                    <p class="photo-info">Tamanho recomendado: 800x800 px<br>Formatos: JPG ou PNG</p>
                 </div>
             </div>
 
             <hr>
-
             <div class="personal-info">
                 <h2>INFORMAÇÕES PESSOAIS</h2>
-            <form method="POST" action="./../controllers/processarCadastroInstrutor.php">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <div class="input-with-icon">
-                                <input type="text" id="nome" name = "campo1">
-                                
-                            </div>
+                <form method="POST" action="./../controllers/processarCadastroInstrutor.php">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <div class="input-with-icon">
+                            <input type="text" id="nome" name="campo1" placeholder="Digite seu nome completo" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="idade">Idade</label>
-                            <div class="input-with-icon">
-                                <input type="number" id="idade" name = "campo2" >
-                                
-                            </div>
+                    <div class="form-group">
+                        <label for="idade">Idade</label>
+                        <div class="input-with-icon">
+                            <input type="number" id="idade" name="campo2" placeholder="Digite sua idade" min="18" max="70" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <div class="input-with-icon">
-                                <input type="email" id="email" name = "campo3">
-                                
-                            </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-with-icon">
+                            <input type="email" id="email" name="campo3" placeholder="Digite seu e-mail" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="celular">Celular</label>
-                            <div class="input-with-icon">
-                                <input type="tel" id="celular" name = "campo4">
-                                
-                            </div>
+                    <div class="form-group">
+                        <label for="celular">Celular</label>
+                        <div class="input-with-icon">
+                            <input type="tel" id="celular" name="campo4" placeholder="(11) 99999-9999" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="cpf">Cpf</label>
-                            <div class="input-with-icon">
-                                <input type="cpf" id="cpf" name = "campo5">
-                                
-                            </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <div class="input-with-icon">
+                            <input type="text" id="cpf" name="campo5" placeholder="000.000.000-00" maxlength="14" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="unidade">Unidade</label>
-                            <div class="select-with-icon">
-                                <select id="unidade" name = "campo6">
-                                    <option selected>Selecione...</option>
-                                    <option>Centro</option>
-                                    <option>Norte</option>
-                                    <option>Sul</option>
-                                </select>
-                                
-                            </div>
+                    <div class="form-group">
+                        <label for="unidade">Unidade</label>
+                        <div class="select-with-icon">
+                            <select id="unidade" name="campo6" required>
+                                <option value="">Selecione uma unidade...</option>
+                                <option value="Centro">Centro</option>
+                                <option value="Norte">Norte</option>
+                                <option value="Sul">Sul</option>
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="servico">Serviço</label>
-                            <div class="select-with-icon">
-                                <select id="servico" name = "campo7">
-                                    <option selected>Selecione...</option>
-                                    <option>Personal Trainer</option>
-                                    <option>Nutricionista</option>
-                                    <option>Fisioterapeuta</option>
-                                </select>
-                                
-                            </div>
+                    <div class="form-group">
+                        <label for="servico">Especialidade</label>
+                        <div class="select-with-icon">
+                            <select id="servico" name="campo7" required>
+                                <option value="">Selecione sua especialidade...</option>
+                                <option value="Personal Trainer">Personal Trainer</option>
+                                <option value="Nutricionista">Nutricionista</option>
+                                <option value="Fisioterapeuta">Fisioterapeuta</option>
+                            </select>
                         </div>
-                        
-                        <button type="submit">cadastrar</button>
+                    </div>
 
+                    <button type="submit">Cadastrar Instrutor</button>
                 </form>
-          
-            <hr>
+            </div>
 
+            <hr>
             <div class="footer-info">
                 <div class="company-info">
-                    <img src="./img/logo.png" alt="gyga Fit Logo" class="footer-logo">
+                    <img src="./img/logo.png" alt="Gyga Fit Logo" class="footer-logo">
                     <div class="company-text">
                         <h3>Gyga Fit</h3>
                         <p>Na Gyga Fit, acreditamos em tornar a academia acessível para todos. Nossa abordagem é simples e eficaz, ajudando você a atingir seus objetivos de saúde e bem-estar com facilidade.</p>
@@ -176,19 +173,28 @@
                 </div>
 
                 <div class="footer-links">
-                    <a href="#">Fale Conosco</a>
+                    <a href="#" aria-label="Fale Conosco">Fale Conosco</a>
                     <span class="divider">|</span>
-                    <a href="#">Política de Privacidade</a>
+                    <a href="#" aria-label="Política de Privacidade">Política de Privacidade</a>
                 </div>
 
                 <div class="social-links">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Pinterest">
+                        <i class="fab fa-pinterest-p"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </main>
 </body>
+
 </html>

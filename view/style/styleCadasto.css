@@ -34,7 +34,8 @@ header {
     width: auto;
 }
 
-.user-icon, .menu-icon {
+.user-icon,
+.menu-icon {
     font-size: 20px;
     cursor: pointer;
 }
@@ -118,13 +119,15 @@ hr {
     margin-bottom: 5px;
 }
 
-.input-with-icon, .select-with-icon {
+.input-with-icon,
+.select-with-icon {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-input, select {
+input,
+select {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #ccc;
@@ -141,6 +144,7 @@ input, select {
     position: absolute;
     right: 10px;
 }
+
 .save-btn {
     width: 100%;
     padding: 10px;
@@ -224,17 +228,17 @@ input, select {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .profile-photo {
         margin-right: 0;
         margin-bottom: 15px;
     }
-    
+
     .company-info {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .footer-logo {
         margin-right: 0;
         margin-bottom: 10px;
