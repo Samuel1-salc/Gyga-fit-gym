@@ -367,50 +367,50 @@ if ($id_ultimo_treino) {
                     <?php endforeach; ?>
 
                     <!-- Botões de Novo Treino -->
-<div class="new-workout-section double-buttons">
-    <button class="new-workout-button" onclick="window.location.href='./index.php?page=solicitacaoTreino'">
-        <i class="fas fa-plus"></i>
-        <span>Solicitar Novo Treino</span>
-    </button>
-    <button class="new-workout-button" onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
-        <i class="fas fa-pen-nib"></i>
-        <span>Criar Meu Próprio Treino</span>
-    </button>
-</div>
-
-
-            <!-- Footer Modernizado -->
-            <div class="footer-modern">
-                <div class="footer-content">
-                    <div class="footer-brand">
-                        <div class="footer-logo">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
-                        <div class="footer-text">
-                            <h4>GYGA FIT</h4>
-                            <p>Transformando vidas através do fitness</p>
-                        </div>
+                    <div class="new-workout-section double-buttons">
+                        <button class="new-workout-button" onclick="window.location.href='./index.php?page=solicitacaoTreino'">
+                            <i class="fas fa-plus"></i>
+                            <span>Solicitar Novo Treino</span>
+                        </button>
+                        <button class="new-workout-button" onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
+                            <i class="fas fa-pen-nib"></i>
+                            <span>Criar Meu Próprio Treino</span>
+                        </button>
                     </div>
 
-                    <div class="footer-center">
-                        <div class="footer-links">
-                            <a href="#"><i class="fas fa-phone"></i> Fale Conosco</a>
-                            <span class="divider">|</span>
-                            <a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidade</a>
-                        </div>
-                    </div>
 
-                    <div class="footer-social">
-                        <p>Siga-nos nas redes sociais</p>
-                        <div class="social-links-modern">
-                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <!-- Footer Modernizado -->
+                    <div class="footer-modern">
+                        <div class="footer-content">
+                            <div class="footer-brand">
+                                <div class="footer-logo">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                                <div class="footer-text">
+                                    <h4>GYGA FIT</h4>
+                                    <p>Transformando vidas através do fitness</p>
+                                </div>
+                            </div>
+
+                            <div class="footer-center">
+                                <div class="footer-links">
+                                    <a href="#"><i class="fas fa-phone"></i> Fale Conosco</a>
+                                    <span class="divider">|</span>
+                                    <a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidade</a>
+                                </div>
+                            </div>
+
+                            <div class="footer-social">
+                                <p>Siga-nos nas redes sociais</p>
+                                <div class="social-links-modern">
+                                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </main>
 
     <script>
@@ -466,7 +466,9 @@ if ($id_ultimo_treino) {
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
             cards.forEach((card, index) => {
-                card.style.animationDelay = ${index * 0.1}s;
+                card.style.animationDelay = $ {
+                    index * 0.1
+                } + 's';
                 card.classList.add('fade-in-up');
             });
         });

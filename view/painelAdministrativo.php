@@ -5,9 +5,14 @@ error_reporting(E_ALL);
 
 require_once __DIR__ .  '/../models/Usuarios.class.php';
 require_once __DIR__ .  '/../models/usuarioInstrutor.class.php';
+require_once __DIR__ .  '/../controllers/AcademiaController.php';
 
 $users      = new Users();
 $instrModel = new aluno_instrutor();
+
+// Instancia controller da academia
+$academiaController = new AcademiaController();
+$dadosAcademia = $academiaController->obterDadosAcademiaGerente();
 
 // Recupera parâmetros de busca e aba ativa
 $search    = $_GET['search'] ?? '';
@@ -142,9 +147,7 @@ if ($search !== '') {
                     </div>
             <?php endforeach;
             endif; ?>
-        </div>
-
-        <!-- Aba Academia -->
+        </div> <!-- Aba Academia -->
         <div class="tab-content" id="academia-content">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>PAINEL DE ACADEMIAS</h2>
@@ -153,7 +156,27 @@ if ($search !== '') {
                     <i class="fas fa-plus"></i><span>Cadastrar Academia</span>
                 </button>
             </div>
-            <!-- cards estáticos -->
+
+            <?php if ($dadosAcademia['sucesso'] && !empty($dadosAcademia['dados'])): ?>
+                <?php $academia = $dadosAcademia['dados'][0]; ?>
+                <div class="academia-card">
+                    <div class="academia-info">
+                        <h3><?= htmlspecialchars($academia['nome']) ?></h3>
+                        <p><strong>Unidade:</strong> <?= htmlspecialchars($academia['unidade']) ?></p>
+                        <p><strong>Capacidade:</strong> <?= $academia['capacidade_maxima'] ?> alunos</p>
+                        <p><strong>Alunos Ativos:</strong> <?= $academia['alunos_ativos'] ?></p>
+                        <p><strong>Instrutores:</strong> <?= $academia['instrutores_ativos'] ?></p>
+                        <p><strong>Vagas Disponíveis:</strong> <?= $academia['vagas_disponiveis'] ?></p>
+                        <p><strong>Ocupação:</strong> <?= $academia['ocupacao_texto'] ?></p>
+                        <p><strong>Status:</strong> <?= $academia['status_texto'] ?></p>
+                        <p><strong>Email:</strong> <?= htmlspecialchars($academia['email']) ?></p>
+                        <p><strong>CEP:</strong> <?= htmlspecialchars($academia['cep']) ?></p>
+                        <p><strong>CNPJ:</strong> <?= htmlspecialchars($academia['cnpj']) ?></p>
+                    </div>
+                </div>
+            <?php else: ?>
+                <p>Nenhuma academia encontrada para sua unidade.</p>
+            <?php endif; ?>
         </div>
     </main>
 
