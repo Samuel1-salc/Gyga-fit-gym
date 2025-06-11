@@ -273,6 +273,24 @@
                         </div>
                     </div>
                 </div>
+            <!-- IMC Calculado -->
+            <div class="question-card">
+               <div class="question-header">
+                    <div class="question-number teal">IMC</div>
+                     <div class="question-title">
+                          <h3>Seu IMC</h3>
+                          <p>Índice de Massa Corporal calculado automaticamente</p>
+                        </div>
+                    </div>
+                <div class="question-content">
+            <div class="input-container">
+            <i class="fas fa-calculator input-icon"></i>
+            <input type="text" id="imc" readonly placeholder="Preencha peso e altura">
+            <span class="input-unit">kg/m²</span>
+        </div>
+    </div>
+</div>
+
 
                 <div class="question-card">
                     <div class="question-header">
@@ -342,6 +360,28 @@
 
     <script src="js/formulario-moderno.js"></script>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const pesoInput = document.querySelector('input[name="peso"]');
+        const alturaInput = document.querySelector('input[name="altura"]');
+        const imcInput = document.getElementById('imc');
+
+        function calcularIMC() {
+            const peso = parseFloat(pesoInput.value);
+            const alturaCm = parseFloat(alturaInput.value);
+            if (!isNaN(peso) && !isNaN(alturaCm) && alturaCm > 0) {
+                const alturaM = alturaCm / 100;
+                const imc = peso / (alturaM * alturaM);
+                imcInput.value = imc.toFixed(2);
+            } else {
+                imcInput.value = '';
+            }
+        }
+
+        pesoInput.addEventListener('input', calcularIMC);
+        alturaInput.addEventListener('input', calcularIMC);
+    });
+</script>
 
 </html>
 
