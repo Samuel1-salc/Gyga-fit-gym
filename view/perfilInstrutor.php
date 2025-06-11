@@ -11,7 +11,99 @@ require_once __DIR__ . '/../models/usuarioInstrutor.class.php';
 require_once __DIR__ . '/../models/SolicitacaoTreino.class.php';
 require_once __DIR__ . '/../models/Treino.class.php';
 
-// [Todo o código PHP existente permanece igual...]
+// --- Funções auxiliares (coloque aqui, ANTES do if) ---
+function countPendentes()
+{
+    $alunos = extrairAlunosUnicos();
+    $status = 'em andamento';
+    $countPendentes = 0;
+    foreach ($alunos as $item) {
+        if ($item['status'] == $status) {
+            $countPendentes++;
+        }
+    }
+    return $countPendentes;
+}
+
+function countSolicitacaoTreino($id_aluno)
+{
+    global $aluno;
+    $countSolicitacoes = 0;
+    foreach ($aluno as $item) {
+        if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
+            $countSolicitacoes++;
+        }
+    }
+    return $countSolicitacoes;
+}
+
+function getStatus($id_aluno)
+{
+    global $aluno;
+    foreach ($aluno as $item) {
+        if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno) {
+            return $item['status'];
+        }
+    }
+    return null;
+}
+
+function extrairAlunosUnicos($dadosAlunos = null)
+{
+    global $alunoOriginal;
+    $dados = $dadosAlunos ?? $alunoOriginal;
+    $alunosUnicos = [];
+    $idsProcessados = [];
+    $contadorSemId = 0;
+
+    foreach ($dados as $item) {
+        $idAluno = $item['id']; // <-- ALTERADO AQUI
+        if (empty($idAluno)) {
+            $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
+            $contadorSemId++;
+        } else {
+            $chaveUnica = $idAluno;
+        }
+
+        if (!in_array($chaveUnica, $idsProcessados)) {
+            $alunosUnicos[] = [
+                'id_aluno' => $idAluno, // <-- ALTERADO AQUI
+                'nome_aluno' => $item['nome_aluno'],
+                'data_solicitacao' => $item['data_solicitacao'],
+                'contato_aluno' => $item['contato_aluno'],
+                'processo' => $item['processo'],
+                'status' => $item['status'],
+            ];
+            $idsProcessados[] = $chaveUnica;
+        }
+    }
+    return $alunosUnicos;
+}
+
+function aplicarFiltroStatus(&$aluno, $statusFiltro)
+{
+    $statusFiltro = strtolower($statusFiltro);
+    if ($statusFiltro === 'todos')
+        return;
+
+    $aluno = array_filter($aluno, function ($item) use ($statusFiltro) {
+        return !empty($item['status']) && strtolower($item['status']) === $statusFiltro;
+    });
+}
+
+function aplicarPesquisa(&$aluno, $search)
+{
+    $search = trim($search);
+    if (empty($search))
+        return;
+
+    $aluno = array_filter($aluno, function ($item) use ($search) {
+        return isset($item['nome_aluno']) && stripos($item['nome_aluno'], $search) !== false;
+    });
+}
+
+// --- Fim das funções auxiliares ---
+
 $instrutor = $_SESSION['usuario'];
 $alunoInstrutor = new aluno_instrutor();
 $solicitacaoTreino = new SolicitacaoTreino();
@@ -34,189 +126,74 @@ if (!empty($alunoOriginal)) {
     $data_saida = $instrutor['data_saida'] ?? null;
     $disponibilidade = ($data_saida && $data_saida != '0000-00-00') ? "indisponível" : "disponível";
 
-    // [Todas as funções PHP existentes permanecem iguais...]
-    function countSolicitacaoTreino($id_aluno)
-    {
-        global $aluno;
-        $countSolicitacoes = 0;
-        foreach ($aluno as $item) {
-            if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
-                $countSolicitacoes++;
-            }
-        }
-        return $countSolicitacoes;
-    }
-
-    function getStatus($id_aluno)
-    {
-        global $aluno;
-        foreach ($aluno as $item) {
-            if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno) {
-                return $item['status'];
-            }
-        }
-        return null;
-    }
-
-    function extrairAlunosUnicos($dadosAlunos = null)
-    {
-        global $alunoOriginal;
-        $dados = $dadosAlunos ?? $alunoOriginal;
-        $alunosUnicos = [];
-        $idsProcessados = [];
-        $contadorSemId = 0;
-
-        foreach ($dados as $item) {
-            $idAluno = $item['id_aluno'];
-            if (empty($idAluno)) {
-                $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
-                $contadorSemId++;
-            } else {
-                $chaveUnica = $idAluno;
-            }
-
-            if (!in_array($chaveUnica, $idsProcessados)) {
-                $alunosUnicos[] = [
-                    'id_aluno' => $item['id_aluno'],
-                    'nome_aluno' => $item['nome_aluno'],
-                    'data_solicitacao' => $item['data_solicitacao'],
-                    'contato_aluno' => $item['contato_aluno'],
-                    'processo' => $item['processo'],
-                    'status' => $item['status'],
-                ];
-                $idsProcessados[] = $chaveUnica;
-            }
-        }
-        return $alunosUnicos;
-    }
-
-    function countPendentes()
-    {
-        $alunos = extrairAlunosUnicos();
-        $status = 'em andamento';
-        $countPendentes = 0;
-        foreach ($alunos as $item) {
-            if ($item['status'] == $status) {
-                $countPendentes++;
-            }
-        }
-        return $countPendentes;
-    }
-
-    function getFormulariosByAluno($id_aluno)
-    {
-        global $aluno;
-        $formularios = [];
-        foreach ($aluno as $item) {
-            if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno && !empty($item['data_created'])) {
-                $formularios[] = [
-                    'id_aluno' => $item['id_aluno'],
-                    'nome_aluno' => $item['nome_aluno'],
-                    'data_created' => $item['data_created'],
-                    'experiencia' => $item['experiencia'],
-                    'objetivo' => $item['objetivo'],
-                    'treinos' => $item['treinos'],
-                    'sexo' => $item['sexo'],
-                    'peso' => $item['peso'],
-                    'altura' => $item['altura'],
-                    'status' => $item['status'],
-                ];
-            }
-        }
-        return empty($formularios) ? null : $formularios;
-    }
-
-    function veryFyStatus($solicitacoes)
-    {
-        $veryFystatus = 'em andamento';
-        foreach ($solicitacoes as $sol) {
-            if ($sol['status'] == $veryFystatus) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function aplicarFiltroStatus(&$aluno, $statusFiltro)
-    {
-        $statusFiltro = strtolower($statusFiltro);
-        if ($statusFiltro === 'todos') return;
-
-        $aluno = array_filter($aluno, function ($item) use ($statusFiltro) {
-            return !empty($item['status']) && strtolower($item['status']) === $statusFiltro;
-        });
-    }
-
-    function aplicarPesquisa(&$aluno, $search)
-    {
-        $search = trim($search);
-        if (empty($search)) return;
-
-        $aluno = array_filter($aluno, function ($item) use ($search) {
-            return isset($item['nome_aluno']) && stripos($item['nome_aluno'], $search) !== false;
-        });
-    }
-
-    // --- Aplicar filtros e busca ---
-    $mensagemFiltro = '';
-    $temFiltroAtivo = false;
-
-    $statusFiltro = $_GET['status'] ?? '';
-    $termoBusca = $_GET['search'] ?? '';
-
-    if (!empty($statusFiltro)) {
-        $temFiltroAtivo = true;
-        aplicarFiltroStatus($aluno, $statusFiltro);
-
-        if (empty($aluno)) {
-            $statusLabel = ($statusFiltro === 'em andamento') ? 'pendente' : 'atendido';
-            $mensagemFiltro = '<div class="alert alert-warning"><i data-lucide="alert-circle" class="icon"></i><strong>Nenhum aluno ' . $statusLabel . ' encontrado.</strong></div>';
-        }
-    }
-
-    if (!empty($termoBusca)) {
-        $alunoAntes = $aluno;
-        aplicarPesquisa($aluno, $termoBusca);
-        $totalDepois = count(extrairAlunosUnicos($aluno));
-
-        if (!empty($aluno)) {
-            $statusLabel = '';
-            if ($temFiltroAtivo) {
-                $statusLabel = ($statusFiltro === 'em andamento') ? 'pendente' : 'atendido';
-            }
-            $mensagemFiltro = '<div class="alert alert-info"><i data-lucide="search" class="icon"></i><strong>' . $totalDepois . ' aluno(s) ' . $statusLabel . ' encontrado(s) para "' . htmlspecialchars($termoBusca) . '".</strong></div>';
-        } elseif (!empty($alunoAntes)) {
-            $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="x-circle" class="icon"></i><strong>Nenhum aluno encontrado para "' . htmlspecialchars($termoBusca) . '".</strong></div>';
-        }
-    }
-
-    if (isset($_GET['search']) && !empty($_GET['search'])) {
-        $search = trim($_GET['search']);
-        if (!empty($search)) {
-            $alunoAntesPesquisa = $aluno;
-            $alunosUnicosAntes = extrairAlunosUnicos($alunoAntesPesquisa);
-            $totalAntes = count($alunosUnicosAntes);
-            $aluno = aplicarPesquisa($aluno, $search);
-            $alunosUnicosDepois = extrairAlunosUnicos($aluno);
-            $totalDepois = count($alunosUnicosDepois);
-
-            if (!empty($aluno)) {
-                if ($temFiltroAtivo) {
-                    $filtroNome = (isset($_GET['status']) && $_GET['status'] === 'em andamento') ? 'pendentes' : 'atendidos';
-                    $mensagemFiltro = '<div class="alert alert-info"><i data-lucide="search" class="icon"></i><strong>' . $totalDepois . ' aluno(s) ' . $filtroNome . ' encontrado(s) para "' . htmlspecialchars($search) . '".</strong></div>';
-                } else {
-                    $mensagemFiltro = '<div class="alert alert-success"><i data-lucide="check-circle" class="icon"></i><strong>' . $totalDepois . ' aluno(s) encontrado(s) para "' . htmlspecialchars($search) . '".</strong></div>';
-                }
-            } elseif (!empty($alunoAntesPesquisa)) {
-                $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="x-circle" class="icon"></i><strong>Nenhum aluno encontrado para "' . htmlspecialchars($search) . '".</strong></div>';
-            }
-        }
-    }
+    // --- Fim do processamento inicial ---
 } else {
     $countAlunos = 0;
+    $disponibilidade = "indisponível"; // Adicione esta linha
     $mensagemFiltro = '<div class="alert alert-error"><i data-lucide="users-x" class="icon"></i><strong>Nenhum aluno encontrado.</strong></div>';
     $alunoOriginal = [];
     $aluno = [];
+}
+
+// Processamento do agendamento
+if (isset($_POST['agendar_consulta'])) {
+    $id_instrutor = $instrutor['id'];
+    $id_aluno = intval($_POST['id_aluno']);
+    $data_agendamento = $_POST['data_agendamento'];
+    $observacao = trim($_POST['observacao']);
+
+    if ($id_aluno && $data_agendamento) {
+        // Debug temporário
+        // var_dump($_POST); exit;
+        $config = require __DIR__ . '/../config/db-config.php';
+        $db = $config['database'];
+        $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
+        $pdo = new PDO($dsn, $db['user'], $db['password']);
+        $stmt = $pdo->prepare("INSERT INTO agendamentos (id_instrutor, id_aluno, data, observacao) VALUES (?, ?, ?, ?)");
+        if ($stmt->execute([$id_instrutor, $id_aluno, $data_agendamento, $observacao])) {
+            $msgAgendamento = '<div class="alert alert-success">Agendamento realizado com sucesso!</div>';
+        } else {
+            $msgAgendamento = '<div class="alert alert-error">Erro ao agendar. Tente novamente.</div>';
+        }
+    } else {
+        $msgAgendamento = '<div class="alert alert-error">Preencha todos os campos obrigatórios.</div>';
+    }
+}
+
+// Lista de Agendamentos
+$config = require __DIR__ . '/../config/db-config.php';
+$db = $config['database'];
+$dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
+$pdo = new PDO($dsn, $db['user'], $db['password']);
+
+$stmt = $pdo->prepare("SELECT a.*, u.username FROM agendamentos a
+    JOIN aluno u ON a.id_aluno = u.id
+    WHERE a.id_instrutor = ? AND a.data >= NOW()
+    ORDER BY a.data ASC");
+$stmt->execute([$instrutor['id']]);
+$agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+function getFormulariosByAluno($id_aluno)
+{
+    $config = require __DIR__ . '/../config/db-config.php';
+    $db = $config['database'];
+    $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
+    $pdo = new PDO($dsn, $db['user'], $db['password']);
+
+    $stmt = $pdo->prepare("SELECT * FROM formulario WHERE id_aluno = ?");
+    $stmt->execute([$id_aluno]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function veryFyStatus($solicitacoes)
+{
+    // Retorna true se houver pelo menos uma solicitação com status "em andamento"
+    foreach ($solicitacoes as $sol) {
+        if (isset($sol['status']) && strtolower($sol['status']) === 'em andamento') {
+            return true;
+        }
+    }
+    return false;
 }
 ?>
 
@@ -288,6 +265,82 @@ if (!empty($alunoOriginal)) {
             background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             border: 1px solid #ef4444;
             color: #dc2626;
+        }
+
+        /* Estilos para o formulário de agendamento */
+        .agendamento-section {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 16px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-agendamento {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-agendamento label {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-agendamento input,
+        .form-agendamento select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn-agendar {
+            grid-column: span 2;
+            padding: 12px;
+            background-color: #10b981;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-agendar:hover {
+            background-color: #059669;
+        }
+
+        /* Estilos para a lista de agendamentos */
+        .lista-agendamentos {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 16px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .lista-agendamentos h4 {
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .lista-agendamentos ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lista-agendamentos li {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .lista-agendamentos li:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
@@ -363,8 +416,10 @@ if (!empty($alunoOriginal)) {
                             <i data-lucide="star" class="icon"></i>
                             <?= htmlspecialchars($instrutor['servico'] ?? 'Personal Trainer') ?>
                         </span>
-                        <span class="badge <?= $disponibilidade === 'disponível' ? 'badge-success' : 'badge-warning' ?>">
-                            <i data-lucide="<?= $disponibilidade === 'disponível' ? 'check-circle' : 'clock' ?>" class="icon"></i>
+                        <span
+                            class="badge <?= $disponibilidade === 'disponível' ? 'badge-success' : 'badge-warning' ?>">
+                            <i data-lucide="<?= $disponibilidade === 'disponível' ? 'check-circle' : 'clock' ?>"
+                                class="icon"></i>
                             <?= ucfirst($disponibilidade) ?>
                         </span>
                     </div>
@@ -430,14 +485,16 @@ if (!empty($alunoOriginal)) {
                         <i data-lucide="filter" class="icon"></i>
                         Filtros
                     </option>
-                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente</option>
+                    <option value="em andamento" <?= $statusSelecionado === 'em andamento' ? 'selected' : '' ?>>Pendente
+                    </option>
                     <option value="atendido" <?= $statusSelecionado === 'atendido' ? 'selected' : '' ?>>Atendido</option>
                     <option value="todos" <?= $statusSelecionado === 'todos' ? 'selected' : '' ?>>Todos</option>
                 </select>
 
 
                 <?php if (!empty($statusSelecionado)): ?>
-                    <a href="<?= "index.php?page=perfilInstrutor " ?><?= !empty($search) ? '?search=' . urlencode($search) : '' ?>" class="btn-clear-filter">
+                    <a href="<?= "index.php?page=perfilInstrutor " ?><?= !empty($search) ? '?search=' . urlencode($search) : '' ?>"
+                        class="btn-clear-filter">
                         <i data-lucide="x" class="btn-icon"></i>
                         Limpar Filtros
                     </a>
@@ -492,7 +549,8 @@ if (!empty($alunoOriginal)) {
 
                             <!-- Container oculto da solicitação -->
                             <?php if (!empty($solicitacoes)): ?>
-                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-details" style="display: none;">
+                                <div id="solicitacao-<?= $alunoAtual['id_aluno'] ?>" class="solicitacao-details"
+                                    style="display: none;">
                                     <?php foreach ($solicitacoes as $sol): ?>
                                         <div class="solicitacao-item">
                                             <div class="detail-grid">
@@ -532,7 +590,8 @@ if (!empty($alunoOriginal)) {
                                             }
                                             ?>
                                             <div class="status-badge <?= $statusClass ?>">
-                                                <i data-lucide="<?= strtolower($sol['status']) === 'em andamento' ? 'clock' : 'check-circle' ?>" class="icon"></i>
+                                                <i data-lucide="<?= strtolower($sol['status']) === 'em andamento' ? 'clock' : 'check-circle' ?>"
+                                                    class="icon"></i>
                                                 <?= htmlspecialchars($sol['status']) ?>
                                             </div>
                                         </div>
@@ -571,6 +630,83 @@ if (!empty($alunoOriginal)) {
                     </button>
                 </div>
             <?php endif; ?>
+        </div>
+
+        <!-- Formulário de Agendamento Personalizado -->
+        <div class="agendamento-section">
+            <h3>
+                <i data-lucide="calendar-plus" class="icon"></i>
+                Agendar Consulta Personalizada
+            </h3>
+            <form method="POST" action="" class="form-agendamento">
+                <label for="aluno_agendamento">Selecione o aluno:</label>
+                <select name="id_aluno" id="aluno_agendamento" required>
+                    <option value="">Selecione...</option>
+                    <?php foreach (extrairAlunosUnicos($alunoOriginal) as $al): ?>
+                        <option value="<?= $al['id_aluno'] ?>">
+                            <?= htmlspecialchars($al['nome_aluno']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="data_agendamento">Data e Hora:</label>
+                <input type="datetime-local" name="data_agendamento" id="data_agendamento" required>
+                <label for="obs_agendamento">Observação:</label>
+                <input type="text" name="observacao" id="obs_agendamento" maxlength="255">
+                <button type="submit" name="agendar_consulta" class="btn-agendar">
+                    <i data-lucide="calendar-check" class="btn-icon"></i>
+                    Agendar
+                </button>
+            </form>
+            <?php if (isset($msgAgendamento))
+                echo $msgAgendamento; ?>
+        </div>
+
+        <!-- Lista de Agendamentos -->
+        <div class="lista-agendamentos">
+            <h4>Próximos Agendamentos</h4>
+            <ul>
+                <?php
+                // filepath: [perfilInstrutor.php](http://_vscodecontentref_/0)
+                $config = require __DIR__ . '/../config/db-config.php';
+                $db = $config['database'];
+                $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
+                $pdo = new PDO($dsn, $db['user'], $db['password']);
+
+                $stmt = $pdo->prepare("SELECT a.*, u.username FROM agendamentos a
+                    JOIN aluno u ON a.id_aluno = u.id
+                    WHERE a.id_instrutor = ? AND a.data >= NOW()
+                    ORDER BY a.data ASC");
+                $stmt->execute([$instrutor['id']]);
+                $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($agendamentos):
+                    foreach ($agendamentos as $ag):
+                        ?>
+                        <?php
+                        // Defina os dados do evento
+                        $start = date('Ymd\THis', strtotime($ag['data']));
+                        $end = date('Ymd\THis', strtotime($ag['data'] . ' +1 hour'));
+                        $title = urlencode('Consulta com ' . $ag['username']);
+                        $details = urlencode($ag['observacao'] ?? '');
+                        $googleCalendarUrl = "https://www.google.com/calendar/render?action=TEMPLATE&text=$title&dates=$start/$end&details=$details";
+                        ?>
+                        <li>
+                            <strong><?= htmlspecialchars($ag['username']) ?></strong> -
+                            <?= date('d/m/Y H:i', strtotime($ag['data'])) ?>
+                            <?php if ($ag['observacao']): ?>
+                                <em>(<?= htmlspecialchars($ag['observacao']) ?>)</em>
+                            <?php endif; ?>
+                            <a href="<?= $googleCalendarUrl ?>" target="_blank" class="btn-agendar-google"
+                                style="margin-left:10px;">
+                                Adicionar ao Google Agenda
+                            </a>
+                        </li>
+                        <?php
+                    endforeach;
+                else:
+                    echo "<li>Nenhum agendamento futuro.</li>";
+                endif;
+                ?>
+            </ul>
         </div>
     </div>
 
@@ -620,7 +756,7 @@ if (!empty($alunoOriginal)) {
         }
 
         // Inicializa os ícones quando a página carrega
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             lucide.createIcons();
 
             // Sincronizar o valor do select com o parâmetro da URL
