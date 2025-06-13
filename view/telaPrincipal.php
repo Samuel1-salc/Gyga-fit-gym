@@ -105,7 +105,8 @@ if ($id_ultimo_treino) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GYGA FIT - Cronograma de Treinos</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./view/style//Tela-Principal.css?v=<?= time(); ?>">
 </head>
@@ -115,7 +116,7 @@ if ($id_ultimo_treino) {
     <header class="header-modern">
         <div class="header-container-modern">
             <div class="header-left">
-                <button class="menu-button-modern" onclick="toggleSidebar()">
+                <button type="button" class="menu-button-modern" onclick="window.toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="logo-container-modern">
@@ -135,7 +136,8 @@ if ($id_ultimo_treino) {
                 </button>
                 <div class="user-avatar">
                     <?php if (!empty($_SESSION['usuario']['foto'])): ?>
-                        <img src="./view/uploads/<?php echo htmlspecialchars($_SESSION['usuario']['foto']); ?>" alt="Avatar">
+                        <img src="./view/uploads/<?php echo htmlspecialchars($_SESSION['usuario']['foto']); ?>"
+                            alt="Avatar">
                     <?php else: ?>
                         <div class="avatar-placeholder">
                             <?= strtoupper(substr($_SESSION['usuario']['username'] ?? 'U', 0, 1)); ?>
@@ -203,7 +205,8 @@ if ($id_ultimo_treino) {
                                     <i class="fas fa-user"></i> Aluno Ativo
                                 </span>
                                 <span class="badge badge-plan">
-                                    <i class="fas fa-crown"></i> <?= htmlspecialchars(plano($_SESSION['usuario']['plano'])) ?? 'Não disponível'; ?>
+                                    <i class="fas fa-crown"></i>
+                                    <?= htmlspecialchars(plano($_SESSION['usuario']['plano'])) ?? 'Não disponível'; ?>
                                 </span>
                             </div>
                         </div>
@@ -217,7 +220,8 @@ if ($id_ultimo_treino) {
                             </div>
                             <div class="metric-content">
                                 <span class="metric-label">Tempo Restante</span>
-                                <span class="metric-value"><?= htmlspecialchars(diffData($_SESSION['usuario']['data_inicio'], $_SESSION['usuario']['data_termino'])) ?? 'Não disponível'; ?></span>
+                                <span
+                                    class="metric-value"><?= htmlspecialchars(diffData($_SESSION['usuario']['data_inicio'], $_SESSION['usuario']['data_termino'])) ?? 'Não disponível'; ?></span>
                             </div>
                         </div>
 
@@ -227,7 +231,8 @@ if ($id_ultimo_treino) {
                             </div>
                             <div class="metric-content">
                                 <span class="metric-label">Instrutor</span>
-                                <span class="metric-value"><?= htmlspecialchars((string) nomeInstrutor($_SESSION['usuario']['id'])) ?? 'Não disponível'; ?></span>
+                                <span
+                                    class="metric-value"><?= htmlspecialchars((string) nomeInstrutor($_SESSION['usuario']['id'])) ?? 'Não disponível'; ?></span>
                             </div>
                         </div>
 
@@ -237,7 +242,8 @@ if ($id_ultimo_treino) {
                             </div>
                             <div class="metric-content">
                                 <span class="metric-label">Unidade</span>
-                                <span class="metric-value"><?= htmlspecialchars($_SESSION['usuario']['unidade']) ?></span>
+                                <span
+                                    class="metric-value"><?= htmlspecialchars($_SESSION['usuario']['unidade']) ?></span>
                             </div>
                         </div>
 
@@ -302,7 +308,7 @@ if ($id_ultimo_treino) {
                                 <?php
                                 $exerciseIndex = 1;
                                 foreach ($treinos as $treino):
-                                ?>
+                                    ?>
                                     <?php if ($treino['letra_treino'] == $letraObj['letra_treino']): ?>
                                         <?php $exercicioInfoArr = $treinosUser->getExerciciosById($treino['nome_exercicio']); ?>
                                         <?php $exercicioInfo = $exercicioInfoArr[0] ?? null; ?>
@@ -311,7 +317,9 @@ if ($id_ultimo_treino) {
                                                 <div class="exercise-header">
                                                     <div class="exercise-number"><?= $exerciseIndex++; ?></div>
                                                     <div class="exercise-info">
-                                                        <h5 class="exercise-name"><?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?></h5>
+                                                        <h5 class="exercise-name">
+                                                            <?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?>
+                                                        </h5>
                                                         <div class="exercise-category">
                                                             <?php
                                                             $category = '';
@@ -320,7 +328,8 @@ if ($id_ultimo_treino) {
                                                             $category = $exercicioInfo['grupo_muscular'] ?? 'Outros';
 
                                                             ?>
-                                                            <span class="category-badge category-<?= strtolower($category); ?>"><?= $category; ?></span>
+                                                            <span
+                                                                class="category-badge category-<?= strtolower($category); ?>"><?= $category; ?></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -337,7 +346,8 @@ if ($id_ultimo_treino) {
                                                         <i class="fas fa-chart-line"></i>
                                                         <div>
                                                             <span class="stat-label">Repetições</span>
-                                                            <span class="stat-value"><?= htmlspecialchars($treino['repeticoes']) ?></span>
+                                                            <span
+                                                                class="stat-value"><?= htmlspecialchars($treino['repeticoes']) ?></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -346,12 +356,15 @@ if ($id_ultimo_treino) {
                                                     <i class="fas fa-info-circle"></i>
                                                     <div>
                                                         <span class="description-label">Instruções:</span>
-                                                        <p class="description-text"><?= htmlspecialchars($exercicioInfo['descricao_exercicio']) ?></p>
+                                                        <p class="description-text">
+                                                            <?= htmlspecialchars($exercicioInfo['descricao_exercicio']) ?>
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="stat-exercise-image">
                                                     <?php if (!empty($exercicioInfo['url_img'])): ?>
-                                                        <img src="<?= htmlspecialchars($exercicioInfo['url_img']) ?>" alt="<?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?>">
+                                                        <img src="<?= htmlspecialchars($exercicioInfo['url_img']) ?>"
+                                                            alt="<?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?>">
                                                     <?php else: ?>
                                                         <div class="exercise-placeholder">
                                                             <i class="fas fa-dumbbell"></i>
@@ -366,69 +379,74 @@ if ($id_ultimo_treino) {
                         </div>
                     <?php endforeach; ?>
 
-<<<<<<< Updated upstream
+
                     <!-- Botões de Novo Treino -->
-<div class="new-workout-section double-buttons">
-=======
-<div class="new-workout-section">
->>>>>>> Stashed changes
-    <button class="new-workout-button" onclick="window.location.href='./index.php?page=solicitacaoTreino'">
-        <i class="fas fa-plus"></i>
-        <span>Solicitar Novo Treino</span>
-    </button>
-<<<<<<< Updated upstream
-    <button class="new-workout-button" onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
-        <i class="fas fa-pen-nib"></i>
-        <span>Criar Meu Próprio Treino</span>
-    </button>
-</div>
+                    <div class="new-workout-section double-buttons">
+                        <div class="new-workout-section">
 
-=======
-    <button class="new-workout-button"
-        onclick="window.location.href='/Gyga-fit-gym/controllers/gerarTreinoPdf.php?alunoId=<?= $_SESSION['usuario']['id'] ?>'">
-    <i class="fas fa-file-pdf"></i><span>Baixar Treino PDF</span>
-</button>
-</div>
->>>>>>> Stashed changes
+                            <button class="new-workout-button"
+                                onclick="window.location.href='./index.php?page=solicitacaoTreino'">
+                                <i class="fas fa-plus"></i>
+                                <span>Solicitar Novo Treino</span>
+                            </button>
 
-            <!-- Footer Modernizado -->
-            <div class="footer-modern">
-                <div class="footer-content">
-                    <div class="footer-brand">
-                        <div class="footer-logo">
-                            <i class="fas fa-dumbbell"></i>
+                            <button class="new-workout-button"
+                                onclick="window.location.href='./index.php?page=telaCriarTreinoAluno'">
+                                <i class="fas fa-pen-nib"></i>
+                                <span>Criar Meu Próprio Treino</span>
+                            </button>
                         </div>
-                        <div class="footer-text">
-                            <h4>GYGA FIT</h4>
-                            <p>Transformando vidas através do fitness</p>
-                        </div>
+
+
+                        <button class="new-workout-button"
+                            onclick="window.location.href='/Gyga-fit-gym/controllers/gerarTreinoPdf.php?alunoId=<?= $_SESSION['usuario']['id'] ?>'">
+                            <i class="fas fa-file-pdf"></i><span>Baixar Treino PDF</span>
+                        </button>
                     </div>
 
-                    <div class="footer-center">
-                        <div class="footer-links">
-                            <a href="#"><i class="fas fa-phone"></i> Fale Conosco</a>
-                            <span class="divider">|</span>
-                            <a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidade</a>
-                        </div>
-                    </div>
 
-                    <div class="footer-social">
-                        <p>Siga-nos nas redes sociais</p>
-                        <div class="social-links-modern">
-                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <!-- Footer Modernizado -->
+                    <div class="footer-modern">
+                        <div class="footer-content">
+                            <div class="footer-brand">
+                                <div class="footer-logo">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                                <div class="footer-text">
+                                    <h4>GYGA FIT</h4>
+                                    <p>Transformando vidas através do fitness</p>
+                                </div>
+                            </div>
+
+                            <div class="footer-center">
+                                <div class="footer-links">
+                                    <a href="#"><i class="fas fa-phone"></i> Fale Conosco</a>
+                                    <span class="divider">|</span>
+                                    <a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidade</a>
+                                </div>
+                            </div>
+
+                            <div class="footer-social">
+                                <p>Siga-nos nas redes sociais</p>
+                                <div class="social-links-modern">
+                                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </main>
 
     <script>
-        function toggleSidebar() {
+        window.toggleSidebar = function () {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
+            if (!sidebar || !overlay) {
+                console.log('Sidebar ou overlay não encontrados!');
+                return;
+            }
             sidebar.classList.toggle('open');
             overlay.classList.toggle('active');
         }
@@ -444,7 +462,7 @@ if ($id_ultimo_treino) {
 
             // Show/hide workout cards
             const treinos = document.querySelectorAll('.workout-card-modern');
-            treinos.forEach(function(card) {
+            treinos.forEach(function (card) {
                 card.style.display = (card.id === treinoId) ? 'block' : 'none';
             });
         }
@@ -452,11 +470,11 @@ if ($id_ultimo_treino) {
         // Gera os botões de treino dinamicamente
         function gerarBotoesTreino(letrasTreino) {
             const container = document.getElementById('dias-semana');
-            letrasTreino.forEach(function(letraObj, index) {
+            letrasTreino.forEach(function (letraObj, index) {
                 const button = document.createElement('button');
                 button.innerHTML = '<i class="fas fa-dumbbell"></i> Treino ' + letraObj.letra_treino;
                 button.className = 'workout-tab' + (index === 0 ? ' active' : '');
-                button.onclick = function() {
+                button.onclick = function () {
                     mostrarTreino('treino' + letraObj.letra_treino);
                 };
                 container.appendChild(button);
@@ -467,7 +485,7 @@ if ($id_ultimo_treino) {
         const letrasTreino = <?php echo json_encode($letrasTreino); ?>;
 
         // Gera os botões e exibe o primeiro treino ao carregar a página
-        window.onload = function() {
+        window.onload = function () {
             gerarBotoesTreino(letrasTreino);
             if (letrasTreino.length > 0 && letrasTreino[0].letra_treino) {
                 mostrarTreino('treino' + letrasTreino[0].letra_treino);
@@ -475,10 +493,10 @@ if ($id_ultimo_treino) {
         };
 
         // Adiciona animações de entrada
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
             cards.forEach((card, index) => {
-                card.style.animationDelay = ${index * 0.1}s;
+                card.style.animationDelay = (index * 0.1) + 's';
                 card.classList.add('fade-in-up');
             });
         });
