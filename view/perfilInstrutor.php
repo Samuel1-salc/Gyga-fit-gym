@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 /**
  * painelInstrutor.php
@@ -57,7 +60,7 @@ function extrairAlunosUnicos($dadosAlunos = null)
     $contadorSemId = 0;
 
     foreach ($dados as $item) {
-        $idAluno = $item['id']; // <-- ALTERADO AQUI
+        $idAluno = $item['id_aluno'] ?? $item['id'] ?? null;
         if (empty($idAluno)) {
             $chaveUnica = 'sem_id_' . $contadorSemId . '_' . $item['nome_aluno'];
             $contadorSemId++;
@@ -67,7 +70,7 @@ function extrairAlunosUnicos($dadosAlunos = null)
 
         if (!in_array($chaveUnica, $idsProcessados)) {
             $alunosUnicos[] = [
-                'id_aluno' => $idAluno, // <-- ALTERADO AQUI
+                'id_aluno' => $idAluno,
                 'nome_aluno' => $item['nome_aluno'],
                 'data_solicitacao' => $item['data_solicitacao'],
                 'contato_aluno' => $item['contato_aluno'],
@@ -138,13 +141,11 @@ if (!empty($alunoOriginal)) {
 // Processamento do agendamento
 if (isset($_POST['agendar_consulta'])) {
     $id_instrutor = $instrutor['id'];
-    $id_aluno = intval($_POST['id_aluno']);
-    $data_agendamento = $_POST['data_agendamento'];
-    $observacao = trim($_POST['observacao']);
+    $id_aluno = isset($_POST['id_aluno']) ? intval($_POST['id_aluno']) : 0;
+    $data_agendamento = isset($_POST['data_agendamento']) ? trim($_POST['data_agendamento']) : '';
+    $observacao = isset($_POST['observacao']) ? trim($_POST['observacao']) : '';
 
-    if ($id_aluno && $data_agendamento) {
-        // Debug temporário
-        // var_dump($_POST); exit;
+    if ($id_aluno > 0 && !empty($data_agendamento)) {
         $config = require __DIR__ . '/../config/db-config.php';
         $db = $config['database'];
         $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
@@ -166,10 +167,11 @@ $db = $config['database'];
 $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
 $pdo = new PDO($dsn, $db['user'], $db['password']);
 
+// Consulta correta: apenas compromissos futuros do instrutor logado
 $stmt = $pdo->prepare("SELECT a.*, u.username FROM agendamentos a
     JOIN aluno u ON a.id_aluno = u.id
-    WHERE a.id_instrutor = ? AND a.data >= NOW()
-    ORDER BY a.data ASC");
+    WHERE a.id_instrutor = ? AND a.data_hora >= NOW()
+    ORDER BY a.data_hora ASC");
 $stmt->execute([$instrutor['id']]);
 $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -624,7 +626,7 @@ function veryFyStatus($solicitacoes)
 
             <?php if (!empty($alunosInfo)): ?>
                 <div class="add-aluno-section">
-                    <button class="btn-add-aluno" onclick="window.location.href='./alunos.php'">
+                    <button class="btn-add-aluno" onclick="window.location.href='./view/alunos.php'">
                         <i data-lucide="user-plus" class="btn-icon"></i>
                         Adicionar Novo Aluno
                     </button>
@@ -638,27 +640,25 @@ function veryFyStatus($solicitacoes)
                 <i data-lucide="calendar-plus" class="icon"></i>
                 Agendar Consulta Personalizada
             </h3>
-            <form method="POST" action="" class="form-agendamento">
-                <label for="aluno_agendamento">Selecione o aluno:</label>
-                <select name="id_aluno" id="aluno_agendamento" required>
-                    <option value="">Selecione...</option>
-                    <?php foreach (extrairAlunosUnicos($alunoOriginal) as $al): ?>
-                        <option value="<?= $al['id_aluno'] ?>">
-                            <?= htmlspecialchars($al['nome_aluno']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <label for="data_agendamento">Data e Hora:</label>
-                <input type="datetime-local" name="data_agendamento" id="data_agendamento" required>
-                <label for="obs_agendamento">Observação:</label>
-                <input type="text" name="observacao" id="obs_agendamento" maxlength="255">
-                <button type="submit" name="agendar_consulta" class="btn-agendar">
-                    <i data-lucide="calendar-check" class="btn-icon"></i>
-                    Agendar
-                </button>
-            </form>
             <?php if (isset($msgAgendamento))
                 echo $msgAgendamento; ?>
+            <form class="form-agendamento" method="POST" action="../controllers/controllerAgendamento.php">
+                <label for="aluno">Selecione o Aluno:</label>
+                <select name="aluno" id="aluno" required>
+                    <option value="">Selecione um aluno</option>
+                    <?php foreach ($alunoOriginal as $aluno): ?>
+                        <option value="<?= $aluno['id_aluno'] ?>"><?= htmlspecialchars($aluno['nome_aluno']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="data_hora">Data e Hora:</label>
+                <input type="datetime-local" name="data_hora" id="data_hora" required>
+                <label for="observacao">Observação:</label>
+                <input type="text" name="observacao" id="observacao" placeholder="Observações (opcional)">
+                <button type="submit" name="agendar_consulta" class="btn-agendar">
+                    <i data-lucide="calendar-check" class="btn-icon"></i>
+                    Agendar Consulta
+                </button>
+            </form>
         </div>
 
         <!-- Lista de Agendamentos -->
@@ -671,11 +671,10 @@ function veryFyStatus($solicitacoes)
                 $db = $config['database'];
                 $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
                 $pdo = new PDO($dsn, $db['user'], $db['password']);
-
                 $stmt = $pdo->prepare("SELECT a.*, u.username FROM agendamentos a
                     JOIN aluno u ON a.id_aluno = u.id
-                    WHERE a.id_instrutor = ? AND a.data >= NOW()
-                    ORDER BY a.data ASC");
+                    WHERE a.id_instrutor = ? AND a.data_hora >= NOW()
+                    ORDER BY a.data_hora ASC");
                 $stmt->execute([$instrutor['id']]);
                 $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if ($agendamentos):
@@ -683,8 +682,8 @@ function veryFyStatus($solicitacoes)
                         ?>
                         <?php
                         // Defina os dados do evento
-                        $start = date('Ymd\THis', strtotime($ag['data']));
-                        $end = date('Ymd\THis', strtotime($ag['data'] . ' +1 hour'));
+                        $start = date('Ymd\THis', strtotime($ag['data_hora']));
+                        $end = date('Ymd\THis', strtotime($ag['data_hora'] . ' +1 hour'));
                         $title = urlencode('Consulta com ' . $ag['username']);
                         $details = urlencode($ag['observacao'] ?? '');
                         $googleCalendarUrl = "https://www.google.com/calendar/render?action=TEMPLATE&text=$title&dates=$start/$end&details=$details";

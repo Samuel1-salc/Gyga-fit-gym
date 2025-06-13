@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['mostrarSenha'] = true;
                 $_SESSION['cpfDigitado'] = $cpf;
                 $_SESSION['error'] = "Senha incorreta.";
-                header("Location: ../view/login.php");
+                header("Location: ../view/telaLogin.php");
                 exit();
             }
         }

@@ -72,7 +72,7 @@ if ($search !== '') {
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>PAINEL DE ALUNOS</h2>
                 <button class="btn-cadastrar"
-                    onclick="location.href='telaCadastroAluno.php'">
+                    onclick="location.href='view/telaCadastroAluno.php'">
                     <i class="fas fa-plus"></i><span>Cadastrar Aluno</span>
                 </button>
             </div>
