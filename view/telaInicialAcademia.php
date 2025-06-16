@@ -78,7 +78,28 @@
                 <li><a href="#endereco">Endereço</a></li>
             </ul>
         </nav>
-        <a href="./view/telaLogin.php" class="login-button">Login</a>
+
+        <?php
+        $linkUsuario = '/Gyga-fit-gym/index.php?page=telaPrincipal';
+        if (!empty($_SESSION['usuario']['typeUser'])) {
+            if ($_SESSION['usuario']['typeUser'] === 'instrutor') {
+                $linkUsuario = '/Gyga-fit-gym/index.php?page=perfilInstrutor';
+            } elseif ($_SESSION['usuario']['typeUser'] === 'gerente') {
+                $linkUsuario = '/Gyga-fit-gym/index.php?page=painelAdministrativo';
+            }
+        }
+        ?>
+        <?php if (!empty($_SESSION['usuario'])): ?>
+            <div class="user-info-header" style="display:flex;align-items:center;gap:12px;background:#222;color:#fff;padding:8px 18px;border-radius:8px;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-left:16px;">
+                <span class="user-online-dot" style="width:10px;height:10px;background:#25D366;border-radius:50%;display:inline-block;margin-right:4px;box-shadow:0 0 4px #25D366;"></span>
+                <a href="<?= $linkUsuario ?>" class="user-name-header" style="color:#fff;text-decoration:none;font-weight:bold;transition:color 0.2s;">
+                    <?= htmlspecialchars($_SESSION['usuario']['username']) ?>
+                </a>
+                <span class="user-status-header" style="background:#25D366;color:#fff;border-radius:12px;padding:2px 10px;font-size:0.95em;margin-left:4px;font-weight:600;letter-spacing:0.5px;">Online</span>
+            </div>
+        <?php else: ?>
+            <a href="./view/telaLogin.php" class="login-button">Login</a>
+        <?php endif; ?>
     </header>
 
     <section id="sobre">
@@ -154,7 +175,17 @@
         <p>&copy; 2025 Gyga Fit - Todos os direitos reservados.</p>
     </footer>
 
-    <a href="https://api.whatsapp.com/send/?phone=%2B5561999426618&text=Ol%C3%A1%2C+Tenho+interesse+em+entrar+na+Gyga+Fit.+Me+passe+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
+    <?php
+    $linkWhatsapp = "https://api.whatsapp.com/send/?phone=%2B5561999426618&text=Ol%C3%A1%2C+Tenho+interesse+em+entrar+na+Gyga+Fit.+Me+passe+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0";
+    if (!empty($_SESSION['usuario']['typeUser'])) {
+        if ($_SESSION['usuario']['typeUser'] === 'aluno') {
+            $linkWhatsapp = "https://api.whatsapp.com/send/?phone=%2B5561999426618&text=Ol%C3%A1%2C+Sou+aluno+da+Gyga+Fit.&type=phone_number&app_absent=0";
+        } elseif ($_SESSION['usuario']['typeUser'] === 'instrutor') {
+            $linkWhatsapp = "https://api.whatsapp.com/send/?phone=%2B5561999426618&text=Ol%C3%A1%2C+Sou+instrutor+da+Gyga+Fit.&type=phone_number&app_absent=0";
+        }
+    }
+    ?>
+    <a href="<?= $linkWhatsapp ?>"
         class="whatsapp-button" target="_blank" title="Fale conosco pelo WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24"
             style="vertical-align: middle; margin-right: 8px;">

@@ -7,8 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/environment/environment.php';
 $environment = new Environment();
 $environment->loadEnv(__DIR__ . '/../.env');
-$ok = getenv('DB_HOST');
-print($ok);
+
 return [
     'database' => [
         'host' => getenv('DB_HOST'),
