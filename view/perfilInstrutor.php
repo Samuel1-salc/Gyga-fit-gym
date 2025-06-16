@@ -45,10 +45,10 @@ function getStatus($id_aluno)
     global $aluno;
     foreach ($aluno as $item) {
         if (!empty($id_aluno) && $item['id_aluno'] == $id_aluno) {
-            return $item['status'];
+            return $item['status'] ?? '';
         }
     }
-    return null;
+    return '';
 }
 
 function extrairAlunosUnicos($dadosAlunos = null)
@@ -71,11 +71,11 @@ function extrairAlunosUnicos($dadosAlunos = null)
         if (!in_array($chaveUnica, $idsProcessados)) {
             $alunosUnicos[] = [
                 'id_aluno' => $idAluno,
-                'nome_aluno' => $item['nome_aluno'],
-                'data_solicitacao' => $item['data_solicitacao'],
-                'contato_aluno' => $item['contato_aluno'],
-                'processo' => $item['processo'],
-                'status' => $item['status'],
+                'nome_aluno' => $item['nome_aluno'] ?? '',
+                'data_solicitacao' => $item['data_solicitacao'] ?? '',
+                'contato_aluno' => $item['contato_aluno'] ?? '',
+                'processo' => $item['processo'] ?? '',
+                'status' => $item['status'] ?? '',
             ];
             $idsProcessados[] = $chaveUnica;
         }
@@ -110,7 +110,14 @@ function aplicarPesquisa(&$aluno, $search)
 $instrutor = $_SESSION['usuario'];
 $alunoInstrutor = new aluno_instrutor();
 $solicitacaoTreino = new SolicitacaoTreino();
-$alunoOriginal = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
+
+// Substituir o carregamento de alunos para buscar todos os alunos cadastrados
+$config = require __DIR__ . '/../config/db-config.php';
+$db = $config['database'];
+$dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
+$pdo = new PDO($dsn, $db['user'], $db['password']);
+$stmt = $pdo->query("SELECT id AS id_aluno, username AS nome_aluno FROM aluno");
+$alunoOriginal = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $aluno = $alunoOriginal;
 
 if (!empty($alunoOriginal)) {
@@ -197,6 +204,8 @@ function veryFyStatus($solicitacoes)
     }
     return false;
 }
+
+// Removido var_dump/aviso da sessão
 ?>
 
 <!DOCTYPE html>
@@ -206,7 +215,7 @@ function veryFyStatus($solicitacoes)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Instrutor - GYGA FIT</title>
-    <link rel="stylesheet" href="./view/style/perfilInstrutor.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="/Gyga-fit-gym/view/style/perfilInstrutor.css?v=<?= time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Adicionando ícones Lucide via CDN -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -379,7 +388,7 @@ function veryFyStatus($solicitacoes)
             <i data-lucide="settings" class="icon"></i>
             Menu
         </h3>
-        <a href="./view/editar_perfil_instrutor.php">
+        <a href="/Gyga-fit-gym/view/editar_perfil_instrutor.php">
             <i data-lucide="user-cog" class="icon"></i>
             Alterar Perfil
         </a>
@@ -391,7 +400,7 @@ function veryFyStatus($solicitacoes)
             <i data-lucide="log-out" class="icon"></i>
             <span>Menu da Academia</span>
         </a>
-        <a href="./view/logout.php" class="sidebar-link">
+        <a href="/Gyga-fit-gym/view/logout.php" class="sidebar-link">
             <i data-lucide="log-out" class="icon"></i>
             <span>log-out</span>
         </a>
@@ -402,13 +411,11 @@ function veryFyStatus($solicitacoes)
         <div class="perfil-instrutor">
             <div class="instrutor-header">
                 <div class="instrutor-avatar">
-                    <?php if (!empty($instrutor['foto'])): ?>
-                        <img src="./view/uploads/<?php echo htmlspecialchars($instrutor['foto']); ?>"
+                    <?php if (!empty($_SESSION['usuario']['foto'])): ?>
+                        <img src="/Gyga-fit-gym/uploads/<?php echo htmlspecialchars($_SESSION['usuario']['foto']); ?>"
                             alt="Foto do Instrutor" class="foto-instrutor">
                     <?php else: ?>
-                        <div class="avatar-circle">
-                            <?= strtoupper(substr($instrutor['username'], 0, 1)) ?>
-                        </div>
+                        <img src="/Gyga-fit-gym/uploads/foto_padrao.jpg" alt="Foto do Instrutor" class="foto-instrutor">
                     <?php endif; ?>
                 </div>
                 <div class="instrutor-info-header">
@@ -642,7 +649,7 @@ function veryFyStatus($solicitacoes)
             </h3>
             <?php if (isset($msgAgendamento))
                 echo $msgAgendamento; ?>
-            <form class="form-agendamento" method="POST" action="../controllers/controllerAgendamento.php">
+            <form class="form-agendamento" method="POST" action="/Gyga-fit-gym/controllers/controllerAgendamento.php">
                 <label for="aluno">Selecione o Aluno:</label>
                 <select name="aluno" id="aluno" required>
                     <option value="">Selecione um aluno</option>
@@ -654,6 +661,7 @@ function veryFyStatus($solicitacoes)
                 <input type="datetime-local" name="data_hora" id="data_hora" required>
                 <label for="observacao">Observação:</label>
                 <input type="text" name="observacao" id="observacao" placeholder="Observações (opcional)">
+                <input type="hidden" name="id_instrutor" value="<?= htmlspecialchars($instrutor['id']) ?>">
                 <button type="submit" name="agendar_consulta" class="btn-agendar">
                     <i data-lucide="calendar-check" class="btn-icon"></i>
                     Agendar Consulta
@@ -690,7 +698,7 @@ function veryFyStatus($solicitacoes)
                         ?>
                         <li>
                             <strong><?= htmlspecialchars($ag['username']) ?></strong> -
-                            <?= date('d/m/Y H:i', strtotime($ag['data'])) ?>
+                            <?= date('d/m/Y H:i', strtotime($ag['data_hora'])) ?>
                             <?php if ($ag['observacao']): ?>
                                 <em>(<?= htmlspecialchars($ag['observacao']) ?>)</em>
                             <?php endif; ?>

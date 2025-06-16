@@ -9,38 +9,37 @@ class Agendamento {
 
     public function __construct() {
         require_once __DIR__ . '/../config/database.class.php';
-        $database = new Database();
-        $this->conn = $database->getConnection();
+        $database = Database::getInstance();
+        $this->conn = $database->getConexao();
     }
 
-    public function criar($id_aluno, $data_hora, $observacao = '') {
-        $query = "INSERT INTO agendamentos (id_aluno, data_hora, observacao) VALUES (?, ?, ?)";
-        
-        $stmt = $this->conn->prepare($query);
-        
-        $stmt->bind_param("iss", $id_aluno, $data_hora, $observacao);
-        
-        if($stmt->execute()) {
-            return true;
+    public function criar($id_aluno, $id_instrutor, $data_hora, $observacao = '') {
+        try {
+            $query = "INSERT INTO agendamentos (id_aluno, id_instrutor, data_hora, observacao) VALUES (:id_aluno, :id_instrutor, :data_hora, :observacao)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
+            $stmt->bindParam(':id_instrutor', $id_instrutor, PDO::PARAM_INT);
+            $stmt->bindParam(':data_hora', $data_hora, PDO::PARAM_STR);
+            $stmt->bindParam(':observacao', $observacao, PDO::PARAM_STR);
+            if($stmt->execute()) {
+                return true;
+            }
+            // Se não executou, exibe erro
+            $errorInfo = $stmt->errorInfo();
+            echo '<pre>Erro ao inserir: ' . print_r($errorInfo, true) . '</pre>';
+            return false;
+        } catch (PDOException $e) {
+            echo '<pre>Exceção PDO: ' . $e->getMessage() . '</pre>';
+            return false;
         }
-        
-        return false;
     }
 
     public function listarPorAluno($id_aluno) {
-        $query = "SELECT * FROM agendamentos WHERE id_aluno = ? ORDER BY data_hora DESC";
-        
+        $query = "SELECT * FROM agendamentos WHERE id_aluno = :id_aluno ORDER BY data_hora DESC";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("i", $id_aluno);
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
         $stmt->execute();
-        
-        $result = $stmt->get_result();
-        
-        $agendamentos = [];
-        while($row = $result->fetch_assoc()) {
-            $agendamentos[] = $row;
-        }
-        
+        $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $agendamentos;
     }
 }
