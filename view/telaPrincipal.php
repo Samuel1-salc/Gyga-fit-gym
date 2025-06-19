@@ -128,7 +128,8 @@ if ($id_ultimo_treino) {
                     </div>
                 </div>
             </div>
-            <div class="header-right">
+            
+        <div class="header-right">
                 <button class="notification-button">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">3</span>
@@ -253,7 +254,7 @@ if ($id_ultimo_treino) {
                     </div>
                 </div>
             </div>
-
+            
             <!-- Cronograma de Treinos Modernizado -->
             <div class="workout-schedule-card">
                 <div class="workout-header">
