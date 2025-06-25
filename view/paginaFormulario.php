@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -255,7 +259,7 @@
                 </div>
             </div>
 
-            <!-- Perguntas 5 e 6: Peso e Altura -->
+            <!-- Peso, IMC, Altura e Meta de Água via API -->
             <div class="input-grid">
                 <div class="question-card">
                     <div class="question-header">
@@ -268,29 +272,28 @@
                     <div class="question-content">
                         <div class="input-container">
                             <i class="fas fa-weight input-icon"></i>
-                            <input type="number" name="peso" placeholder="Ex: 70" required>
+                            <input type="number" name="peso" id="peso" placeholder="Ex: 70" required>
                             <span class="input-unit">kg</span>
                         </div>
                     </div>
                 </div>
-            <!-- IMC Calculado -->
-            <div class="question-card">
-               <div class="question-header">
-                    <div class="question-number teal">IMC</div>
-                     <div class="question-title">
-                          <h3>Seu IMC</h3>
-                          <p>Índice de Massa Corporal calculado automaticamente</p>
+
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number teal">IMC</div>
+                        <div class="question-title">
+                            <h3>Seu IMC</h3>
+                            <p>Índice de Massa Corporal calculado automaticamente</p>
                         </div>
                     </div>
-                <div class="question-content">
-            <div class="input-container">
-            <i class="fas fa-calculator input-icon"></i>
-            <input type="text" id="imc" readonly placeholder="Preencha peso e altura">
-            <span class="input-unit">kg/m²</span>
-        </div>
-    </div>
-</div>
-
+                    <div class="question-content">
+                        <div class="input-container">
+                            <i class="fas fa-calculator input-icon"></i>
+                            <input type="text" id="imc" readonly placeholder="Preencha peso e altura">
+                            <span class="input-unit">kg/m²</span>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="question-card">
                     <div class="question-header">
@@ -303,9 +306,27 @@
                     <div class="question-content">
                         <div class="input-container">
                             <i class="fas fa-ruler-vertical input-icon"></i>
-                            <input type="number" name="altura" placeholder="Ex: 175" required>
+                            <input type="number" name="altura" id="altura" placeholder="Ex: 175" required>
                             <span class="input-unit">cm</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number cyan">7</div>
+                        <div class="question-title">
+                            <h3>Meta diária de água</h3>
+                            <p>Com base no seu peso, recomendamos essa ingestão de água</p>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div class="input-container">
+                            <i class="fas fa-tint input-icon"></i>
+                            <input type="text" id="meta-agua" readonly placeholder="Preencha o peso para calcular">
+                            <span class="input-unit">litros</span>
+                        </div>
+                        <input type="hidden" name="meta_agua" id="meta-agua-hidden">
                     </div>
                 </div>
             </div>
@@ -322,74 +343,66 @@
                 </div>
             </div>
         </form>
-
-        <!-- Footer -->
-        <div class="footer-card">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <div class="footer-icon">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
-                        <div>
-                            <h3>GYGA FIT</h3>
-                            <p>Transformando vidas através do fitness</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <div class="footer-links">
-                        <a href="#" onclick="faleConosco()">Fale Conosco</a>
-                        <span>|</span>
-                        <a href="#" onclick="politicaPrivacidade()">Política de Privacidade</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <p>Siga-nos nas redes sociais</p>
-                    <div class="social-links">
-                        <button onclick="abrirFacebook()"><i class="fab fa-facebook-f"></i></button>
-                        <button onclick="abrirInstagram()"><i class="fab fa-instagram"></i></button>
-                        <button onclick="abrirYoutube()"><i class="fab fa-youtube"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <script src="js/formulario-moderno.js"></script>
-</body>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const pesoInput = document.querySelector('input[name="peso"]');
-        const alturaInput = document.querySelector('input[name="altura"]');
-        const imcInput = document.getElementById('imc');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const pesoInput = document.getElementById('peso');
+            const alturaInput = document.getElementById('altura');
+            const imcInput = document.getElementById('imc');
+            const metaAguaInput = document.getElementById('meta-agua');
+            const metaAguaHidden = document.getElementById('meta-agua-hidden');
 
-        function calcularIMC() {
-            const peso = parseFloat(pesoInput.value);
-            const alturaCm = parseFloat(alturaInput.value);
-            if (!isNaN(peso) && !isNaN(alturaCm) && alturaCm > 0) {
-                const alturaM = alturaCm / 100;
-                const imc = peso / (alturaM * alturaM);
-                imcInput.value = imc.toFixed(2);
-            } else {
-                imcInput.value = '';
+            function calcularIMC() {
+                const peso = parseFloat(pesoInput.value);
+                const alturaCm = parseFloat(alturaInput.value);
+                if (!isNaN(peso) && !isNaN(alturaCm) && alturaCm > 0) {
+                    const alturaM = alturaCm / 100;
+                    const imc = peso / (alturaM * alturaM);
+                    imcInput.value = imc.toFixed(2);
+                } else {
+                    imcInput.value = '';
+                }
             }
-        }
 
-        pesoInput.addEventListener('input', calcularIMC);
-        alturaInput.addEventListener('input', calcularIMC);
-    });
-</script>
+            function calcularMetaAgua() {
+                const peso = parseFloat(pesoInput.value);
+                if (!isNaN(peso) && peso > 0) {
+                    fetch('/Gyga-fit-gym/controllers/processarHidratacao.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'weight=' + peso
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            const litros = (peso * 35 / 1000).toFixed(2);
+                            metaAguaInput.value = litros;
+                            metaAguaHidden.value = litros;
+                        } else {
+                            metaAguaInput.value = '';
+                            metaAguaHidden.value = '';
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Erro ao calcular meta de água:', err);
+                        metaAguaInput.value = '';
+                        metaAguaHidden.value = '';
+                    });
+                } else {
+                    metaAguaInput.value = '';
+                    metaAguaHidden.value = '';
+                }
+            }
 
+            pesoInput.addEventListener('input', () => {
+                calcularIMC();
+                calcularMetaAgua();
+            });
+            alturaInput.addEventListener('input', calcularIMC);
+        });
+    </script>
+</body>
 </html>
-
-<?php
-/**
- * Processamento PHP (se necessário)
- */
-
-require_once __DIR__ . '/../controllers/processarSolicitacaoDeTreino.php';
-session_start();
-?>
