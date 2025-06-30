@@ -129,12 +129,8 @@ if ($id_ultimo_treino) {
                     </div>
                 </div>
             </div>
-            
-        <div class="header-right">
-                <button class="notification-button">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
+
+            <div class="header-right">
                 <div class="user-avatar">
                     <?php if (!empty($_SESSION['usuario']['foto'])): ?>
                         <img src="./view/uploads/<?php echo htmlspecialchars($_SESSION['usuario']['foto']); ?>"
@@ -256,7 +252,7 @@ if ($id_ultimo_treino) {
                     </div>
                 </div>
             </div>
-            
+
             <!-- Cronograma de Treinos Modernizado -->
             <div class="workout-schedule-card">
                 <div class="workout-header">
@@ -305,7 +301,7 @@ if ($id_ultimo_treino) {
                                 <?php
                                 $exerciseIndex = 1;
                                 foreach ($treinos as $treino):
-                                    ?>
+                                ?>
                                     <?php if ($treino['letra_treino'] == $letraObj['letra_treino']): ?>
                                         <?php if (isset($treino['nome_exercicio'])): ?>
                                             <?php $exercicioInfoArr = $treinosUser->getExerciciosById($treino['nome_exercicio']); ?>
@@ -316,12 +312,12 @@ if ($id_ultimo_treino) {
                                                         <div class="exercise-number"><?= $exerciseIndex++; ?></div>
                                                         <div class="exercise-info">
                                                             <h5 class="exercise-name">
-                                                                <?= htmlspecialchars($exercicioInfo['nome_exercicio'] ?? 'Exercício não informado') ?>
+                                                                <?= htmlspecialchars($exercicioInfo['exercicio'] ?? 'Exercício não informado') ?>
                                                             </h5>
                                                             <div class="exercise-category">
                                                                 <?php
                                                                 $category = '';
-                                                                $exerciseName = strtolower($exercicioInfo['nome_exercicio'] ?? '');
+                                                                $exerciseName = strtolower($exercicioInfo['exercicio'] ?? '');
                                                                 $category = $exercicioInfo['grupo_muscular'] ?? 'Outros';
                                                                 ?>
                                                                 <span class="category-badge category-<?= strtolower($category); ?>"><?= $category; ?></span>
@@ -351,14 +347,14 @@ if ($id_ultimo_treino) {
                                                         <div>
                                                             <span class="description-label">Instruções:</span>
                                                             <p class="description-text">
-                                                                <?= htmlspecialchars($exercicioInfo['descricao_exercicio'] ?? 'Sem instruções cadastradas.') ?>
+                                                                <?= htmlspecialchars($exercicioInfo['descricao'] ?? 'Sem instruções cadastradas.') ?>
                                                             </p>
                                                         </div>
                                                     </div>
                                                     <div class="stat-exercise-image">
-                                                        <?php if (!empty($exercicioInfo['url_img'])): ?>
-                                                            <img src="<?= htmlspecialchars($exercicioInfo['url_img']) ?>"
-                                                                alt="<?= htmlspecialchars($exercicioInfo['nome_exercicio'] ?? '') ?>">
+                                                        <?php if (!empty($exercicioInfo['url_da_imagem'])): ?>
+                                                            <img src="<?= htmlspecialchars($exercicioInfo['url_da_imagem']) ?>"
+                                                                alt="<?= htmlspecialchars($exercicioInfo['exercicio'] ?? '') ?>">
                                                         <?php else: ?>
                                                             <div class="exercise-placeholder">
                                                                 <i class="fas fa-dumbbell"></i>
@@ -435,7 +431,7 @@ if ($id_ultimo_treino) {
     </main>
 
     <script>
-        window.toggleSidebar = function () {
+        window.toggleSidebar = function() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             if (!sidebar || !overlay) {
@@ -457,7 +453,7 @@ if ($id_ultimo_treino) {
 
             // Show/hide workout cards
             const treinos = document.querySelectorAll('.workout-card-modern');
-            treinos.forEach(function (card) {
+            treinos.forEach(function(card) {
                 card.style.display = (card.id === treinoId) ? 'block' : 'none';
             });
         }
@@ -465,11 +461,11 @@ if ($id_ultimo_treino) {
         // Gera os botões de treino dinamicamente
         function gerarBotoesTreino(letrasTreino) {
             const container = document.getElementById('dias-semana');
-            letrasTreino.forEach(function (letraObj, index) {
+            letrasTreino.forEach(function(letraObj, index) {
                 const button = document.createElement('button');
                 button.innerHTML = '<i class="fas fa-dumbbell"></i> Treino ' + letraObj.letra_treino;
                 button.className = 'workout-tab' + (index === 0 ? ' active' : '');
-                button.onclick = function () {
+                button.onclick = function() {
                     mostrarTreino('treino' + letraObj.letra_treino);
                 };
                 container.appendChild(button);
@@ -480,7 +476,7 @@ if ($id_ultimo_treino) {
         const letrasTreino = <?php echo json_encode($letrasTreino); ?>;
 
         // Gera os botões e exibe o primeiro treino ao carregar a página
-        window.onload = function () {
+        window.onload = function() {
             gerarBotoesTreino(letrasTreino);
             if (letrasTreino.length > 0 && letrasTreino[0].letra_treino) {
                 mostrarTreino('treino' + letrasTreino[0].letra_treino);
@@ -488,7 +484,7 @@ if ($id_ultimo_treino) {
         };
 
         // Adiciona animações de entrada
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.student-info-card, .workout-schedule-card');
             cards.forEach((card, index) => {
                 card.style.animationDelay = (index * 0.1) + 's';
