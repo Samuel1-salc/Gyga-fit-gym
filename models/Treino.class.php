@@ -140,7 +140,6 @@ class Treino
         );
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     }
 
     /**
@@ -178,7 +177,6 @@ class Treino
         $stmt->bindParam(':grupo_muscular', $grupo_muscular, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     }
 
     /**
@@ -204,6 +202,15 @@ class Treino
         if (!empty($idArr['id_treino_criado'])) {
             $idTreino = $idArr['id_treino_criado'];
             $treinos = $this->getTreinoByIdTreino($idTreino);
+
+            // Corrige o nome dos exercícios baseado no ID
+            foreach ($treinos as &$treino) {
+                $exercicioData = $this->getExerciciosById($treino['nome_exercicio']);
+                if (!empty($exercicioData)) {
+                    $treino['nome_exercicio'] = $exercicioData[0]['exercicio'];
+                }
+            }
+
             $dataArr = $this->getDataTreinos($alunoId);
             $dataCri = $dataArr['data_criacao'] ?? date('Y-m-d H:i:s');
             $user = new Users();
