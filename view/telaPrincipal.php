@@ -109,145 +109,6 @@ if ($id_ultimo_treino) {
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./view/style//Tela-Principal.css?v=<?= time(); ?>">
-        <!-- Estilos do marcador de exercício concluído -->
-    <style>
-      .complete-btn {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-        color: #ccc;
-      }
-      .exercise-card {
-        position: relative;
-      }
-      .exercise-card.completed {
-        opacity: 0.6;
-      }
-      .exercise-card.completed .exercise-name {
-        text-decoration: line-through;
-      }
-      .exercise-card.completed .complete-btn {
-        color: #2ecc71;
-      }
-    </style>
-
-    <!-- Dark mode styles -->
-<style>
-  /* Variáveis de cor */
-  :root {
-    --bg: #fff;
-    --fg: #333;
-    --card-bg: #fafafa;
-    --accent: #2ecc71;
-  }
-  body.dark-mode {
-    --bg: #222;
-    --fg: #eee;
-    --card-bg: #2c2c2c;
-    --accent: #9b59b6;
-  }
-/* aplica cor clara somente nos containers principais (não nas métricas) */
-body.dark-mode .header-modern,
-body.dark-mode .sidebar-modern,
-body.dark-mode .student-info-card,
-body.dark-mode .workout-schedule-card,
-body.dark-mode .exercise-card,
-body.dark-mode .workout-tab,
-body.dark-mode .workout-tabs-container button {
-  background-color: var(--card-bg) !important;
-  color: var(--fg) !important;
-}
-
-/* sidebar links */
-body.dark-mode .sidebar-modern .sidebar-link {
-  color: var(--fg) !important;
-}
-
-/* badges/accentos continuam legíveis */
-body.dark-mode .badge-plan,
-body.dark-mode .badge-active {
-  background-color: var(--accent) !important;
-  color: #fff !important;
-}
-
-/* restaura o estilo padrão só dentro da área de métricas */
-body.dark-mode .metrics-grid * {
-  color: inherit !important;
-  background: none !important;
-}
-
-  /* Aplicando as variáveis */
-  body {
-    background-color: var(--bg);
-    color: var(--fg);
-  }
-  .header-modern,
-  .sidebar-modern,
-  .student-info-card,
-  .workout-schedule-card,
-  .exercise-card {
-    background-color: var(--card-bg);
-  }
-  .badge-plan {
-    background-color: var(--accent);
-    color: #fff;
-  }
-  /* …repita para outros elementos que precisem inverter cores… */
-  /* Ajustes de contraste no dark mode */
-body.dark-mode {
-  --bg: #222;
-  --fg: #eee;
-  --card-bg: #2c2c2c;
-  --accent: #9b59b6;
-}
-
-/* forçar texto claro em todos títulos, parágrafos e botões */
-body.dark-mode *,
-body.dark-mode .sidebar-link,
-body.dark-mode .notification-button,
-body.dark-mode button,
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode h5,
-body.dark-mode h6,
-body.dark-mode p,
-body.dark-mode span,
-body.dark-mode a {
-  color: var(--fg) !important;
-}
-
-/* e garantir que os cartões e abas fiquem legíveis */
-body.dark-mode .workout-tab,
-body.dark-mode .workout-tabs-container button,
-body.dark-mode .workout-card-modern,
-body.dark-mode .exercise-card {
-  background-color: var(--card-bg) !important;
-  color: var(--fg) !important;
-}
-
-/* sidebar */
-body.dark-mode .sidebar-modern {
-  background-color: var(--card-bg) !important;
-}
-body.dark-mode .sidebar-modern .sidebar-link {
-  color: var(--fg) !important;
-}
-
-/* indicadores/accentos */
-body.dark-mode .badge-plan,
-body.dark-mode .badge-active {
-  background-color: var(--accent) !important;
-  color: #fff !important;
-}
-
-</style>
-
 </head>
 
 <body>
@@ -270,32 +131,23 @@ body.dark-mode .badge-active {
             </div>
             
         <div class="header-right">
-    <!-- 1) botão de notificações (inalterado) -->
-    <button class="notification-button">
-        <i class="fas fa-bell"></i>
-        <span class="notification-badge">3</span>
-    </button>
-
-    <!-- 2) botão de modo escuro adicionado -->
-    <button id="darkToggle" class="notification-button" title="Modo escuro" style="margin-left: 0.5rem;">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <!-- 3) avatar do usuário (inalterado) -->
-    <div class="user-avatar">
-        <?php if (!empty($_SESSION['usuario']['foto'])): ?>
-            <img src="./view/uploads/<?php echo htmlspecialchars($_SESSION['usuario']['foto']); ?>"
-                 alt="Avatar">
-        <?php else: ?>
-            <div class="avatar-placeholder">
-                <?= strtoupper(substr($_SESSION['usuario']['username'] ?? 'U', 0, 1)); ?>
+                <button class="notification-button">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-avatar">
+                    <?php if (!empty($_SESSION['usuario']['foto'])): ?>
+                        <img src="./view/uploads/<?php echo htmlspecialchars($_SESSION['usuario']['foto']); ?>"
+                            alt="Avatar">
+                    <?php else: ?>
+                        <div class="avatar-placeholder">
+                            <?= strtoupper(substr($_SESSION['usuario']['username'] ?? 'U', 0, 1)); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
-        <?php endif; ?>
-    </div>
-</div>
-</div>
-</header>
-
+        </div>
+    </header>
 
     <!-- Sidebar Moderna -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -463,10 +315,6 @@ body.dark-mode .badge-active {
                                         <?php $exercicioInfo = $exercicioInfoArr[0] ?? null; ?>
                                         <?php if ($exercicioInfo): ?>
                                             <div class="exercise-card">
-                                                <button class="complete-btn" title="Marcar concluído">
-  <i class="fas fa-circle"></i>
-</button>
-
                                                 <div class="exercise-header">
                                                     <div class="exercise-number"><?= $exerciseIndex++; ?></div>
                                                     <div class="exercise-info">
@@ -654,34 +502,6 @@ body.dark-mode .badge-active {
             });
         });
     </script>
-    <script>
-  document.getElementById('darkToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    // opcional: trocar ícone
-    const ico = document.querySelector('#darkToggle i');
-    ico.classList.toggle('fa-moon');
-    ico.classList.toggle('fa-sun');
-  });
-</script>
-
-<script>
-  // Marca exercício como concluído
-  document.addEventListener('click', e=>{
-    if (e.target.closest('.complete-btn')) {
-      const btn  = e.target.closest('.complete-btn');
-      const card = btn.closest('.exercise-card');
-      const icon = btn.querySelector('i');
-      card.classList.toggle('completed');
-      if (card.classList.contains('completed')) {
-        icon.classList.replace('fa-circle','fa-check-circle');
-      } else {
-        icon.classList.replace('fa-check-circle','fa-circle');
-      }
-    }
-  });
-</script>
-
-
 </body>
 
 </html>
