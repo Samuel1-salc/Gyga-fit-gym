@@ -163,10 +163,6 @@ if ($id_ultimo_treino) {
                 <i class="fas fa-user-edit"></i>
                 <span>Alterar Perfil</span>
             </a>
-            <a href="./configuracoes.php" class="sidebar-link">
-                <i class="fas fa-cog"></i>
-                <span>Configurações</span>
-            </a>
             <a href="./index.php?page=telaInicial" class="sidebar-link">
                 <i class="fas fa-dumbbell"></i>
                 <span>Menu da Academia</span>
@@ -311,68 +307,66 @@ if ($id_ultimo_treino) {
                                 foreach ($treinos as $treino):
                                     ?>
                                     <?php if ($treino['letra_treino'] == $letraObj['letra_treino']): ?>
-                                        <?php $exercicioInfoArr = $treinosUser->getExerciciosById($treino['nome_exercicio']); ?>
-                                        <?php $exercicioInfo = $exercicioInfoArr[0] ?? null; ?>
-                                        <?php if ($exercicioInfo): ?>
-                                            <div class="exercise-card">
-                                                <div class="exercise-header">
-                                                    <div class="exercise-number"><?= $exerciseIndex++; ?></div>
-                                                    <div class="exercise-info">
-                                                        <h5 class="exercise-name">
-                                                            <?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?>
-                                                        </h5>
-                                                        <div class="exercise-category">
-                                                            <?php
-                                                            $category = '';
-                                                            $exerciseName = strtolower($exercicioInfo['nome_exercicio']);
-
-                                                            $category = $exercicioInfo['grupo_muscular'] ?? 'Outros';
-
-                                                            ?>
-                                                            <span
-                                                                class="category-badge category-<?= strtolower($category); ?>"><?= $category; ?></span>
+                                        <?php if (isset($treino['nome_exercicio'])): ?>
+                                            <?php $exercicioInfoArr = $treinosUser->getExerciciosById($treino['nome_exercicio']); ?>
+                                            <?php $exercicioInfo = $exercicioInfoArr[0] ?? null; ?>
+                                            <?php if ($exercicioInfo): ?>
+                                                <div class="exercise-card">
+                                                    <div class="exercise-header">
+                                                        <div class="exercise-number"><?= $exerciseIndex++; ?></div>
+                                                        <div class="exercise-info">
+                                                            <h5 class="exercise-name">
+                                                                <?= htmlspecialchars($exercicioInfo['nome_exercicio'] ?? 'Exercício não informado') ?>
+                                                            </h5>
+                                                            <div class="exercise-category">
+                                                                <?php
+                                                                $category = '';
+                                                                $exerciseName = strtolower($exercicioInfo['nome_exercicio'] ?? '');
+                                                                $category = $exercicioInfo['grupo_muscular'] ?? 'Outros';
+                                                                ?>
+                                                                <span class="category-badge category-<?= strtolower($category); ?>"><?= $category; ?></span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="exercise-stats">
-                                                    <div class="stat-item">
-                                                        <i class="fas fa-redo"></i>
+                                                    <div class="exercise-stats">
+                                                        <div class="stat-item">
+                                                            <i class="fas fa-redo"></i>
+                                                            <div>
+                                                                <span class="stat-label">Séries</span>
+                                                                <span class="stat-value"><?= htmlspecialchars($treino['series'] ?? '-') ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="stat-item">
+                                                            <i class="fas fa-chart-line"></i>
+                                                            <div>
+                                                                <span class="stat-label">Repetições</span>
+                                                                <span class="stat-value"><?= htmlspecialchars($treino['repeticoes'] ?? '-') ?></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="exercise-description">
+                                                        <i class="fas fa-info-circle"></i>
                                                         <div>
-                                                            <span class="stat-label">Séries</span>
-                                                            <span class="stat-value"><?= htmlspecialchars($treino['series']) ?></span>
+                                                            <span class="description-label">Instruções:</span>
+                                                            <p class="description-text">
+                                                                <?= htmlspecialchars($exercicioInfo['descricao_exercicio'] ?? 'Sem instruções cadastradas.') ?>
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                    <div class="stat-item">
-                                                        <i class="fas fa-chart-line"></i>
-                                                        <div>
-                                                            <span class="stat-label">Repetições</span>
-                                                            <span
-                                                                class="stat-value"><?= htmlspecialchars($treino['repeticoes']) ?></span>
-                                                        </div>
+                                                    <div class="stat-exercise-image">
+                                                        <?php if (!empty($exercicioInfo['url_img'])): ?>
+                                                            <img src="<?= htmlspecialchars($exercicioInfo['url_img']) ?>"
+                                                                alt="<?= htmlspecialchars($exercicioInfo['nome_exercicio'] ?? '') ?>">
+                                                        <?php else: ?>
+                                                            <div class="exercise-placeholder">
+                                                                <i class="fas fa-dumbbell"></i>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
-
-                                                <div class="exercise-description">
-                                                    <i class="fas fa-info-circle"></i>
-                                                    <div>
-                                                        <span class="description-label">Instruções:</span>
-                                                        <p class="description-text">
-                                                            <?= htmlspecialchars($exercicioInfo['descricao_exercicio']) ?>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="stat-exercise-image">
-                                                    <?php if (!empty($exercicioInfo['url_img'])): ?>
-                                                        <img src="<?= htmlspecialchars($exercicioInfo['url_img']) ?>"
-                                                            alt="<?= htmlspecialchars($exercicioInfo['nome_exercicio']) ?>">
-                                                    <?php else: ?>
-                                                        <div class="exercise-placeholder">
-                                                            <i class="fas fa-dumbbell"></i>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 <?php endforeach; ?>

@@ -169,12 +169,15 @@ unset($_SESSION['mostrarSenha'], $_SESSION['error']);
 </head>
 
 <body>
+  <?php if (!$mostrarSenha): ?>
   <div id="video-intro">
     <video autoplay muted>
       <source src="../view/video/intro.mp4" type="video/mp4" />
       Seu navegador não suporta vídeo HTML5.
     </video>
+    <button id="skip-intro" style="position:absolute;bottom:32px;right:32px;z-index:10000;padding:7px 18px;background:#ff0000;color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px #000;min-width:auto;width:auto;">Pular abertura</button>
   </div>
+  <?php endif; ?>
 
   <div class="container" id="conteudo-login">
     <div class="logo">
@@ -211,15 +214,24 @@ unset($_SESSION['mostrarSenha'], $_SESSION['error']);
   </div>
 
   <script>
+    <?php if (!$mostrarSenha): ?>
     const videoIntro = document.getElementById('video-intro');
     const conteudoLogin = document.getElementById('conteudo-login');
     const video = videoIntro.querySelector("video");
+    const skipBtn = document.getElementById('skip-intro');
 
-    video.addEventListener("ended", () => {
+    function mostrarConteudoLogin() {
       videoIntro.classList.add("fade-out");
       conteudoLogin.classList.add("show-content");
       document.querySelector('input[name="cpf"]').focus();
-    });
+    }
+
+    video.addEventListener("ended", mostrarConteudoLogin);
+    skipBtn.addEventListener("click", mostrarConteudoLogin);
+    <?php else: ?>
+    document.getElementById('conteudo-login').classList.add('show-content');
+    document.querySelector('input[name="senha"]').focus();
+    <?php endif; ?>
   </script>
 </body>
 

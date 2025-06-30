@@ -93,7 +93,15 @@
             <div class="user-info-header" style="display:flex;align-items:center;gap:12px;background:#222;color:#fff;padding:8px 18px;border-radius:8px;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-left:16px;">
                 <span class="user-online-dot" style="width:10px;height:10px;background:#25D366;border-radius:50%;display:inline-block;margin-right:4px;box-shadow:0 0 4px #25D366;"></span>
                 <a href="<?= $linkUsuario ?>" class="user-name-header" style="color:#fff;text-decoration:none;font-weight:bold;transition:color 0.2s;">
-                    <?= htmlspecialchars($_SESSION['usuario']['username']) ?>
+                    <?php
+                    if (isset($_SESSION['usuario']['username'])) {
+                        echo htmlspecialchars($_SESSION['usuario']['username']);
+                    } elseif (isset($_SESSION['usuario']['nome'])) {
+                        echo htmlspecialchars($_SESSION['usuario']['nome']);
+                    } else {
+                        echo 'Usuário';
+                    }
+                    ?>
                 </a>
                 <span class="user-status-header" style="background:#25D366;color:#fff;border-radius:12px;padding:2px 10px;font-size:0.95em;margin-left:4px;font-weight:600;letter-spacing:0.5px;">Online</span>
             </div>

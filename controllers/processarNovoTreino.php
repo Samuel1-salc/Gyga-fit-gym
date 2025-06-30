@@ -100,8 +100,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($id_solicitacao) {
                 $atualizado = new SolicitacaoTreino();
                 $atualizado->atualizarStatusSolicitacao($id_aluno, "Atendido");
+                if (isset($_SESSION['usuario']['typeUser']) && $_SESSION['usuario']['typeUser'] === 'instrutor') {
+                    header("Location: /Gyga-fit-gym/view/sucessoSolicitacaoTreinoInstrutor.php");
+                } else {
+                    header("Location: /Gyga-fit-gym/view/sucessoSolicitacaoTreino.php");
+                }
+                exit();
             }
-            header("Location: ../view/perfilInstrutor.php?id_aluno=$id_aluno");
+            // Caso seja treino próprio do aluno
+            header("Location: /Gyga-fit-gym/view/sucessoTreinoAluno.php");
             exit();
         } else {
             echo "Erro ao cadastrar o plano de treino!";
