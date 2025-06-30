@@ -2,7 +2,7 @@
 session_start();
 require_once('../config/database.class.php');
 
-$db = new Database();
+$db = Database::getInstance();
 $pdo = $db->getConexao();
 
 // Verifica se o usuário está logado e é um instrutor
@@ -35,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminho_completo)) {
             $stmt = $pdo->prepare("UPDATE instrutor SET username = ?, email = ?, phone = ?, foto = ? WHERE id = ?");
             $stmt->execute([$nome, $email, $phone, $foto_nome, $id]);
+            // Atualiza a foto na sessão para refletir imediatamente
+            $_SESSION['usuario']['foto'] = $foto_nome;
         } else {
             die('Erro ao salvar a imagem. Verifique as permissões da pasta uploads.');
         }

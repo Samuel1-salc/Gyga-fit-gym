@@ -107,7 +107,7 @@
         <div class="sucesso-container">
             <h2>Perfil Editado com Sucesso!</h2>
             <p>Suas informações foram alteradas com sucesso. Aperte "OK" para retornar ao Seu Perfil.</p>
-            <a href="perfilInstrutor.php" class="btn-voltar">OK</a>
+            <a href="../index.php?page=perfilInstrutor" class="btn-voltar">OK</a>
         </div>
     </main>
 

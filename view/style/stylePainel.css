@@ -7,7 +7,8 @@
 }
 
 body {
-    background-color: #f0f0f0;
+    background-color: #111;
+    color: #f5f5f5;
 }
 
 header {
@@ -43,7 +44,7 @@ header {
 .container {
     max-width: 800px;
     margin: 20px auto;
-    background-color: white;
+    background-color: #181818;
     border-radius: 15px;
     border: 2px solid #FF0000;
     
@@ -67,7 +68,7 @@ header {
 
 .btn-cadastrar {
     background-color: #FF0000;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
@@ -82,6 +83,8 @@ header {
 .tabs {
     display: flex;
     margin-bottom: 20px;
+    background: #181818;
+    border-radius: 10px 10px 0 0;
 }
 
 .tab-btn {
@@ -91,16 +94,18 @@ header {
     font-weight: bold;
     border-radius: 5px 5px 0 0;
     margin-right: 2px;
+    background-color: #222;
+    color: #f5f5f5;
 }
 
 .tab-btn.active {
     background-color: #FF0000;
-    color: white;
+    color: #fff;
 }
 
 .tab-btn:not(.active) {
-    background-color: #000;
-    color: white;
+    background-color: #222;
+    color: #f5f5f5;
 }
 
 .tab-content {
@@ -118,9 +123,10 @@ header {
 .search-bar {
     display: flex;
     margin-bottom: 30px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 50px;
     overflow: hidden;
+    background: #222;
 }
 
 .search-bar input {
@@ -129,9 +135,12 @@ header {
     border: none;
     outline: none;
     font-size: 16px;
+    background: #181818;
+    color: #f5f5f5;
 }
 
 .search-btn {
+    color: #FF0000;
     background: transparent;
     border: none;
     padding: 10px 15px;
@@ -142,10 +151,12 @@ header {
 .aluno-card {
     display: flex;
     align-items: center;
-    border: 1px solid #eee;
+    border: 1px solid #333;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
+    background: #222;
+    color: #f5f5f5;
 }
 
 .aluno-avatar {
@@ -173,7 +184,7 @@ header {
 }
 
 .aluno-info p {
-    color: #666;
+    color: #bbb;
     margin-bottom: 3px;
 }
 
@@ -185,10 +196,12 @@ header {
 .personal-card {
     display: flex;
     align-items: center;
-    border: 1px solid #eee;
+    border: 1px solid #333;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
+    background: #222;
+    color: #f5f5f5;
 }
 
 .personal-avatar {
@@ -216,7 +229,7 @@ header {
 }
 
 .personal-info p {
-    color: #666;
+    color: #bbb;
     margin-bottom: 3px;
 }
 
@@ -226,7 +239,7 @@ header {
 
 .btn-editar {
     background-color: #FF0000;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
@@ -241,10 +254,12 @@ header {
 .acad-card {
     display: flex;
     align-items: center;
-    border: 1px solid #eee;
+    border: 1px solid #333;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
+    background: #222;
+    color: #f5f5f5;
 }
 
 .acad-avatar {
@@ -272,7 +287,7 @@ header {
 }
 
 .acad-info p {
-    color: #666;
+    color: #bbb;
     margin-bottom: 3px;
 }
 
@@ -283,7 +298,7 @@ header {
 /* Divisor */
 .divider {
     height: 1px;
-    background-color: #eee;
+    background-color: #222;
     margin: 30px 0;
 }
 
@@ -320,7 +335,7 @@ header {
 }
 
 .footer-links a {
-    color: #000;
+    color: #f5f5f5;
     text-decoration: none;
     font-size: 14px;
 }
@@ -337,7 +352,7 @@ header {
 }
 
 .social-icon {
-    color: #000;
+    color: #f5f5f5;
     font-size: 18px;
 }
 

@@ -32,17 +32,28 @@ if ($search !== '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyga Fit - Painel Administrativo</title>
-    <link rel="stylesheet" href="./view/style/stylePainel.css">
+    <link rel="stylesheet" href="./view/style/stylePainel.css?v=<?= time() ?>">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      body { background: #111 !important; color: #f5f5f5 !important; }
+      .container { background: #181818 !important; color: #f5f5f5 !important; }
+      .aluno-card, .personal-card, .acad-card { background: #222 !important; color: #f5f5f5 !important; }
+      .tab-btn { background: #222 !important; color: #f5f5f5 !important; }
+      .tab-btn.active { background: #FF0000 !important; color: #fff !important; }
+      .search-bar { background: #222 !important; border: 1px solid #333 !important; }
+      .search-bar input { background: #181818 !important; color: #f5f5f5 !important; }
+      .btn-cadastrar, .btn-editar { background: #FF0000 !important; color: #fff !important; }
+      .painel-header h1, .tab-content h2 { color: #FF0000 !important; }
+    </style>
 </head>
 
 <body>
     <header>
         <div class="header-container">
-            <div class="user-icon"><i class="fas fa-user"></i></div>
-            <div class="logo"><img src="./view/img/logo.png" alt="Gyga Fit Logo" class="logo-img"></div>
-            <div class="menu-icon"><i class="fas fa-bars"></i></div>
+            <form action="index.php?page=logout" method="post" style="margin-left:auto;">
+                <button type="submit" style="background:#ff0000;color:#fff;border:none;padding:8px 18px;border-radius:16px;font-weight:bold;cursor:pointer;">Logout</button>
+            </form>
         </div>
     </header>
 

@@ -46,7 +46,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $SolicitarTreino->SolicitarTreino($data_created, $id_aluno, $experiencia, $objetivo, $treinos, $sexo, $peso, $altura, $status = "em andamento");
         $processo = 'em andamento';
         $checkRelacao->adcStatus($processo, $id_aluno);
+        header("Location: /Gyga-fit-gym/view/sucessoSolicitacaoTreino.php");
+        exit;
     } else {
         $_SESSION['error'] = "voce ainda não tem instrutor!";
+        header("Location: /Gyga-fit-gym/index.php?page=telaPrincipal&erro=sem_instrutor");
+        exit;
     }
 }

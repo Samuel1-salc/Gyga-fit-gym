@@ -53,8 +53,8 @@ function getStatus($id_aluno)
 
 function extrairAlunosUnicos($dadosAlunos = null)
 {
-    global $alunoOriginal;
-    $dados = $dadosAlunos ?? $alunoOriginal;
+    // Não usar mais o array global $alunoOriginal, sempre usar o parâmetro recebido
+    $dados = (is_array($dadosAlunos) && $dadosAlunos !== null) ? $dadosAlunos : [];
     $alunosUnicos = [];
     $idsProcessados = [];
     $contadorSemId = 0;
@@ -86,12 +86,20 @@ function extrairAlunosUnicos($dadosAlunos = null)
 function aplicarFiltroStatus(&$aluno, $statusFiltro)
 {
     $statusFiltro = strtolower($statusFiltro);
-    if ($statusFiltro === 'todos')
-        return;
-
-    $aluno = array_filter($aluno, function ($item) use ($statusFiltro) {
+    if ($statusFiltro === 'todos') return;
+    $aluno = array_values(array_filter($aluno, function ($item) use ($statusFiltro) {
         return !empty($item['status']) && strtolower($item['status']) === $statusFiltro;
-    });
+    }));
+}
+
+function removerAcentos($string) {
+    return preg_replace([
+        '/[áàãâä]/u', '/[éèêë]/u', '/[íìîï]/u', '/[óòõôö]/u', '/[úùûü]/u', '/[ç]/u',
+        '/[ÁÀÃÂÄ]/u', '/[ÉÈÊË]/u', '/[ÍÌÎÏ]/u', '/[ÓÒÕÔÖ]/u', '/[ÚÙÛÜ]/u', '/[Ç]/u'
+    ], [
+        'a', 'e', 'i', 'o', 'u', 'c',
+        'A', 'E', 'I', 'O', 'U', 'C'
+    ], $string);
 }
 
 function aplicarPesquisa(&$aluno, $search)
@@ -99,10 +107,11 @@ function aplicarPesquisa(&$aluno, $search)
     $search = trim($search);
     if (empty($search))
         return;
-
-    $aluno = array_filter($aluno, function ($item) use ($search) {
-        return isset($item['nome_aluno']) && stripos($item['nome_aluno'], $search) !== false;
-    });
+    $searchSemAcento = removerAcentos(mb_strtolower($search));
+    $aluno = array_values(array_filter($aluno, function ($item) use ($searchSemAcento) {
+        $nome = isset($item['nome_aluno']) ? removerAcentos(mb_strtolower($item['nome_aluno'])) : '';
+        return strpos($nome, $searchSemAcento) !== false;
+    }));
 }
 
 // --- Fim das funções auxiliares ---
@@ -112,6 +121,18 @@ $alunoInstrutor = new aluno_instrutor();
 $solicitacaoTreino = new SolicitacaoTreino();
 $alunoOriginal = $alunoInstrutor->getAlunosByIdInstrutor($instrutor['id']);
 $aluno = $alunoOriginal;
+
+// Definir variáveis de filtro ANTES de aplicar os filtros
+$search = $_GET['search'] ?? '';
+$statusSelecionado = $_GET['status'] ?? '';
+
+// Aplicar filtros de busca e status, se existirem
+if (!empty($search)) {
+    aplicarPesquisa($aluno, $search);
+}
+if (!empty($statusSelecionado)) {
+    aplicarFiltroStatus($aluno, $statusSelecionado);
+}
 
 if (!empty($alunoOriginal)) {
     $alunosUnicos = [];
@@ -138,28 +159,7 @@ if (!empty($alunoOriginal)) {
     $aluno = [];
 }
 
-// Processamento do agendamento
-if (isset($_POST['agendar_consulta'])) {
-    $id_instrutor = $instrutor['id'];
-    $id_aluno = isset($_POST['id_aluno']) ? intval($_POST['id_aluno']) : 0;
-    $data_agendamento = isset($_POST['data_agendamento']) ? trim($_POST['data_agendamento']) : '';
-    $observacao = isset($_POST['observacao']) ? trim($_POST['observacao']) : '';
-
-    if ($id_aluno > 0 && !empty($data_agendamento)) {
-        $config = require __DIR__ . '/../config/db-config.php';
-        $db = $config['database'];
-        $dsn = "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4";
-        $pdo = new PDO($dsn, $db['user'], $db['password']);
-        $stmt = $pdo->prepare("INSERT INTO agendamentos (id_instrutor, id_aluno, data, observacao) VALUES (?, ?, ?, ?)");
-        if ($stmt->execute([$id_instrutor, $id_aluno, $data_agendamento, $observacao])) {
-            $msgAgendamento = '<div class="alert alert-success">Agendamento realizado com sucesso!</div>';
-        } else {
-            $msgAgendamento = '<div class="alert alert-error">Erro ao agendar. Tente novamente.</div>';
-        }
-    } else {
-        $msgAgendamento = '<div class="alert alert-error">Preencha todos os campos obrigatórios.</div>';
-    }
-}
+// Removido processamento de agendamento direto. O agendamento agora é feito apenas via controllerAgendamento.php
 
 // Lista de Agendamentos
 $config = require __DIR__ . '/../config/db-config.php';
@@ -170,7 +170,7 @@ $pdo = new PDO($dsn, $db['user'], $db['password']);
 // Consulta correta: apenas compromissos futuros do instrutor logado
 $stmt = $pdo->prepare("SELECT a.*, u.username FROM agendamentos a
     JOIN aluno u ON a.id_aluno = u.id
-    WHERE a.id_instrutor = ? AND a.data_hora >= NOW()
+    WHERE a.id_instrutor = ?
     ORDER BY a.data_hora ASC");
 $stmt->execute([$instrutor['id']]);
 $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -383,10 +383,6 @@ function veryFyStatus($solicitacoes)
             <i data-lucide="user-cog" class="icon"></i>
             Alterar Perfil
         </a>
-        <a href="./configuracoes.php">
-            <i data-lucide="settings" class="icon"></i>
-            Configurações
-        </a>
         <a href="./index.php?page=telaInicial" class="sidebar-link">
             <i data-lucide="log-out" class="icon"></i>
             <span>Menu da Academia</span>
@@ -463,7 +459,8 @@ function veryFyStatus($solicitacoes)
 
         <!-- Seção de Pesquisa Melhorada -->
         <div class="search-section">
-            <form method="GET" action="./index.php " class="search-bar">
+            <form method="GET" action="./index.php" class="search-bar">
+                <input type="hidden" name="page" value="perfilInstrutor">
                 <?php
                 $search = $_GET['search'] ?? '';
                 $statusSelecionado = $_GET['status'] ?? '';
@@ -475,13 +472,10 @@ function veryFyStatus($solicitacoes)
                         value="<?= htmlspecialchars($search) ?>" class="search-input">
                 </div>
 
-                <!-- Sempre incluir o status atual como campo oculto se existir -->
                 <button type="submit" class="btn-search">
                     <i data-lucide="search" class="btn-icon"></i>
-
                     Pesquisar
                 </button>
-                <!-- Mudar o nome para "status" para corresponder ao parâmetro usado no PHP -->
                 <select name="status" id="status_filter" class="filter-select" onchange="applyFilter(this.value)">
                     <option value="">
                         <i data-lucide="filter" class="icon"></i>
@@ -493,9 +487,8 @@ function veryFyStatus($solicitacoes)
                     <option value="todos" <?= $statusSelecionado === 'todos' ? 'selected' : '' ?>>Todos</option>
                 </select>
 
-
                 <?php if (!empty($statusSelecionado)): ?>
-                    <a href="<?= "index.php?page=perfilInstrutor " ?><?= !empty($search) ? '?search=' . urlencode($search) : '' ?>"
+                    <a href="index.php?page=perfilInstrutor<?= !empty($search) ? '&search=' . urlencode($search) : '' ?>"
                         class="btn-clear-filter">
                         <i data-lucide="x" class="btn-icon"></i>
                         Limpar Filtros
@@ -503,6 +496,14 @@ function veryFyStatus($solicitacoes)
                 <?php endif; ?>
             </form>
         </div>
+        <script>
+        function applyFilter(filterValue) {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('page', 'perfilInstrutor');
+            urlParams.set('status', filterValue);
+            window.location.href = window.location.pathname + '?' + urlParams.toString();
+        }
+        </script>
         <!-- Solicitações Melhoradas -->
         <div class="solicitacoes">
             <div class="solicitacoes-header">
@@ -642,12 +643,14 @@ function veryFyStatus($solicitacoes)
             </h3>
             <?php if (isset($msgAgendamento))
                 echo $msgAgendamento; ?>
-            <form class="form-agendamento" method="POST" action="../controllers/controllerAgendamento.php">
+            <form class="form-agendamento" method="POST" action="/Gyga-fit-gym/controllers/controllerAgendamento.php">
                 <label for="aluno">Selecione o Aluno:</label>
                 <select name="aluno" id="aluno" required>
                     <option value="">Selecione um aluno</option>
-                    <?php foreach ($alunoOriginal as $aluno): ?>
-                        <option value="<?= $aluno['id_aluno'] ?>"><?= htmlspecialchars($aluno['nome_aluno']) ?></option>
+                    <?php foreach (extrairAlunosUnicos($aluno) as $aluno): ?>
+                        <?php if (!empty($aluno['id_aluno'])): ?>
+                            <option value="<?= $aluno['id_aluno'] ?>"><?= htmlspecialchars($aluno['nome_aluno']) ?></option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </select>
                 <label for="data_hora">Data e Hora:</label>
@@ -673,7 +676,7 @@ function veryFyStatus($solicitacoes)
                 $pdo = new PDO($dsn, $db['user'], $db['password']);
                 $stmt = $pdo->prepare("SELECT a.*, u.username FROM agendamentos a
                     JOIN aluno u ON a.id_aluno = u.id
-                    WHERE a.id_instrutor = ? AND a.data_hora >= NOW()
+                    WHERE a.id_instrutor = ?
                     ORDER BY a.data_hora ASC");
                 $stmt->execute([$instrutor['id']]);
                 $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -690,7 +693,7 @@ function veryFyStatus($solicitacoes)
                         ?>
                         <li>
                             <strong><?= htmlspecialchars($ag['username']) ?></strong> -
-                            <?= date('d/m/Y H:i', strtotime($ag['data'])) ?>
+                            <?= date('d/m/Y H:i', strtotime($ag['data_hora'])) ?>
                             <?php if ($ag['observacao']): ?>
                                 <em>(<?= htmlspecialchars($ag['observacao']) ?>)</em>
                             <?php endif; ?>

@@ -67,7 +67,7 @@ if (!is_array($exercicios) || empty($exercicios)) {
       <p class="text-gray-600">Você pode montar seu próprio plano de treino do zero!</p>
     </div>
 
-    <form id="formPlano" class="space-y-6">
+    <form id="formPlano" class="space-y-6" method="POST" action="/Gyga-fit-gym/controllers/processarNovoTreino.php">
       <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($id_aluno) ?>">
 
       <div class="space-y-4">
@@ -92,7 +92,7 @@ if (!is_array($exercicios) || empty($exercicios)) {
           <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Novo Treino
         </button>
 
-        <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+        <button type="submit" name="submit_plano" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
           <i data-lucide="check-circle" class="w-4 h-4"></i> Finalizar e Enviar Plano
         </button>
       </div>
@@ -219,25 +219,6 @@ if (!is_array($exercicios) || empty($exercicios)) {
     document.addEventListener("DOMContentLoaded", function () {
       adicionarTreino();
       lucide.createIcons();
-
-      const form = document.getElementById("formPlano");
-      const mensagem = document.getElementById("mensagemSucesso");
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault(); // impede envio tradicional
-
-        mensagem.classList.remove("hidden");
-        mensagem.scrollIntoView({ behavior: "smooth" });
-
-        setTimeout(() => {
-          mensagem.classList.add("hidden");
-          form.reset();
-          document.getElementById("treinosContainer").innerHTML = '';
-          treinoIndex = 0;
-          adicionarTreino();
-          lucide.createIcons();
-        }, 4000);
-      });
     });
   </script>
 </body>
