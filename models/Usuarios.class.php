@@ -282,4 +282,44 @@ class Users
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    // Adicione este método à sua classe Usuarios em Usuarios.class.php
+    public function cadastrar($dados) {
+        // Validação básica
+         if(empty($dados['username']) || 
+             !filter_var($dados['email'], FILTER_VALIDATE_EMAIL) || 
+             strlen($dados['senha']) < 6 || 
+            !in_array($dados['typeUser'], ['aluno', 'instrutor'])) {
+             return false;
+    }
+    
+    // Se passar na validação, retorna true (simulando sucesso)
+    return true;
+    }
+
+    /**
+     * Realiza o login do usuário pelo CPF e senha.
+     * @param string $cpf
+     * @param string $senha
+     * @return array|false Dados do usuário em caso de sucesso, false em caso de erro
+     */
+    public function login($cpf, $senha)
+    {
+        // Tenta buscar o aluno pelo CPF
+        $stmt = $this->link->prepare("SELECT * FROM aluno WHERE cpf = :cpf");
+        $stmt->bindParam(':cpf', $cpf);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($usuario && isset($usuario['senha']) && password_verify($senha, $usuario['senha'])) {
+            return $usuario;
+        }
+        // Tenta buscar o instrutor pelo CPF, se não encontrou como aluno
+        $stmt = $this->link->prepare("SELECT * FROM instrutor WHERE cpf = :cpf");
+        $stmt->bindParam(':cpf', $cpf);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($usuario && isset($usuario['senha']) && password_verify($senha, $usuario['senha'])) {
+            return $usuario;
+        }
+        return false;
+    }
 }
