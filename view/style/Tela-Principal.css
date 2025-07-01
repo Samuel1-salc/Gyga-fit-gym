@@ -1,0 +1,1051 @@
+/* Reset e Configurações Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+/* Header Profissional Modernizado */
+.header-modern {
+    background: linear-gradient(135deg, #3b1e1e 0%, #553333 50%, #3b1e1e 100%);
+    color: white;
+    padding: 16px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid #334155;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+}
+
+.header-container-modern {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-button-modern {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.menu-button-modern:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.logo-container-modern {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon-modern {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+}
+
+.logo-icon-modern i {
+    font-size: 24px;
+    color: white;
+}
+
+.logo-text-modern h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(45deg, #ffffff, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo-text-modern span {
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.notification-button {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.notification-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #dc2626;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* Sidebar Moderna */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar-modern {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 320px;
+    height: 100%;
+    background: linear-gradient(180deg, #3b1e1e 0%, #553333 100%);
+    color: white;
+    padding: 24px;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.2);
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+}
+
+.sidebar-modern.open {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-button-modern {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-button-modern:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    color: #cbd5e1;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(4px);
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+}
+
+/* Main Content Modernizado */
+.main-content-modern {
+    padding: 32px 0;
+}
+
+.container-modern {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Card de Informações do Aluno Modernizado */
+.student-info-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+.card-header-accent {
+    height: 4px;
+    background: linear-gradient(90deg, #dc2626, #ef4444, #dc2626);
+}
+
+.student-info-content {
+    padding: 32px;
+}
+
+.student-profile {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.student-avatar-container {
+    position: relative;
+}
+
+.student-avatar,
+.student-avatar-placeholder {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 4px solid #fef2f2;
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
+}
+
+.student-avatar {
+    object-fit: cover;
+}
+
+.student-avatar-placeholder {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    background: #10b981;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.student-details {
+    flex: 1;
+}
+
+.student-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+    text-transform: capitalize;
+}
+
+.student-badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-active {
+    background: linear-gradient(45deg, #dc2626, #ef4444);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.badge-plan {
+    background: linear-gradient(45deg, #059669, #10b981);
+    color: white;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* Grid de Métricas Modernizado */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.metric-time .metric-icon {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+.metric-instructor .metric-icon {
+    background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.metric-unit .metric-icon {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+}
+
+.metric-workouts .metric-icon {
+    background: linear-gradient(135deg, #ea580c, #f97316);
+}
+
+.metric-content {
+    flex: 1;
+}
+
+.metric-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.metric-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Cronograma de Treinos Modernizado */
+.workout-schedule-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.workout-header {
+    padding: 32px 32px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.workout-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.workout-title i {
+    font-size: 32px;
+    color: #dc2626;
+    margin-top: 4px;
+}
+
+.workout-title h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 8px 0;
+}
+
+.workout-title p {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+}
+
+.workout-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-active {
+    background: linear-gradient(45deg, #059669, #10b981);
+    color: white;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* Abas de Treinos Modernizadas */
+.workout-tabs-container {
+    padding: 0 32px 24px;
+}
+
+.workout-tabs {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 16px;
+    flex-wrap: wrap;
+}
+
+.workout-tab {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: #64748b;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.workout-tab:hover {
+    background: #f1f5f9;
+    color: #dc2626;
+    transform: translateY(-1px);
+}
+
+.workout-tab.active {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+}
+
+/* Cards de Exercícios Modernizados */
+.workouts-container {
+    padding: 0 32px 32px;
+}
+
+.workout-card-modern {
+    margin-bottom: 24px;
+}
+
+.workout-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.workout-card-header h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+}
+
+.workout-card-header i {
+    color: #dc2626;
+}
+
+.exercise-count {
+    padding: 6px 12px;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.exercise-card {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    color: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(220, 38, 38, 0.4);
+}
+
+.exercise-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.exercise-number {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.exercise-info {
+    flex: 1;
+}
+
+.exercise-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.exercise-category {
+    margin-top: 8px;
+}
+
+.category-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.exercise-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 16px;
+    border-radius: 12px;
+
+}
+
+.stat-item i {
+    font-size: 16px;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.stat-exercise-image {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    align-items: center;
+    border-radius: 12px;
+}
+
+.exercise-description {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.exercise-description i {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.description-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.description-text {
+    margin: 0;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Botão Solicitar Novo Treino */
+.new-workout-section {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 24px;
+}
+
+.new-workout-button {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 32px rgba(5, 150, 105, 0.3);
+}
+
+.new-workout-button:hover {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(5, 150, 105, 0.4);
+}
+
+/* Footer Modernizado */
+.footer-modern {
+    background: linear-gradient(135deg, #3b1e1e 0%, #553333 100%);
+    color: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.footer-content {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 32px;
+    align-items: center;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-logo {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.footer-text h4 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+}
+
+.footer-text p {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin: 0;
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.divider {
+    color: #64748b;
+}
+
+.footer-social {
+    text-align: right;
+}
+
+.footer-social p {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin: 0 0 12px 0;
+}
+
+.social-links-modern {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Responsividade Melhorada */
+@media (max-width: 1024px) {
+    .container-modern {
+        padding: 0 16px;
+    }
+
+    .student-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 24px;
+    }
+
+    .footer-social {
+        text-align: center;
+    }
+
+    .social-links-modern {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container-modern {
+        padding: 0 16px;
+    }
+
+    .logo-text-modern h1 {
+        font-size: 20px;
+    }
+
+    .student-info-content,
+    .workout-header,
+    .workout-tabs-container,
+    .workouts-container,
+    .footer-content {
+        padding: 24px 16px;
+    }
+
+    .workout-tabs {
+        flex-direction: column;
+    }
+
+    .exercise-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-modern {
+        width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .student-avatar,
+    .student-avatar-placeholder {
+        width: 80px;
+        height: 80px;
+    }
+
+    .student-name {
+        font-size: 24px;
+    }
+
+    .workout-title h3 {
+        font-size: 24px;
+    }
+
+    .exercise-name {
+        font-size: 18px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estados de Loading e Interação */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+    border: 2px solid #dc2626;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Melhorias de Acessibilidade */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus States */
+button:focus,
+.sidebar-link:focus,
+.footer-links a:focus,
+.social-link:focus {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Print Styles */
+@media print {
+
+    .header-modern,
+    .sidebar-modern,
+    .sidebar-overlay,
+    .new-workout-section,
+    .footer-modern {
+        display: none;
+    }
+
+    .main-content-modern {
+        padding: 0;
+    }
+
+    .student-info-card,
+    .workout-schedule-card {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+    }
+}

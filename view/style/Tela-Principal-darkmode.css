@@ -1,0 +1,116 @@
+/*
+ * Modo escuro adaptado do perfilInstrutor.css para telaPrincipal.php
+ *
+ * Este bloco deve ser incluído ao final de Tela-Principal.css
+ */
+:root {
+    --bg: #fff;
+    --fg: #333;
+    --card-bg: #fafafa;
+    --accent: #2ecc71;
+}
+body.dark-mode {
+    --bg: #222;
+    --fg: #eee;
+    --card-bg: #2c2c2c;
+    --accent: #9b59b6;
+}
+body, html {
+    background-color: var(--bg) !important;
+    color: var(--fg) !important;
+}
+* {
+    transition: background 0.2s, color 0.2s;
+}
+.header-modern, .main-content-modern, .student-info-card, .workout-schedule-card, .workout-tabs, .workout-card-modern, .footer-modern, .sidebar-modern {
+    background-color: var(--card-bg) !important;
+    color: var(--fg) !important;
+}
+.badge-active, .badge-plan, .status-badge, .workout-tab.active, .new-workout-button {
+    background: var(--accent) !important;
+    color: #fff !important;
+}
+body.dark-mode .sidebar-modern {
+    background: #18181b !important;
+    color: #fff !important;
+}
+body.dark-mode .sidebar-link {
+    color: #eee !important;
+}
+body.dark-mode .sidebar-link:hover {
+    background: #23232b !important;
+    color: #fff !important;
+}
+body.dark-mode .footer-modern {
+    background: #18181b !important;
+    color: #eee !important;
+}
+body.dark-mode .footer-logo {
+    filter: brightness(0.8) !important;
+}
+body.dark-mode .student-info-card,
+body.dark-mode .workout-schedule-card,
+body.dark-mode .workout-card-modern,
+body.dark-mode .main-content-modern {
+    background: #23232b !important;
+    color: #eee !important;
+    border-color: #333 !important;
+}
+body.dark-mode .badge-active, body.dark-mode .badge-plan, body.dark-mode .status-badge, body.dark-mode .workout-tab.active, body.dark-mode .new-workout-button {
+    background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%) !important;
+    color: #fff !important;
+}
+body.dark-mode .workout-tab {
+    background: #18181b !important;
+    color: #fff !important;
+}
+body.dark-mode .workout-tab:hover {
+    background: #23232b !important;
+    color: #fff !important;
+}
+body.dark-mode .workout-tab,
+body.dark-mode .workout-tab i {
+    color: #fff !important;
+}
+body.dark-mode .workout-tab.active,
+body.dark-mode .workout-tab.active i {
+    color: #fff !important;
+    text-shadow: 0 2px 8px #000a;
+}
+body.dark-mode .workout-card-header h4,
+body.dark-mode .workout-card-header i {
+    color: #fff !important;
+    text-shadow: 0 2px 8px #000a;
+}
+body.dark-mode .metric-card, body.dark-mode .exercise-card {
+    background: #23232b !important;
+    color: #eee !important;
+    border-color: #333 !important;
+}
+body.dark-mode .exercise-name, body.dark-mode .metric-label, body.dark-mode .metric-value {
+    color: #fff !important;
+}
+body.dark-mode .avatar-placeholder, body.dark-mode .student-avatar-placeholder {
+    background: #18181b !important;
+    color: #fff !important;
+    border-color: #23232b !important;
+}
+body.dark-mode .search-input, body.dark-mode .filter-select {
+    background: #18181b !important;
+    color: #fff !important;
+    border-color: #333 !important;
+}
+body.dark-mode .search-input::placeholder {
+    color: #aaa !important;
+}
+body.dark-mode .new-workout-button:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+}
+body.dark-mode .student-name,
+body.dark-mode .workout-title h3 {
+    color: #fff !important;
+    text-shadow: 0 2px 8px #000a;
+}
+body.dark-mode .workout-title p {
+    color: #e0e0e0 !important;
+}
