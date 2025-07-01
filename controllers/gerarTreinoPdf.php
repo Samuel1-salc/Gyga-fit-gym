@@ -9,7 +9,7 @@ require_once __DIR__ . '/PdfService.php';               // lê o serviço que ge
 session_start();
 
 // 1) Parâmetro alunoId via GET
-$alunoId = filter_input(INPUT_GET, 'alunoId', FILTER_VALIDATE_INT);
+$alunoId = $_SESSION['usuario']['id'];
 if (!$alunoId) {
     http_response_code(400);
     exit('Parâmetro alunoId inválido.');
