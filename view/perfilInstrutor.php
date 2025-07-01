@@ -211,139 +211,64 @@ function veryFyStatus($solicitacoes)
     <!-- Adicionando ícones Lucide via CDN -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
-        .icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .header-icon {
-            width: 24px;
-            height: 24px;
-            margin-right: 8px;
-        }
-
-        .metric-icon {
-            width: 32px;
-            height: 32px;
-        }
-
-        .btn-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-        }
-
-        .alert {
-            padding: 16px 20px;
-            border-radius: 12px;
-            margin: 16px 0;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .alert-success {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            border: 1px solid #10b981;
-            color: #047857;
-        }
-
-        .alert-info {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border: 1px solid #3b82f6;
-            color: #1e40af;
-        }
-
-        .alert-warning {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 1px solid #f59e0b;
-            color: #92400e;
-        }
-
-        .alert-error {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            border: 1px solid #ef4444;
-            color: #dc2626;
-        }
-
-        /* Estilos para o formulário de agendamento */
-        .agendamento-section {
-            background: #fff;
-            padding: 24px;
-            border-radius: 12px;
-            margin: 16px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-agendamento {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .form-agendamento label {
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .form-agendamento input,
-        .form-agendamento select {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .btn-agendar {
-            grid-column: span 2;
-            padding: 12px;
-            background-color: #10b981;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-agendar:hover {
-            background-color: #059669;
-        }
-
-        /* Estilos para a lista de agendamentos */
-        .lista-agendamentos {
-            background: #fff;
-            padding: 24px;
-            border-radius: 12px;
-            margin: 16px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .lista-agendamentos h4 {
-            margin-bottom: 16px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .lista-agendamentos ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .lista-agendamentos li {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .lista-agendamentos li:last-child {
-            border-bottom: none;
-        }
+      .complete-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #ccc;
+      }
+      .exercise-card {
+        position: relative;
+      }
+      .exercise-card.completed {
+        opacity: 0.6;
+      }
+      .exercise-card.completed .exercise-name {
+        text-decoration: line-through;
+      }
+      .exercise-card.completed .complete-btn {
+        color: #2ecc71;
+      }
+      /* Modo escuro global */
+      :root {
+        --bg: #fff;
+        --fg: #333;
+        --card-bg: #fafafa;
+        --accent: #2ecc71;
+      }
+      body.dark-mode {
+        --bg: #222;
+        --fg: #eee;
+        --card-bg: #2c2c2c;
+        --accent: #9b59b6;
+      }
+      body, html {
+        background-color: var(--bg) !important;
+        color: var(--fg) !important;
+      }
+      * {
+        transition: background 0.2s, color 0.2s;
+      }
+      .card, .sidebar, .header-modern, .main-content, .perfil-instrutor, .agendamento-section, .lista-agendamentos, .solicitacoes, .search-section, .metrica-card, .aluno-card-header, .exercise-card {
+        background-color: var(--card-bg) !important;
+        color: var(--fg) !important;
+      }
+      .badge-plan, .badge-active, .badge-primary, .badge-success, .badge-warning {
+        background-color: var(--accent) !important;
+        color: #fff !important;
+      }
+      /* Forçar texto claro em todos títulos, parágrafos e botões no dark mode */
+      body.dark-mode *, body.dark-mode .sidebar-link, body.dark-mode .notification-button, body.dark-mode button, body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6, body.dark-mode p, body.dark-mode span, body.dark-mode a {
+        color: var(--fg) !important;
+      }
+      /* Ajuste para ícones Lucide no dark mode */
+      body.dark-mode .icon, body.dark-mode .btn-icon, body.dark-mode .header-icon, body.dark-mode .metric-icon {
+        stroke: var(--fg) !important;
+      }
     </style>
 </head>
 
@@ -366,6 +291,10 @@ function veryFyStatus($solicitacoes)
             <button class="btn-header">
                 <i data-lucide="bell" class="btn-icon"></i>
                 Notificações
+            </button>
+            <button id="toggle-dark-mode" class="btn-dark-mode" title="Alternar modo escuro">
+                <i data-lucide="moon" class="btn-icon"></i>
+                <span>Modo Escuro</span>
             </button>
         </div>
     </header>
@@ -757,19 +686,38 @@ function veryFyStatus($solicitacoes)
             lucide.createIcons();
         }
 
-        // Inicializa os ícones quando a página carrega
-        document.addEventListener("DOMContentLoaded", function () {
-            lucide.createIcons();
-
-            // Sincronizar o valor do select com o parâmetro da URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const statusParam = urlParams.get('status');
-
-            if (statusParam) {
-                const statusSelect = document.getElementById('status_filter');
-                if (statusSelect) {
-                    statusSelect.value = statusParam;
+        // Alternar modo escuro instantaneamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkBtn = document.getElementById('toggle-dark-mode');
+            const body = document.body;
+            // Carrega preferência salva
+            if (localStorage.getItem('gygafit-darkmode') === '1') {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+            function updateDarkBtn() {
+                if (!darkBtn) return;
+                if (body.classList.contains('dark-mode')) {
+                    darkBtn.innerHTML = '<i data-lucide="sun" class="btn-icon"></i> <span>Modo Claro</span>';
+                } else {
+                    darkBtn.innerHTML = '<i data-lucide="moon" class="btn-icon"></i> <span>Modo Escuro</span>';
                 }
+                if (window.lucide && typeof lucide.createIcons === 'function') {
+                    lucide.createIcons();
+                }
+            }
+            if (darkBtn) {
+                darkBtn.addEventListener('click', function() {
+                    body.classList.toggle('dark-mode');
+                    if (body.classList.contains('dark-mode')) {
+                        localStorage.setItem('gygafit-darkmode', '1');
+                    } else {
+                        localStorage.removeItem('gygafit-darkmode');
+                    }
+                    updateDarkBtn();
+                });
+                updateDarkBtn();
             }
         });
     </script>

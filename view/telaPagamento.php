@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -101,12 +100,20 @@
                 
                 <div class="user-info">
                     <h3>Seus Dados</h3>
-                    <div class="user-details">
-                        <span><strong>Nome:</strong> João Silva</span>
-                        <span><strong>Email:</strong> joao@email.com</span>
-                        <span><strong>CPF:</strong> 123.456.789-00</span>
-                        <span><strong>Telefone:</strong> (63) 99999-9999</span>
-                    </div>
+                    <form id="user-data-form" class="user-details" autocomplete="on" style="display:flex;flex-direction:column;gap:10px;max-width:400px;">
+                        <label><strong>Nome:</strong>
+                            <input type="text" id="user-name" name="user-name" placeholder="Digite seu nome completo" required>
+                        </label>
+                        <label><strong>Email:</strong>
+                            <input type="email" id="user-email" name="user-email" placeholder="Digite seu email" required>
+                        </label>
+                        <label><strong>CPF:</strong>
+                            <input type="text" id="user-cpf" name="user-cpf" placeholder="000.000.000-00" maxlength="14" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+                        </label>
+                        <label><strong>Telefone:</strong>
+                            <input type="tel" id="user-phone" name="user-phone" placeholder="(00) 00000-0000" maxlength="15" required pattern="\(\d{2}\) \d{5}-\d{4}">
+                        </label>
+                    </form>
                 </div>
                 
                 <div class="payment-summary">
@@ -310,6 +317,31 @@
                 alert('Em um sistema real, você seria redirecionado para a área do cliente.');
             }, 3000);
         }
+        
+        // Validação simples para garantir que os dados do usuário foram preenchidos antes do pagamento
+        function validateUserData() {
+            const name = document.getElementById('user-name').value.trim();
+            const email = document.getElementById('user-email').value.trim();
+            const cpf = document.getElementById('user-cpf').value.trim();
+            const phone = document.getElementById('user-phone').value.trim();
+            if (!name || !email || !cpf || !phone) {
+                alert('Por favor, preencha todos os dados antes de prosseguir com o pagamento.');
+                return false;
+            }
+            return true;
+        }
+        // Intercepta o clique nos botões de pagamento
+        function blockPaymentIfNoUserData() {
+            const paymentSection = document.getElementById('payment-buttons');
+            if (!paymentSection) return;
+            paymentSection.addEventListener('click', function(e) {
+                if (!validateUserData()) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            }, true);
+        }
+        document.addEventListener('DOMContentLoaded', blockPaymentIfNoUserData);
         
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {

@@ -109,6 +109,7 @@ if ($id_ultimo_treino) {
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./view/style//Tela-Principal.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="./view/style/Tela-Principal-darkmode.css?v=<?= time(); ?>">
 </head>
 
 <body>
@@ -141,6 +142,10 @@ if ($id_ultimo_treino) {
                         </div>
                     <?php endif; ?>
                 </div>
+                <button id="toggle-dark-mode" class="btn-dark-mode" title="Alternar modo escuro"
+                    style="margin-left:16px;padding:10px 18px;border-radius:10px;background:rgba(30,41,59,0.7);color:#fff;font-size:15px;font-weight:600;box-shadow:0 2px 8px #0002;cursor:pointer;display:flex;align-items:center;gap:8px;border:none;transition:all 0.3s;">
+                    <i class="fas fa-moon"></i> <span>Modo Escuro</span>
+                </button>
             </div>
         </div>
     </header>
@@ -308,6 +313,10 @@ if ($id_ultimo_treino) {
                                             <?php $exercicioInfo = $exercicioInfoArr[0] ?? null; ?>
                                             <?php if ($exercicioInfo): ?>
                                                 <div class="exercise-card">
+                                                    <button class="complete-btn" title="Marcar concluído"
+                                                        style="position:absolute;top:16px;right:16px;z-index:2;background:rgba(0,0,0,0.12);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;">
+                                                        <i class="fas fa-circle" style="font-size:20px;color:#fff;"></i>
+                                                    </button>
                                                     <div class="exercise-header">
                                                         <div class="exercise-number"><?= $exerciseIndex++; ?></div>
                                                         <div class="exercise-info">
@@ -394,39 +403,6 @@ if ($id_ultimo_treino) {
                             <i class="fas fa-file-pdf"></i><span>Baixar Treino PDF</span>
                         </button>
                     </div>
-
-
-                    <!-- Footer Modernizado -->
-                    <div class="footer-modern">
-                        <div class="footer-content">
-                            <div class="footer-brand">
-                                <div class="footer-logo">
-                                    <i class="fas fa-dumbbell"></i>
-                                </div>
-                                <div class="footer-text">
-                                    <h4>GYGA FIT</h4>
-                                    <p>Transformando vidas através do fitness</p>
-                                </div>
-                            </div>
-
-                            <div class="footer-center">
-                                <div class="footer-links">
-                                    <a href="#"><i class="fas fa-phone"></i> Fale Conosco</a>
-                                    <span class="divider">|</span>
-                                    <a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidade</a>
-                                </div>
-                            </div>
-
-                            <div class="footer-social">
-                                <p>Siga-nos nas redes sociais</p>
-                                <div class="social-links-modern">
-                                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
     </main>
 
@@ -491,6 +467,53 @@ if ($id_ultimo_treino) {
                 card.classList.add('fade-in-up');
             });
         });
+
+        // Alternar modo escuro instantaneamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkBtn = document.getElementById('toggle-dark-mode');
+            const body = document.body;
+            // Carrega preferncia salva
+            if (localStorage.getItem('gygafit-darkmode') === '1') {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+            function updateDarkBtn() {
+                if (!darkBtn) return;
+                if (body.classList.contains('dark-mode')) {
+                    darkBtn.innerHTML = '<i class="fas fa-sun"></i> <span>Modo Claro</span>';
+                } else {
+                    darkBtn.innerHTML = '<i class="fas fa-moon"></i> <span>Modo Escuro</span>';
+                }
+            }
+            if (darkBtn) {
+                darkBtn.addEventListener('click', function() {
+                    body.classList.toggle('dark-mode');
+                    if (body.classList.contains('dark-mode')) {
+                        localStorage.setItem('gygafit-darkmode', '1');
+                    } else {
+                        localStorage.removeItem('gygafit-darkmode');
+                    }
+                    updateDarkBtn();
+                });
+                updateDarkBtn();
+            }
+        });
+
+        // Marca exercício como concluído
+  document.addEventListener('click', e=>{
+    if (e.target.closest('.complete-btn')) {
+      const btn  = e.target.closest('.complete-btn');
+      const card = btn.closest('.exercise-card');
+      const icon = btn.querySelector('i');
+      card.classList.toggle('completed');
+      if (card.classList.contains('completed')) {
+        icon.classList.replace('fa-circle','fa-check-circle');
+      } else {
+        icon.classList.replace('fa-check-circle','fa-circle');
+      }
+    }
+  });
     </script>
 </body>
 
