@@ -106,7 +106,10 @@
                 <span class="user-status-header" style="background:#25D366;color:#fff;border-radius:12px;padding:2px 10px;font-size:0.95em;margin-left:4px;font-weight:600;letter-spacing:0.5px;">Online</span>
             </div>
         <?php else: ?>
-            <a href="./view/telaLogin.php" class="login-button">Login</a>
+            <div style="display:flex;align-items:center;gap:12px;margin-left:16px;">
+                <a href="./view/telaLogin.php" class="login-button">Login</a>
+                <a href="/Gyga-fit-gym/view/telaPagamento.php" class="inscrever-button" style="padding:10px 24px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-size:1.1em;font-weight:600;box-shadow:0 2px 8px #0002;cursor:pointer;text-decoration:none;transition:background 0.2s;">Inscreva-se na Academia</a>
+            </div>
         <?php endif; ?>
     </header>
 
@@ -202,7 +205,24 @@
         </svg>
         Fale Conosco
     </a>
-    
+
+    <script>
+    // Scroll suave para âncoras do menu
+    const navLinks = document.querySelectorAll('nav ul li a[href^="#"]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 10, // ajuste se quiser espaço do topo
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

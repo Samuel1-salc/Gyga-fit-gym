@@ -45,13 +45,37 @@ if ($search !== '') {
       .search-bar input { background: #181818 !important; color: #f5f5f5 !important; }
       .btn-cadastrar, .btn-editar { background: #FF0000 !important; color: #fff !important; }
       .painel-header h1, .tab-content h2 { color: #FF0000 !important; }
+      .student-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ff0000;
+        background: #181818;
+      }
+      .student-avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #222;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        border: 2px solid #ff0000;
+      }
     </style>
 </head>
 
 <body>
     <header>
         <div class="header-container">
-            <form action="index.php?page=logout" method="post" style="margin-left:auto;">
+            <form action="index.php?page=telaInicial" method="get" style="margin-left:auto;display:inline-block;">
+                <button type="submit" style="background:#222;color:#fff;border:none;padding:8px 18px;border-radius:16px;font-weight:bold;cursor:pointer;margin-right:10px;">Menu Academia</button>
+            </form>
+            <form action="index.php?page=logout" method="post" style="display:inline-block;">
                 <button type="submit" style="background:#ff0000;color:#fff;border:none;padding:8px 18px;border-radius:16px;font-weight:bold;cursor:pointer;">Logout</button>
             </form>
         </div>
@@ -93,7 +117,13 @@ if ($search !== '') {
                 <?php else: foreach ($alunos as $al): ?>
                     <div class="aluno-card">
                         <div class="aluno-avatar">
-                            <img src="./view/img/<?php echo htmlspecialchars($al['foto']); ?>" alt="Avatar">
+                            <?php if (!empty($al['foto'])): ?>
+                                <img src="./view/uploads/<?= htmlspecialchars($al['foto']) ?>" alt="Foto do aluno" class="student-avatar">
+                            <?php else: ?>
+                                <div class="student-avatar-placeholder">
+                                    <?= strtoupper(substr($al['username'] ?? 'U', 0, 1)); ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div class="aluno-info">
                             <h3><?= htmlspecialchars($al['username']) ?></h3>
@@ -137,7 +167,13 @@ if ($search !== '') {
                 <?php else: foreach ($personais as $p): ?>
                     <div class="personal-card">
                         <div class="personal-avatar">
-                            <img src="./view/img/<?php echo htmlspecialchars($p['foto']); ?>" alt="Avatar">>
+                            <?php if (!empty($p['foto'])): ?>
+                                <img src="./view/uploads/<?= htmlspecialchars($p['foto']) ?>" alt="Foto do instrutor" class="student-avatar">
+                            <?php else: ?>
+                                <div class="student-avatar-placeholder">
+                                    <?= strtoupper(substr($p['username'] ?? 'U', 0, 1)); ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div class="personal-info">
                             <h3><?= htmlspecialchars($p['username']) ?></h3>
