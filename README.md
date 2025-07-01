@@ -1,3 +1,4 @@
+
 # Engenharia de Software 2025/01 | Universidade Federal do Tocantins 
 
 
@@ -507,5 +508,6 @@ ___
 - A imagem deve aparecer corretamente nos exercícios listados.
 - URLs inválidas não devem ser salvas.
 - A visualização deve ser otimizada para diferentes dispositivos.
+
 
 
